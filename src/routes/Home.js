@@ -1,6 +1,7 @@
 //각각의 신교대 목록 그려줌
 import divisionData from "../data/divisionData"
 import BootCamp from "./BootCamp";
+
 function Home(){
     
     return (
