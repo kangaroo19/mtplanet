@@ -6,14 +6,14 @@ import Ranking from "../routes/Ranking";
 import Detail from "../routes/Detail";
 import Login from '../routes/Login'
 import Profile from "../routes/Profile";
-function Router({userObj}){
+function Router({userObj,isLoggedIn}){
     return (
         <Routes>
-            <Route path="/" element={<Home/>}></Route>
+            <Route path="/" element={<Home userObj={userObj}/>}></Route>
             <Route path="/ranking" element={<Ranking/>}></Route>
             <Route path="/news" element={<News/>}></Route>
             <Route path="login" element={<Login/>}></Route>
-            <Route path='/detail/:id' element={<Detail/>}></Route>
+            <Route path='/detail/:id' element={<Detail userObj={userObj} isLoggedIn={isLoggedIn}/>}></Route>
             <Route path='/profile' element={<Profile/>}></Route>
         </Routes>
     )

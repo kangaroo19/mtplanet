@@ -26,7 +26,7 @@ function App() {
   return (
     <>
     <Navigation userObj={userObj} isLoggedIn={isLoggedIn}/>
-    <Router userObj={userObj}/>
+    <Router userObj={userObj} isLoggedIn={isLoggedIn}/>
     </>
   );
 }
