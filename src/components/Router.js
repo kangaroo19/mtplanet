@@ -6,6 +6,7 @@ import Ranking from "../routes/Ranking";
 import Detail from "../routes/Detail";
 import Login from '../routes/Login'
 import Profile from "../routes/Profile";
+import ReviewForm from "../routes/ReviewForm";
 function Router({userObj,isLoggedIn}){
     return (
         <Routes>
@@ -15,6 +16,7 @@ function Router({userObj,isLoggedIn}){
             <Route path="login" element={<Login/>}></Route>
             <Route path='/detail/:id' element={<Detail userObj={userObj} isLoggedIn={isLoggedIn}/>}></Route>
             <Route path='/profile' element={<Profile/>}></Route>
+            <Route path='/reviewform' element={<ReviewForm userObj={userObj} isLoggedIn={isLoggedIn}/>}></Route>
         </Routes>
     )
 }

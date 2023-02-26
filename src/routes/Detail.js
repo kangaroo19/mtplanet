@@ -2,24 +2,24 @@
 //글쓰기 기능
 
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { useParams,useLocation } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import divisionData from "../data/divisionData";
 import { dbService } from "../fbase";
-import { setDoc,doc,getDoc,addDoc, query, collection, onSnapshot, QuerySnapshot, orderBy, where } from "firebase/firestore";
+import { query, collection, onSnapshot, orderBy } from "firebase/firestore";
 import Reviews from "../components/Reviews";
+import ReviewForm from "./ReviewForm";
+import Map from "../components/Map";
 function Detail({userObj,isLoggedIn}){
     const [title,setTitle]=useState(null)
     const [desc,setDesc]=useState(null)
-    const [review,setReview]=useState('') //내가 방금 쓴 리뷰(한개)
     const [reviewArr,setReviewArr]=useState([]) // 나 포함 다른 사용자들이 쓴 리뷰들
-    const location=useLocation()
     const {id}=useParams()
+    const navigate=useNavigate() //리디렉션 처리위함
     
     useEffect(()=>{
-        setTitle(divisionData[id].title)
+        setTitle(divisionData[id].name)
         setDesc(divisionData[id].desc)
-        const q=query(collection(dbService,`${divisionData[id].title}`))
+        const q=query(collection(dbService,`${divisionData[id].title}`),orderBy('date','desc'))
         const un=onSnapshot(q,(snapshot)=>{ //데이터베이스에 변화가 생기면 onSnapshot 실행됨
             const arr=[]
             snapshot.forEach((doc)=>{
@@ -32,39 +32,31 @@ function Detail({userObj,isLoggedIn}){
             //console.log(reviewArr)
         })
     },[])
-    const onSubmit=async(event)=>{
-        event.preventDefault()
-        if(!isLoggedIn){ //로그인 상태 아닐때 글 못쓰게하기 위함
+
+    const goToReviewForm=()=>{
+        if(!isLoggedIn){ //로그인 되어있지 않을때 로그인 페이지로 리디렉션
             alert('로그인 필요')
+            navigate('/login')
+            return 
         }
-        else if(review!==''){
-          const reviewObj={
-            displayName:userObj.displayName,
-            uid:userObj.uid,
-            userImg:userObj.userImg,
-            userReview:review,
-          }
-          const docRef=await addDoc(collection(dbService,`${divisionData[id].title}`),reviewObj)
-          setReview('')
-        }
-    }
-    const onChange=(event)=>{
-        const {target:{value}}=event
-        setReview(value)
+        let number=123
+        navigate('/reviewform',{state:{id:id,},})
     }
     return (
         <div>
             <h1>{title}</h1>
             <h2>{desc}</h2>
+            <Map/>
             {reviewArr.map((value,idx)=>(
                 <Reviews
                     key={idx}
                     reviewObj={value}/>
             ))}
-            <form onSubmit={onSubmit} action="">
-                <input onChange={onChange} value={review} type="text" />
-                <input  type="submit" value='글쓰기'/>
-            </form>
+            <button onClick={goToReviewForm}>리뷰 작성하기</button>
+            {/* <ReviewForm 
+                userObj={userObj}
+                isLoggedIn={isLoggedIn}
+                id={id}/> */}
         </div>
     )
 }
