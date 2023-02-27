@@ -3,6 +3,7 @@ import Router from "./components/Router";
 import { authService } from "./fbase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect,useState } from "react";
+import Footer from "./components/Footer";
 
 function App() {
   const [isLoggedIn,setIsLoggedIn]=useState(false) //로그인 되기 전에는 false
@@ -27,6 +28,7 @@ function App() {
     <>
     <Navigation userObj={userObj} isLoggedIn={isLoggedIn}/>
     <Router userObj={userObj} isLoggedIn={isLoggedIn}/>
+    <Footer/>
     </>
   );
 }

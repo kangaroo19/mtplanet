@@ -1,12 +1,13 @@
 //리뷰 작성부분 컴포넌트
 import { useState } from "react";
 import { useLocation,useNavigate } from "react-router-dom";
-import { addDoc,  collection, } from "firebase/firestore";
+import { doc,addDoc,setDoc,  collection,getDoc } from "firebase/firestore";
 import { dbService } from "../fbase";
 import divisionData from "../data/divisionData";
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
 function ReviewForm({userObj,isLoggedIn}){
+    
     const location=useLocation()
     const navigate=useNavigate()
     const id=location.state.id //현재 보고있는 부대의 id값 , Detail에서 useNavigate에서 전달받음
@@ -17,7 +18,7 @@ function ReviewForm({userObj,isLoggedIn}){
     const onSubmit=async(event)=>{
         event.preventDefault()
         if(oneLineReview!=='' && goodReview!=='' && badReview!==''){
-          const reviewObj={ //reveiwArr에 저장되는 데이터
+          const reviewObj={ //reviewArr에 저장되는 데이터
             displayName:userObj.displayName,
             uid:userObj.uid,
             userImg:userObj.userImg,
@@ -27,12 +28,29 @@ function ReviewForm({userObj,isLoggedIn}){
             userStarReview:starReview,
             date:Date.now(),
           }
+          
           const docRef=await addDoc(collection(dbService,`${divisionData[id].title}`),reviewObj)
+
           setOneLineReview('')
           setGoodReview('')
           setBadReview('')
           navigate(`/detail/${id}`) //리뷰 작성 완료 후 해당 부대 페이지로 리디렉션
+        //   const testRef=doc(dbService,`${divisionData[id].title}`,'allrating')
+        // const testSnap=await getDoc(testRef)
+        // console.log(testSnap.data().rating+Number(reviewObj.userStarReview))
+        // const reviewStarObj={
+        //     rating:testSnap.data().rating+Number(reviewObj.userStarReview),
+        //     count:testSnap.data().count+1,
+        // }
         }
+        
+        // const reviewStarObj={
+        //     rating:Number(testSnap.data().rating)+Number(starReview),
+        //     count:testSnap.data().count++
+        // }
+        // const docReftest=await setDoc(doc(dbService,`${divisionData[id].title}`,'allrating'),reviewStarObj)
+
+        // console.log(reviewStarObj)
     }
     const onChange=(event)=>{
         const {target:{value,name}}=event
@@ -43,6 +61,7 @@ function ReviewForm({userObj,isLoggedIn}){
     const onChangeStar=(event)=>{
         setStarReview(event.target.value)
     }
+    
     return (
         <>
             <form onSubmit={onSubmit} action="">
