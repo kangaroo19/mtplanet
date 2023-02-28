@@ -18,12 +18,13 @@ function TitleImg(){
 export default TitleImg
 
 const Section=styled.div`
-width:100%;
-background-color: white;
-position: relative;
+    width:100%;
+    background-color: white;
+    position: relative;
+    margin-top:50px;
 `
 const Wrapper=styled.div`
-height:360px;
+    height:360px;
     background-image: url(${img});
     background-size: cover;
     background-position:center 1%;
@@ -31,27 +32,27 @@ height:360px;
     z-index: 1;
 `
 const Inner=styled.div`
-width:100%;
-height:100%; 
-/* height 100%는 상속된 값인 360px  */
-background-color:rgb(47,48,89);
-opacity: 0.8;
-z-index: 2;
+    width:100%;
+    height:100%; 
+    /* height 100%는 상속된 값인 360px  */
+    background-color:rgb(47,48,89);
+    opacity: 0.8;
+    z-index: 2;
 `
 const TitleWrapper=styled.div`
-margin:0 30px;
-padding-top:60px;
-padding-bottom: 100px;
+    margin:0 30px;
+    padding-top:60px;
+    padding-bottom: 100px;
 `
 
 const Title=styled.div`
-font-size: 2rem;
-font-weight: bold;
-color:white;
-margin-bottom: 2rem;
+    font-size: 2rem;
+    font-weight: bold;
+    color:white;
+    margin-bottom: 2rem;
 `
 
 const Message=styled.div`
-color:white;
-font-size: 1.4rem;
+    color:white;
+    font-size: 1.4rem;
 `

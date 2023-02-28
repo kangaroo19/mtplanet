@@ -5,6 +5,11 @@ import Autocomplete from '@mui/material/Autocomplete';
 import divisionData from '../data/divisionData';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
+import { borderRadius, borderRight } from '@mui/system';
+
 function SearchInput(){
     const navigation=useNavigate()
     const [army,setArmy]=useState('')
@@ -21,17 +26,42 @@ function SearchInput(){
         })
     }
     return (
-        <Stack spacing={2} sx={{ width: 1200 }}>
-        <Autocomplete
-        onChange={onClickAutoComplete}
-        id="free-solo-demo"
-        freeSolo
-        options={divisionData.map((option) => option.name)}
-        renderInput={(params) => <TextField {...params} label="어떤 훈련소를 찾고 있나요?" />}
-      />
-      <button onClick={onClickSearchButton}>검색</button>
-      </Stack>
+        <Wrapper>
+            <Autocomplete
+                sx={{
+                    '.MuiOutlinedInput-notchedOutline': {
+                        borderStyle:'none',
+                        border:'3px solid #2186c4',
+                        borderRight:'0px',
+                        borderRadius:'0px',
+                        
+                    },
+                    
+                }}
+                style={{width:'95%',}}
+                onChange={onClickAutoComplete}
+                id="free-solo-demo"
+                freeSolo
+                options={divisionData.map((option) => option.name)}
+                renderInput={(params) => <TextField {...params} label="어떤 훈련소를 찾고 있나요?" />}
+            />
+            <Button onClick={onClickSearchButton}><FontAwesomeIcon size="2x" icon={faMagnifyingGlass}></FontAwesomeIcon></Button>
+      </Wrapper>
     )
 }
 
 export default SearchInput
+
+const Wrapper=styled.div`
+    width:100%;
+    display:flex;
+    margin-top:10px;
+    align-items:center;
+    margin-bottom:10px;
+`
+const Button=styled.button`
+    width:5%;
+    background-color:#2186c4;
+    border:none;
+    height:57px;
+`

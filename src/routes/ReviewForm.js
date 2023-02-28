@@ -1,7 +1,7 @@
 //리뷰 작성부분 컴포넌트
 import { useState } from "react";
 import { useLocation,useNavigate } from "react-router-dom";
-import { doc,addDoc,setDoc,  collection,getDoc } from "firebase/firestore";
+import { doc,addDoc,setDoc,  collection,getDoc, getCountFromServer } from "firebase/firestore";
 import { dbService } from "../fbase";
 import divisionData from "../data/divisionData";
 import Rating from '@mui/material/Rating';
@@ -18,39 +18,37 @@ function ReviewForm({userObj,isLoggedIn}){
     const onSubmit=async(event)=>{
         event.preventDefault()
         if(oneLineReview!=='' && goodReview!=='' && badReview!==''){
-          const reviewObj={ //reviewArr에 저장되는 데이터
-            displayName:userObj.displayName,
-            uid:userObj.uid,
-            userImg:userObj.userImg,
-            userReview:oneLineReview,
-            userGoodReview:goodReview,
-            userBadReview:badReview,
-            userStarReview:starReview,
-            date:Date.now(),
-          }
-          
-          const docRef=await addDoc(collection(dbService,`${divisionData[id].title}`),reviewObj)
+            const reviewObj={ //reviewArr에 저장되는 데이터
+                displayName:userObj.displayName,
+                uid:userObj.uid,
+                userImg:userObj.userImg,
+                userReview:oneLineReview,
+                userGoodReview:goodReview,
+                userBadReview:badReview,
+                userStarReview:starReview,
+                date:Date.now(),
+            }
+            const reviewDocRef=await addDoc(collection(dbService,`${divisionData[id].title}`),reviewObj)
 
-          setOneLineReview('')
-          setGoodReview('')
-          setBadReview('')
-          navigate(`/detail/${id}`) //리뷰 작성 완료 후 해당 부대 페이지로 리디렉션
-        //   const testRef=doc(dbService,`${divisionData[id].title}`,'allrating')
-        // const testSnap=await getDoc(testRef)
-        // console.log(testSnap.data().rating+Number(reviewObj.userStarReview))
-        // const reviewStarObj={
-        //     rating:testSnap.data().rating+Number(reviewObj.userStarReview),
-        //     count:testSnap.data().count+1,
-        // }
+            let starDocRef=doc(dbService,`${divisionData[id].title}`,'allrating')
+            const starSnapshot=await getDoc(starDocRef)
+            
+            const countDocRef = collection(dbService, `${divisionData[id].title}`); //총 리뷰 개수
+            const countSnapshot = await getCountFromServer(countDocRef);
+            const starObj={ //부대의 평균 별점 내기 위함
+                star:starSnapshot.data().star+Number(reviewObj.userStarReview), //방금 내가 선택한 별점과 데이터베이스에 저장된 별점 더함
+                count:countSnapshot.data().count-1, //해당 부대에 저장된 문서 갯수
+            }
+            starDocRef=await setDoc(doc(dbService,`${divisionData[id].title}`,'allrating'),starObj)
+            console.log(starObj)
+            setOneLineReview('')
+            setGoodReview('')
+            setBadReview('')
+            navigate(`/detail/${id}`) //리뷰 작성 완료 후 해당 부대 페이지로 리디렉션
+       
         }
         
-        // const reviewStarObj={
-        //     rating:Number(testSnap.data().rating)+Number(starReview),
-        //     count:testSnap.data().count++
-        // }
-        // const docReftest=await setDoc(doc(dbService,`${divisionData[id].title}`,'allrating'),reviewStarObj)
-
-        // console.log(reviewStarObj)
+       
     }
     const onChange=(event)=>{
         const {target:{value,name}}=event
@@ -72,7 +70,7 @@ function ReviewForm({userObj,isLoggedIn}){
                     <input onChange={onChange} value={badReview} name='badreview' type="text" placeholder="단점"/>
                     <br/>
                     <Stack spacing={1}>
-                        <Rating onChange={onChangeStar} name="half-rating" defaultValue={2.5} precision={0.5} />
+                        <Rating onChange={onChangeStar} name="half-rating" defaultValue={Number(0)} precision={0.5} />
                      </Stack>
                     <input type="submit" value='글쓰기'/>
                     
@@ -82,3 +80,7 @@ function ReviewForm({userObj,isLoggedIn}){
 }
 
 export default ReviewForm
+
+//allrating 문서이름
+//star:0
+//count:0
