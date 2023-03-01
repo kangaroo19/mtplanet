@@ -1,6 +1,7 @@
 import { getAuth, signOut, updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../fbase";
+import styled from "styled-components";
 function Profile({refreshUser,userObj}){
     const navigate=useNavigate()
     const onLogOutClick=()=>{
@@ -8,10 +9,14 @@ function Profile({refreshUser,userObj}){
         navigate('/') //homepage로 리다이렉트
     }
     return (
-        <div>
+        <Wrapper>
             <button onClick={onLogOutClick}>로그아웃</button>
-        </div>
+        </Wrapper>
     )
 }
 
 export default Profile
+
+const Wrapper=styled.div`
+    margin-top:50px;
+`

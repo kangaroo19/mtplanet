@@ -1,6 +1,6 @@
 //홈 화면에 그려지는 각각의 신교대 목록들
 //신교대 클릭시 해당 부대 게시판(Detail.js)으로 이동
-import { Link,useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import styled from 'styled-components'
 import Grid from '@mui/material/Grid';
 import divisionData from "../data/divisionData";
@@ -11,8 +11,8 @@ import StarIcon from '@mui/icons-material/Star';
 function BootCamp({id,title}){
     const [star,setStar]=useState(0)
     const navigate=useNavigate()
-    const onClick=async()=>{
-        console.log(123232323)
+
+    const onClick=async()=>{ //라우팅 처리
         navigate(`/detail/${id}`)
         const initDocRef=collection(dbService,`${divisionData[id].title}`)
         const initSnapshot=await getCountFromServer(initDocRef)
@@ -20,24 +20,33 @@ function BootCamp({id,title}){
             await setDoc(doc(dbService,`${divisionData[id].title}`,'allrating'),{star:0,count:0})
         }
     }
-    // const getStarRating=async()=>{
-    //     const starDocRef=doc(dbService,`${divisionData[id].title}`,'allrating')
-    //     const starSnapshot=await getDoc(starDocRef)
-    //     console.log(starSnapshot.data())
-    //     return starSnapshot.data()
-    // }
-    
-    // getStarRating()
+
     const setStarRating=async()=>{
         const starRef=doc(dbService,`${divisionData[id].title}`,'allrating')
         const starSnap=await getDoc(starRef)
         const rating=(starSnap.data().star/starSnap.data().count).toFixed(1)
         if(starSnap.data().star===0 && starSnap.data().count===0) setStar(0)
         else setStar(rating)
-    }   
+    }  
+
+    const setArmyDB=async()=>{ //데이터베이스(allarmy)에 부대의 정보(이름,주소,별점 )저장 ,랭킹컴포넌트
+        const starRef=doc(dbService,`${divisionData[id].title}`,'allrating')
+        const starSnap=await getDoc(starRef)
+        await setDoc(doc(dbService,"allarmy",`${divisionData[id].title}`),{
+            title:divisionData[id].name,
+            desc:divisionData[id].desc,
+            img:divisionData[id].img,
+            rating:(starSnap.data().star===0 && starSnap.data().count===0)?0:Number((starSnap.data().star/starSnap.data().count).toFixed(1)),
+            count:starSnap.data().count,
+            routing:id,
+          })
+    }
+
     useEffect(()=>{
         setStarRating()
+        setArmyDB()
     },[])
+    
     return (
         <Grid item xs={4}>
             <Wrapper onClick={onClick}>

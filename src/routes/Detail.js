@@ -9,6 +9,7 @@ import { query, collection, onSnapshot, orderBy } from "firebase/firestore";
 import Reviews from "../components/Reviews";
 import ReviewForm from "./ReviewForm";
 import Map from "../components/Map";
+import styled from "styled-components";
 function Detail({userObj,isLoggedIn}){
     const [title,setTitle]=useState(null)
     const [desc,setDesc]=useState(null)
@@ -33,17 +34,16 @@ function Detail({userObj,isLoggedIn}){
         })
     },[])
 
-    const goToReviewForm=()=>{
-        if(!isLoggedIn){ //로그인 되어있지 않을때 로그인 페이지로 리디렉션
+    const goToReviewForm=()=>{ //리뷰작성하는 화면으로 이동 (로그인상태 아닐때는 로그인 페이지로 리디렉션)
+        if(!isLoggedIn){ 
             alert('로그인 필요')
             navigate('/login')
             return 
         }
-        let number=123
         navigate('/reviewform',{state:{id:id,},})
     }
     return (
-        <div>
+        <Wrapper>
             <h1>{title}</h1>
             <h2>{desc}</h2>
             <Map/>
@@ -53,11 +53,7 @@ function Detail({userObj,isLoggedIn}){
                     reviewObj={value}/>
             ))}
             <button onClick={goToReviewForm}>리뷰 작성하기</button>
-            {/* <ReviewForm 
-                userObj={userObj}
-                isLoggedIn={isLoggedIn}
-                id={id}/> */}
-        </div>
+        </Wrapper>
     )
 }
 
@@ -68,3 +64,7 @@ export default Detail
 //다음랜더의 값을 바꿈
 //그러므로 이후 콘솔로그를 찍어도 현재 랜더의 reviewArr값이 나옴
 //어쨋든 값은 제대로 전달되긴함
+
+const Wrapper=styled.div`
+    margin-top:50px;
+`

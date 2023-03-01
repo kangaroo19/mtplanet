@@ -16,7 +16,7 @@ function Home({userObj}){
             <TitleImg/>
             <Wrapper>
                 <SearchInput/>
-                <Grid  container rowSpacing={0} columnSpacing={{ xs: 2, sm: 2, md: 2 }} style={{border:'1px solid black'}}>
+                <Grid  container rowSpacing={0} columnSpacing={{ xs: 2, sm: 2, md: 2 }}>
                 {divisionData.map((v,i)=>(
                     <BootCamp
                         key={v.id}

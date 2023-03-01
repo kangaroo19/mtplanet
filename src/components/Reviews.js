@@ -6,7 +6,7 @@ function Reviews({reviewObj}){
         <Wrapper>
             {/* <Title>{reviewObj.displayName}</Title> */}
             <OneLineReview>{reviewObj.userReview}</OneLineReview>
-            <Rating name="half-rating-read" defaultValue={reviewObj.userStarReview} precision={0.5} readOnly />
+            <Rating name="half-rating-read" defaultValue={Number(reviewObj.userStarReview)} precision={0.5} readOnly />
             <GoodReview>장점:{reviewObj.userGoodReview}</GoodReview>
             <BadReview>단점:{reviewObj.userBadReview}</BadReview>
         </Wrapper>

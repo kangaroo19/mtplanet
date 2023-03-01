@@ -1,6 +1,5 @@
 //홈 화면에 있는 검색기능
 import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
 import divisionData from '../data/divisionData';
 import { useState } from 'react';
@@ -8,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
-import { borderRadius, borderRight } from '@mui/system';
 
 function SearchInput(){
     const navigation=useNavigate()
@@ -57,7 +55,7 @@ const Wrapper=styled.div`
     display:flex;
     margin-top:10px;
     align-items:center;
-    margin-bottom:10px;
+    margin-bottom:30px;
 `
 const Button=styled.button`
     width:5%;

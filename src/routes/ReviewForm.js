@@ -6,6 +6,7 @@ import { dbService } from "../fbase";
 import divisionData from "../data/divisionData";
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
+import styled from "styled-components";
 function ReviewForm({userObj,isLoggedIn}){
     
     const location=useLocation()
@@ -28,7 +29,7 @@ function ReviewForm({userObj,isLoggedIn}){
                 userStarReview:starReview,
                 date:Date.now(),
             }
-            const reviewDocRef=await addDoc(collection(dbService,`${divisionData[id].title}`),reviewObj)
+            const reviewDocRef=await addDoc(collection(dbService,`${divisionData[id].title}`),reviewObj) //내가 작성한 reviewObj 해당 부대의 데이터베이스 저장
 
             let starDocRef=doc(dbService,`${divisionData[id].title}`,'allrating')
             const starSnapshot=await getDoc(starDocRef)
@@ -61,7 +62,7 @@ function ReviewForm({userObj,isLoggedIn}){
     }
     
     return (
-        <>
+        <Wrapper>
             <form onSubmit={onSubmit} action="">
                     <input onChange={onChange} value={oneLineReview} name='onelinereview'type="text" placeholder="한줄평"/>
                     <br />
@@ -75,12 +76,12 @@ function ReviewForm({userObj,isLoggedIn}){
                     <input type="submit" value='글쓰기'/>
                     
             </form>
-        </>
+        </Wrapper>
     )
 }
 
 export default ReviewForm
 
-//allrating 문서이름
-//star:0
-//count:0
+const Wrapper=styled.div`
+    margin-top:50px;
+`
