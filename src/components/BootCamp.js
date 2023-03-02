@@ -11,17 +11,13 @@ import StarIcon from '@mui/icons-material/Star';
 function BootCamp({id,title}){
     const [star,setStar]=useState(0)
     const navigate=useNavigate()
-
-    const onClick=async()=>{ //라우팅 처리
+    const initDocRef=collection(dbService,`${divisionData[id].title}`)
+    const onClickRouting=async()=>{ //라우팅 처리 해당부대 디테일 컴포넌트로 이동 
         navigate(`/detail/${id}`)
-        const initDocRef=collection(dbService,`${divisionData[id].title}`)
-        const initSnapshot=await getCountFromServer(initDocRef)
-        if(initSnapshot.data().count===0){ //만약 아무도 리뷰 작성하지 않앗을때 allrating필드 초기화 위함
-            await setDoc(doc(dbService,`${divisionData[id].title}`,'allrating'),{star:0,count:0})
-        }
+        
     }
 
-    const setStarRating=async()=>{
+    const getStarRating=async()=>{ //해당부대(컬렉션)=>allrating(문서)에 저장된 이 부대의 평균별점 가져옴
         const starRef=doc(dbService,`${divisionData[id].title}`,'allrating')
         const starSnap=await getDoc(starRef)
         const rating=(starSnap.data().star/starSnap.data().count).toFixed(1)
@@ -41,15 +37,21 @@ function BootCamp({id,title}){
             routing:id,
           })
     }
-
+    const initArmy=async(ref)=>{
+        const initSnapshot=await getCountFromServer(ref)
+        if(initSnapshot.data().count===0){ 
+            await setDoc(doc(dbService,`${divisionData[id].title}`,'allrating'),{star:0,count:0})
+        }
+    }
     useEffect(()=>{
-        setStarRating()
-        setArmyDB()
+        initArmy(initDocRef) //만약 아무도 리뷰 작성하지 않앗을때 해당부대 컬렉션 만들고 allrating문서까지 만듦 그리고 allrating {count:0,rating:0}으로 초기화
+        getStarRating() //별점평균값 가져오기 위함
+        setArmyDB() //이 부대가 처음 생겼을때 초기화 위함,reviewform 컴포넌트에서 재사용 하였음
     },[])
     
     return (
         <Grid item xs={4}>
-            <Wrapper onClick={onClick}>
+            <Wrapper onClick={onClickRouting}>
             <CardImg>
                 <img src={divisionData[id].img} style={{width:'200px',height:'155px'}}></img>
             </CardImg>

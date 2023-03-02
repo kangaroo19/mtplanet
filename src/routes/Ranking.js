@@ -5,7 +5,7 @@
 //allarmy 컬렉션에는 잘 등록이 안됨
 //보니까 홈페이지로 이동할때만 제대로 등록되고
 //홈페이지가 아닌 랭킹페이지로 이동하면 등록이안됨
-//onSnapshot 문제인거같음
+//onSnapshot 문제인거같음 (bootcamp컴포넌트의 useEffect문제)
 import { useEffect,useState } from "react"
 import { dbService } from "../fbase"
 import { getDoc,collection,doc,query,onSnapshot,orderBy } from "firebase/firestore"
