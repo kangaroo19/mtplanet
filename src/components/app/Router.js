@@ -1,12 +1,12 @@
 //라우팅 처리
 import { Routes,Route, Navigate } from "react-router-dom";
-import News from "../routes/News";
-import Home from "../routes/Home";
-import Ranking from "../routes/Ranking";
-import Detail from "../routes/Detail";
-import Login from '../routes/Login'
-import Profile from "../routes/Profile";
-import ReviewForm from "../routes/ReviewForm";
+import News from "../../routes/News";
+import Home from "../../routes/Home";
+import Ranking from "../../routes/Ranking";
+import Detail from "../../routes/Detail";
+import Login from '../../routes/Login'
+import Profile from "../../routes/Profile";
+import ReviewForm from "../../routes/ReviewForm";
 function Router({userObj,isLoggedIn}){
     return (
         <Routes>

@@ -1,4 +1,4 @@
-//각 신교대 페이지(Detail.js)안에 있는 리뷰컴포넌트
+//각 신교대 페이지(Detail.js)안에 있는 유저들이 작성한 리뷰
 import styled from 'styled-components'
 import Rating from '@mui/material/Rating';
 function Reviews({reviewObj}){

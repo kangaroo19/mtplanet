@@ -5,13 +5,14 @@ import { doc,addDoc,setDoc,  collection,getDoc, getCountFromServer } from "fireb
 import { dbService } from "../fbase";
 import divisionData from "../data/divisionData";
 import Rating from '@mui/material/Rating';
-import Stack from '@mui/material/Stack';
 import styled from "styled-components";
 import { Grid } from "@mui/material";
-import RadioGroupRating from "../components/RadioGroupRating";
+import RadioGroupRating from "../components/reviewform/RadioGroupRating";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import ColorToggleButton from "../components/ColorToggleButton";
+import ColorToggleButton from "../components/reviewform/ColorToggleButton";
+import DatePicker from "../components/reviewform/DatePicker";
+
 function ReviewForm({userObj,isLoggedIn}){
     
     const location=useLocation()
@@ -20,22 +21,23 @@ function ReviewForm({userObj,isLoggedIn}){
     const [oneLineReview,setOneLineReview]=useState('') //내가 방금 쓴 리뷰(한개)
     const [goodReview,setGoodReview]=useState('')
     const [badReview,setBadReview]=useState('')
-    const [starReview,setStarReview]=useState(null)
-    const [roomReview,setRoomReview]=useState(null)
-    const [showerReview,setShowerReview]=useState(null)
-    const [tolietReview,setTolietReview]=useState(null)
-    const [foodReview,setFoodReview]=useState(null)
-    const [training,setTrainingReview]=useState(null)
-    const [distance,setDistanceReview]=useState(null)
-    const [smokeReview,setSmokeReview]=useState(null)
-    const [tvReview,setTvReview]=useState(null)
-    const [pxReview,setPxReview]=useState(null)
-
-    
-    const onSubmit=async(event)=>{
+    const [starReview,setStarReview]=useState(3)
+    const [roomReview,setRoomReview]=useState(3)
+    const [showerReview,setShowerReview]=useState(3)
+    const [tolietReview,setTolietReview]=useState(3)
+    const [foodReview,setFoodReview]=useState(3)
+    const [trainingReview,setTrainingReview]=useState(3)
+    const [distanceReview,setDistanceReview]=useState(3)
+    const [smokeReview,setSmokeReview]=useState(1)
+    const [tvReview,setTvReview]=useState(1)
+    const [pxReview,setPxReview]=useState(1)
+    const [year,setYear]=useState('2023')
+    const [month,setMonth]=useState('1')
+     
+    const onSubmit=async(event)=>{ //리뷰 제출
         event.preventDefault()
         if(oneLineReview!=='' && goodReview!=='' && badReview!==''){
-            const reviewObj={ //reviewArr에 저장되는 데이터
+            const reviewObj={ //reviewArr에 저장되는 데이터,db에 저장됨
                 displayName:userObj.displayName,
                 uid:userObj.uid,
                 userImg:userObj.userImg,
@@ -43,6 +45,17 @@ function ReviewForm({userObj,isLoggedIn}){
                 userGoodReview:goodReview,
                 userBadReview:badReview,
                 userStarReview:starReview,
+                userRoomReview:roomReview,
+                userShowerReview:showerReview,
+                userTolietReview:tolietReview,
+                userTrainingReview:trainingReview,
+                userDistanceReview:distanceReview,
+                userFoodReivew:foodReview,
+                userSmokeReview:smokeReview,
+                userTvReview:tvReview,
+                userPxReview:pxReview,
+                userYear:year,
+                userMonth:month,
                 date:Date.now(),
             }
             const reviewDocRef=await addDoc(collection(dbService,`${divisionData[id].title}`),reviewObj) //내가 작성한 reviewObj 해당 부대의 데이터베이스 저장
@@ -68,7 +81,7 @@ function ReviewForm({userObj,isLoggedIn}){
         //home 컴포넌트(useEffect) 한번 거쳐야됨
         //이 함수에서 정한 db값(allarmy 컬렉션)을 토대로 ranking 정해짐
     }
-    const setArmyDB=async()=>{ //데이터베이스(allarmy)에 부대의 정보(이름,주소,별점 )저장 ,랭킹컴포넌트
+    const setArmyDB=async()=>{ //데이터베이스(allarmy)에 부대의 정보(이름,주소,별점 등등 )저장 ,랭킹컴포넌트
         const starRef=doc(dbService,`${divisionData[id].title}`,'allrating')
         const starSnap=await getDoc(starRef)
         await setDoc(doc(dbService,"allarmy",`${divisionData[id].title}`),{
@@ -80,25 +93,59 @@ function ReviewForm({userObj,isLoggedIn}){
             routing:id,
           })
     }
-    const onChange=(event)=>{
+    const onChangeReviews=(event)=>{ //한줄평,장점,단점 값 설정
         const {target:{value,name}}=event
         if(name==='onelinereview') setOneLineReview(value)
         else if(name==='goodreview') setGoodReview(value)
         else setBadReview(value)
     }
-    const onChangeStar=(event)=>{
+    const onChangeStar=(event)=>{ //별점 값 설정 
         setStarReview(event.target.value)
     }
-    const onRadioChange=(event)=>{
-        // console.dir(event.target.parentNode.parentNode.title)
-        console.log(event.target.value)
+    const onRadioChange=(event)=>{ //colorTogglebutton 컴포넌트 값 설정
+        const {parentNode:{title}}=event.target.parentNode
+        const value=Number(event.target.value)
+        switch(title){
+            case 'room': 
+                setRoomReview(value)
+                break
+            case 'shower':
+                setShowerReview(value)
+                break
+            case 'toliet':
+                setTolietReview(value)
+                break
+            case 'training':
+                setTrainingReview(value)
+                break
+            case 'distance':
+                setDistanceReview(value)
+                break
+            case 'food':
+                setFoodReview(value)
+                break    
+        }
+    }
+    
+    const childToParentToggle=(id,value)=>{ //원래상태 그대로(true,아무것도 클릭안햇을때(onChange가 트리거되지 않을때))보내면 id는 null이지만 초기값이 true라 상관없음
+        if(id==='smoke') setSmokeReview(Number(value))
+        else if(id==='tv') setTvReview(Number(value))
+        else if(id==='px') setPxReview(Number(value))
+    }
+    
+    const childToParentDate=(year,month)=>{
+        setYear(year)
+        setMonth(month)
     }
     return (
         <Wrapper>
             <Inner>
             <Title>리뷰 작성하기</Title>
             <Grid mb={5}>
-                <Grid container style={{justifyContent:'space-around'}} mb={5} mt={2}>
+                <Grid>
+                    <DatePicker childToParentDate={childToParentDate}/>
+                </Grid>
+                <Grid container style={{justifyContent:'space-between'}} mb={5} mt={2}>
                     <RadioInner onChange={onRadioChange} title='room'>
                         <Grid style={{textAlign:'center',fontWeight:'900'}}>생활관</Grid>
                         <RadioGroupRating n='room'/>
@@ -112,7 +159,7 @@ function ReviewForm({userObj,isLoggedIn}){
                         <RadioGroupRating/>
                     </RadioInner>
                 </Grid>
-                <Grid container style={{justifyContent:'space-around'}}>
+                <Grid container style={{justifyContent:'space-between'}}>
                     <RadioInner onChange={onRadioChange} title='training'>
                         <Grid style={{textAlign:'center',fontWeight:'900',}}>훈련강도</Grid>
                         <RadioGroupRating/>
@@ -127,22 +174,22 @@ function ReviewForm({userObj,isLoggedIn}){
                     </RadioInner>
                     </Grid>
                 </Grid>
-                    <Grid container style={{display:'flex',justifyContent:"space-around",}}>
-                        <Grid><Grid mb={1} style={{fontWeight:'900'}}>흡연</Grid><ColorToggleButton/></Grid>
-                        <Grid><Grid mb={1} style={{fontWeight:'900'}}>TV</Grid><ColorToggleButton/></Grid>
-                        <Grid><Grid mb={1} style={{fontWeight:'900'}}>PX</Grid><ColorToggleButton/></Grid>
-                    </Grid>
-                    <Grid style={{display:'flex',justifyContent:"center",}}>
-                        <TextField 
-                            style={{width:'80%'}} 
-                            id="standard-basic" 
-                            label="한줄평" 
-                            variant="standard" 
-                            onChange={onChange} 
-                            value={oneLineReview} 
-                            name='onelinereview'/>
-                    </Grid>
-                    <Grid mt={2} style={{display:'flex',justifyContent:"center",}}>
+                <Grid container style={{display:'flex',justifyContent:"space-around",}}>
+                    <Grid id='smoke'><Grid mb={1} style={{fontWeight:'900'}}>흡연</Grid><ColorToggleButton childToParentToggle={childToParentToggle}/></Grid>
+                    <Grid id='tv' ><Grid mb={1} style={{fontWeight:'900'}}>TV</Grid><ColorToggleButton childToParentToggle={childToParentToggle}/></Grid>
+                    <Grid id='px'><Grid mb={1} style={{fontWeight:'900'}}>PX</Grid><ColorToggleButton childToParentToggle={childToParentToggle}/></Grid>
+                </Grid>
+                <Grid style={{display:'flex',justifyContent:"center",}}>
+                    <TextField 
+                        style={{width:'80%'}} 
+                        id="standard-basic" 
+                        label="한줄평" 
+                        variant="standard" 
+                        onChange={onChangeReviews} 
+                        value={oneLineReview} 
+                        name='onelinereview'/>
+                </Grid>
+                <Grid mt={2} style={{display:'flex',justifyContent:"center",}}>
                     <TextField
                         style={{width:'80%'}}
                         id="filled-multiline-static"
@@ -150,12 +197,12 @@ function ReviewForm({userObj,isLoggedIn}){
                         multiline
                         rows={4}
                         variant="filled"
-                        onChange={onChange}
+                        onChange={onChangeReviews}
                         value={goodReview} 
                         name='goodreview'
                     />
-                    </Grid>
-                    <Grid mt={2} style={{display:'flex',justifyContent:"center",}}>
+                </Grid>
+                <Grid mt={2} style={{display:'flex',justifyContent:"center",}}>
                     <TextField
                         style={{width:'80%'}}
                         id="filled-multiline-static"
@@ -163,16 +210,24 @@ function ReviewForm({userObj,isLoggedIn}){
                         multiline
                         rows={4}
                         variant="filled"
-                        onChange={onChange} 
+                        onChange={onChangeReviews} 
                         value={badReview} 
                         name='badreview'
                     />
-                    </Grid>
-                    <Grid mt={2} mb={2} style={{display:'flex',justifyContent:"center",}}>
-                        <Rating onChange={onChangeStar} name="half-rating" defaultValue={Number(2.5)} precision={0.5} size='large'/>
-                     </Grid>
-                    {/* <Submit type="submit" value='글쓰기'/> */}
-                    <Button onClick={onSubmit} variant="contained" style={{width:'80%',margin:'0 auto',display:'block',marginBottom:'20px'}}>글쓰기</Button>
+                </Grid>
+                <Grid mt={2} mb={2} style={{display:'flex',justifyContent:"center",}}>
+                    <Rating onChange={onChangeStar} name="half-rating" defaultValue={Number(3)} precision={0.5} size='large'/>
+                </Grid>
+                <Button 
+                    onClick={onSubmit} 
+                    variant="contained" 
+                    style={{
+                        width:'80%',
+                        margin:'0 auto',
+                        display:'block',
+                        marginBottom:'20px'
+                        }}>글쓰기
+                </Button>
             </Inner>
         </Wrapper>
     )
@@ -204,7 +259,6 @@ const Title=styled.div`
     text-align:center;
 `
 
-//style={{backgroundColor:'white', width:'30%',height:'50px',alignItems:'center',display:'flex',flexDirection:'column'}}
 const RadioInner=styled.div`
     background-color:rgba(0, 0, 0, 0.12);
     border-radius:10px;
@@ -216,16 +270,3 @@ const RadioInner=styled.div`
     justify-content:center;
 `
 
-const Input=styled.input`
-    display:block;
-    margin:0 auto;
-    margin-top:30px;
-    width:80%;
-`
-
-const Submit=styled.input`
-    width:80%;
-    display:block;
-    margin:0 auto;
-    margin-bottom:20px;
-`

@@ -1,7 +1,7 @@
 //홈 화면에 있는 검색기능
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import divisionData from '../data/divisionData';
+import divisionData from '../../data/divisionData';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';

@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import img from '../img/main.jpg'
+import img from '../../img/main.jpg'
 function TitleImg(){
     return (
         <Section>

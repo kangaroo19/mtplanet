@@ -6,9 +6,8 @@ import { useParams,useNavigate } from "react-router-dom";
 import divisionData from "../data/divisionData";
 import { dbService } from "../fbase";
 import { query, collection, onSnapshot, orderBy } from "firebase/firestore";
-import Reviews from "../components/Reviews";
-import ReviewForm from "./ReviewForm";
-import Map from "../components/Map";
+import Reviews from "../components/detail/Reviews";
+import Map from "../components/detail/Map";
 import styled from "styled-components";
 function Detail({userObj,isLoggedIn}){
     const [title,setTitle]=useState(null)

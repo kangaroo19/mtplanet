@@ -1,3 +1,5 @@
+//랭킹 페이지에서 각 랭킹 표현
+
 import styled from "styled-components"
 import { Grid } from "@mui/material"
 import { useNavigate } from "react-router-dom"

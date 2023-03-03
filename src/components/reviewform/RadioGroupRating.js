@@ -1,3 +1,5 @@
+//리뷰폼에서 생활관,샤워장 등 어느정도로 좋은지 레이팅 매김
+
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
@@ -50,7 +52,7 @@ export default function RadioGroupRating() {
   return (
     <StyledRating
       name="highlight-selected-only"
-      defaultValue={2}
+      defaultValue={3}
       IconContainerComponent={IconContainer}
       getLabelText={(value) => customIcons[value].label}
       highlightSelectedOnly

@@ -3,9 +3,9 @@
 import { useNavigate } from "react-router-dom"
 import styled from 'styled-components'
 import Grid from '@mui/material/Grid';
-import divisionData from "../data/divisionData";
+import divisionData from "../../data/divisionData";
 import { collection, doc, getCountFromServer, getDoc, setDoc } from "firebase/firestore";
-import { dbService } from "../fbase";
+import { dbService } from "../../fbase";
 import { useEffect, useState } from "react";
 import StarIcon from '@mui/icons-material/Star';
 function BootCamp({id,title}){

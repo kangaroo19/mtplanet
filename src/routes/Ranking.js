@@ -8,27 +8,28 @@
 //onSnapshot 문제인거같음 (bootcamp컴포넌트의 useEffect문제)
 import { useEffect,useState } from "react"
 import { dbService } from "../fbase"
-import { getDoc,collection,doc,query,onSnapshot,orderBy } from "firebase/firestore"
-import divisionData from "../data/divisionData"
+import { collection,query,onSnapshot,orderBy } from "firebase/firestore"
 import styled from "styled-components"
-import Rank from "../components/Rank"
+import Rank from "../components/ranking/Rank"
 import { Grid } from "@mui/material"
 function Ranking(){
     const [armys,setArmys]=useState([])
     const [sort,setSort]=useState('desc')
-    useEffect(()=>{
+    useEffect(()=>{ 
         let q
-        if(sort==='desc'){ //평점 높은순
-            q=query(collection(dbService,"allarmy"),orderBy("rating","desc"))
-        }
-        else if(sort==='asc'){ //평점 낮은순
-            q=query(collection(dbService,"allarmy"),orderBy("rating","asc"))
-        }
-        else if(sort==='rdesc'){ //리뷰 많은순
-            q=query(collection(dbService,"allarmy"),orderBy("count","desc"))
-        }
-        else{ //리뷰 적은순
-            q=query(collection(dbService,"allarmy"),orderBy("count","asc"))
+        switch(sort){
+            case 'desc' : //평점 높은순
+                q=query(collection(dbService,"allarmy"),orderBy("rating","desc"))
+                break
+            case 'asc' : //평점 낮은순
+                q=query(collection(dbService,"allarmy"),orderBy("rating","asc"))
+                break
+            case 'rdesc' : //리뷰 많은순
+                q=query(collection(dbService,"allarmy"),orderBy("count","desc"))
+                break
+            case 'rasc' : //리뷰 적은순
+                q=query(collection(dbService,"allarmy"),orderBy("count","asc"))
+                break
         }
         const un=onSnapshot(q,(snapshot)=>{ //데이터베이스에 변화가 생기면 onSnapshot 실행됨
             const arr=[]
@@ -42,13 +43,13 @@ function Ranking(){
         })
     },[sort])
     
-    const onSortChange=(event)=>{ //평점 오름차순,내림차순 정렬
+    const onChangeSort=(event)=>{ //평점 오름차순,내림차순 정렬
         setSort(event.target.value)
     }
     return (
         <Wrapper>
             <Inner>
-                <Select onChange={onSortChange}>
+                <Select onChange={onChangeSort}>
                     <Option value="desc">평점 높은순</Option>
                     <Option value="asc">평점 낮은순</Option>
                     <Option value="rdesc">리뷰 많은순</Option>
