@@ -17,8 +17,7 @@ const Wrapper=styled.div`
     height:120px;
     border-top:1px solid #e4e4e4;
     background-color:#f8f9fa ;
-    padding:1rem 0;
-    margin-top:1.2rem; 
+    
 `
 const Message=styled.div`
 font-weight: bold;

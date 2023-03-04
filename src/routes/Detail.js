@@ -9,6 +9,9 @@ import { query, collection, onSnapshot, orderBy } from "firebase/firestore";
 import Reviews from "../components/detail/Reviews";
 import Map from "../components/detail/Map";
 import styled from "styled-components";
+import ProgressBar from "../components/detail/ProgressBar";
+import { Grid } from "@mui/material";
+import Rating from '@mui/material/Rating';
 function Detail({userObj,isLoggedIn}){
     const [title,setTitle]=useState(null)
     const [desc,setDesc]=useState(null)
@@ -43,15 +46,83 @@ function Detail({userObj,isLoggedIn}){
     }
     return (
         <Wrapper>
-            <h1>{title}</h1>
-            <h2>{desc}</h2>
-            <Map/>
-            {reviewArr.map((value,idx)=>(
-                <Reviews
-                    key={idx}
-                    reviewObj={value}/>
-            ))}
-            <button onClick={goToReviewForm}>리뷰 작성하기</button>
+            <Inner>
+                <Title>{title}</Title>
+                {/* <h2>{desc}</h2> */}
+                <Grid container>
+                    <Grid item xs={5}>
+                        <Grid mb={1}>
+                            <Grid>생활관</Grid>
+                            <Grid display='flex' alignContent='center'>
+                                <ProgressBar value={76}/>
+                                <Grid ml={2}>3.8</Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid mb={1}>
+                            <Grid>샤워장</Grid>
+                            <Grid display='flex' alignContent='center'>
+                                <ProgressBar value={36}/>
+                                <Grid ml={2}>1.8</Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid mb={1}>
+                            <Grid>화장실</Grid>
+                            <Grid display='flex' alignContent='center'>
+                                <ProgressBar value={96}/>
+                                <Grid ml={2}>4.8</Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid mb={1}>
+                            <Grid>훈련강도</Grid>
+                            <Grid display='flex' alignContent='center'>
+                                <ProgressBar value={40}/>
+                                <Grid ml={2}>2.0</Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid mb={1}>
+                            <Grid>교장거리</Grid>
+                            <Grid display='flex' alignContent='center'>
+                                <ProgressBar value={50}/>
+                                <Grid ml={2}>2.5</Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid mb={1}>
+                            <Grid>밥</Grid>
+                            <Grid display='flex' alignContent='center'>
+                                <ProgressBar value={20}/>
+                                <Grid ml={2}>1.0</Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={7} >
+                        <Grid height='40%'>
+                            <Grid>
+                            <Grid textAlign='center'>평균별점</Grid>
+
+                                <Rating 
+                                    name="half-rating-read"  
+                                    defaultValue={2.5} 
+                                    precision={0.5} 
+                                    readOnly 
+                                    size="large" 
+                                    sx={{fontSize: "3rem",margin:'0 auto',display:'flex',justifyContent:'center',}}/>
+                            </Grid>
+                        </Grid>
+                       <Grid height='60%'>
+                     <Map/>
+
+                       </Grid>
+                    </Grid>
+                    
+                </Grid>
+
+                {reviewArr.map((value,idx)=>(
+                    <Reviews
+                        key={idx}
+                        reviewObj={value}/>
+                ))}
+                <button onClick={goToReviewForm}>리뷰 작성하기</button>
+            </Inner>
         </Wrapper>
     )
 }
@@ -65,5 +136,26 @@ export default Detail
 //어쨋든 값은 제대로 전달되긴함
 
 const Wrapper=styled.div`
+    background-color:#e9e9e9;
     margin-top:50px;
+`
+
+const Inner=styled.div`
+    background-color:white;
+    padding:20px;
+    width:100%;
+    height:100%;
+    margin:0 auto;
+    overflow: hidden;
+    @media only screen and (min-width:800px){
+        max-width:800px;
+    }
+`
+
+const Title=styled.div`
+    text-align: center;
+    font-size:2rem;
+    margin-top:10px;
+    margin-bottom:30px;
+    font-weight:900;
 `
