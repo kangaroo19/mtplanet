@@ -68,6 +68,15 @@ function ReviewForm({userObj,isLoggedIn}){
             const starObj={ //부대의 평균 별점 내기 위함
                 star:starSnapshot.data().star+Number(reviewObj.userStarReview), //방금 내가 선택한 별점과 데이터베이스에 저장된 별점 더함
                 count:countSnapshot.data().count-1, //해당 부대에 저장된 문서 갯수
+                room:starSnapshot.data().room+reviewObj.userRoomReview,
+                shower:starSnapshot.data().shower+reviewObj.userShowerReview,
+                toliet:starSnapshot.data().toliet+reviewObj.userTolietReview,
+                training:starSnapshot.data().training+reviewObj.userTolietReview,
+                distance:starSnapshot.data().distance+reviewObj.userDistanceReview,
+                food:starSnapshot.data().food+reviewObj.userFoodReivew,
+                smoke:starSnapshot.data().smoke+reviewObj.userSmokeReview,
+                tv:starSnapshot.data().tv+reviewObj.userTvReview,
+                px:starSnapshot.data().px+reviewObj.userPxReview,
             }
             starDocRef=await setDoc(doc(dbService,`${divisionData[id].title}`,'allrating'),starObj)
             setOneLineReview('')
@@ -89,6 +98,7 @@ function ReviewForm({userObj,isLoggedIn}){
             desc:divisionData[id].desc,
             img:divisionData[id].img,
             rating:(starSnap.data().star===0 && starSnap.data().count===0)?0:Number((starSnap.data().star/starSnap.data().count).toFixed(1)),
+            
             count:starSnap.data().count,
             routing:id,
           })

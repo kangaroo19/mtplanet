@@ -5,7 +5,7 @@ function Reviews({reviewObj}){
     return (
         <Wrapper>
             {/* <Title>{reviewObj.displayName}</Title> */}
-            <OneLineReview>{reviewObj.userReview}</OneLineReview>
+            <OneLineReview>{reviewObj.userReview} 입영일자:{reviewObj.userYear}/{reviewObj.userMonth}</OneLineReview>
             <Rating name="half-rating-read" defaultValue={Number(reviewObj.userStarReview)} precision={0.5} readOnly />
             <GoodReview>장점:{reviewObj.userGoodReview}</GoodReview>
             <BadReview>단점:{reviewObj.userBadReview}</BadReview>
