@@ -75,18 +75,22 @@ function Ranking(){
 export default Ranking
 
 const Wrapper=styled.div`
-    width:100%;
-    height:100%;
-    margin:0 auto;
-    overflow: hidden;
-    margin-top:70px;
-    @media only screen and (min-width:1000px){
-        max-width:1000px;
-    }
+    background-color:#e9e9e9;
+    margin-top:50px;
+    
 `
 
 const Inner=styled.div`
     text-align:center;
+    background-color:white;
+    width:100%;
+    height:100%;
+    margin:0 auto;
+    overflow: hidden;
+    padding:20px;
+    @media only screen and (min-width:900px){
+        max-width:900px;
+    }
 `
 
 const Title=styled.div`

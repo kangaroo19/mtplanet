@@ -144,7 +144,13 @@ export default function Login() {
                         }}>
                         {/* <LockOutlinedIcon /> */}
                     </Avatar>
-                    <Typography component="h1" variant="h5">로그인</Typography>
+                    <Typography component="h1" variant="h5">
+                    {
+                                newAccount
+                                    ? "회원가입"
+                                    : "로그인"
+                            }
+                    </Typography>
                     <Box
                         component="form"
                         noValidate="noValidate"
@@ -205,7 +211,7 @@ export default function Login() {
                         <Grid container="container">
                             <Grid item="item" xs="xs"></Grid>
                             <Grid item="item">
-                                <span className="login_toggle" onClick={toggleAccount}>{
+                                <span className="login_toggle" onClick={toggleAccount} style={{textDecoration:'underline'}}>{
                                         newAccount
                                             ? "로그인 하기"
                                             : "계정 생성하기"

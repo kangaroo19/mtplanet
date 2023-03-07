@@ -39,7 +39,7 @@ const Wrapper = styled.div `
     height:100%;
     margin:0 auto;
     overflow: hidden;
-    @media only screen and (min-width:1200px){
-        max-width:1200px;
+    @media only screen and (min-width:1000px){
+        max-width:1000px;
     }
 `

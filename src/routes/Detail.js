@@ -16,6 +16,7 @@ import Rating from '@mui/material/Rating';
 import Button from '@mui/material/Button';
 import CreateIcon from '@mui/icons-material/Create';
 function Detail({userObj,isLoggedIn}){
+    
     const [title,setTitle]=useState(null)
     const [desc,setDesc]=useState(null)
     const [reviewArr,setReviewArr]=useState([]) // 나 포함 다른 사용자들이 쓴 리뷰들
@@ -29,6 +30,7 @@ function Detail({userObj,isLoggedIn}){
     const [smoke,setSmoke]=useState(0)
     const [tv,setTv]=useState(0)
     const [px,setPx]=useState(0)
+    
     const {id}=useParams()
     const navigate=useNavigate() //리디렉션 처리위함
     
