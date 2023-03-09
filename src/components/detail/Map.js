@@ -1,24 +1,26 @@
-import GoogleMapReact from 'google-map-react';
-import React, { useCallback, useEffect, useRef } from "react";
-function Map(){
-    const mapRef = useRef(null);
-
-    const initMap = useCallback(() => {
-      new window.google.maps.Map(mapRef.current, {
-        center: { lat: 38.195610, lng: 127.773835 },
-        zoom: 9,
+import React, { useCallback, useEffect, useRef,useState } from "react";
+import divisionData from "../../data/divisionData";
+function Map({id}){
+  const [map, setMap] = useState(null);
+  const ref = useRef();
+  
+  useEffect(()=>{
+      const newMap = new window.google.maps.Map(ref.current, {
+          center : { lat:divisionData[id].lat, lng: divisionData[id].lon},
+          zoom : 11,
       });
-    }, [mapRef]);
-  
-    useEffect(() => {
-      initMap();
-    }, [initMap]);
-  
+      const marker = new window.google.maps.Marker({
+        position: { lat:divisionData[id].lat, lng: divisionData[id].lon},
+        map: newMap,
+      });     
+      console.log(id)    
+      setMap(newMap);
+  },[])
     return (
       <div
         className="map"
         style={{ width: "100%", height: "100%" }}
-        ref={mapRef}
+        ref={ref}
       ></div>
     );
 }

@@ -19,7 +19,6 @@ const rows = [
 
 export default function BasicTable({px,tv,smoke}) {
     const t=true
-    console.log(px,tv,smoke)
   return (
     <TableContainer>
         <Table>

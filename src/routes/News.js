@@ -8,9 +8,9 @@ import { display } from "@mui/system";
 function News(){
     const [news,setNews]=useState([])
     const [loading,setLoading]=useState(true)
-    const apiKey='e148feed44c547518a6d46d96af92278'
+    const NEWS_API_KEY=process.env.REACT_APP_NEWS_ID //env에 저장된 news api 키
     const topic='국방'
-    var url =`https://newsapi.org/v2/everything?q=${topic}&apiKey=${apiKey}`;
+    var url =`https://newsapi.org/v2/everything?q=${topic}&apiKey=${NEWS_API_KEY}`;
     const getNews=async ()=>{
         const json=await(
             await fetch(url)
@@ -19,7 +19,7 @@ function News(){
         setLoading(false)
     }
     useEffect(()=>{
-        getNews()
+        getNews() //뉴스 가져옴
     },[])
     return (
         <Wrapper>

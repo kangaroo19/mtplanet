@@ -2,15 +2,14 @@ import { Grid } from "@mui/material"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
 function NewsDetail({newsObj}){
-    console.log(newsObj)
     return (
         <Wrapper>
             <Grid container>
-                <Grid xs={3}>
+                <Grid item xs={3}>
                     <Image src={newsObj.urlToImage}></Image>
                 </Grid>
-                <Grid xs={1}></Grid>
-                <Grid xs={8}>
+                <Grid item xs={1}></Grid>
+                <Grid item xs={8}>
                     <Link to={newsObj.url} style={{textDecoration:'none',}}><Title>{newsObj.title}</Title></Link>
                     <Desc>{newsObj.description}</Desc>
                 </Grid>

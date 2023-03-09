@@ -16,6 +16,8 @@ export default [
         title:'1st',
         name:'제1사단 전진부대',
         desc:'경기도 파주시 문산읍',
+        lat:37.866066,
+        lon:126.822579,
         img:`${one}`,
     },
     {
@@ -23,6 +25,8 @@ export default [
         title:'21st',
         name:'제21사단 백두산부대',
         desc:'강원도 양구군 국토정중앙면',
+        lat:38.114108,
+        lon:128.041051,
         img:`${twoone}`,
 
     },
@@ -31,6 +35,8 @@ export default [
         title:'9th',
         name:'제9사단 백마부대',
         desc:'경기도 고양시 일산동구',
+        lat:37.702392,
+        lon:126.796938,
         img:`${nine}`,
 
 
@@ -40,6 +46,8 @@ export default [
         title:'7th',
         name:'제7사단 칠성부대',
         desc:'강원도 화천군 화천읍',
+        lat:37.702392,
+        lon:126.796938,
         img:`${seven}`,
 
     },
@@ -48,6 +56,8 @@ export default [
         title:'15th',
         name:'제15사단 승리부대',
         desc:'강원도 화천군 사내면',
+        lat:38.043530,
+        lon:127.497376,
         img:`${onefive}`,
 
 
@@ -57,6 +67,8 @@ export default [
         title:'12nd',
         name:'제12사단 을지부대',
         desc:'강원도 인제군 북면',
+        lat:38.157898,
+        lon:128.184450,
         img:`${onetwo}`,
     },
     {
@@ -64,6 +76,8 @@ export default [
         title:'36th',
         name:'제36사단 백호부대',
         desc:'강원도 원주시 소초면',
+        lat:37.383757,
+        lon:127.968769,
         img:`${threesix}`,
     },
     {
@@ -71,6 +85,8 @@ export default [
         title:'55th',
         name:'제55사단 봉화부대',
         desc:'경기도 용인시 처인구 포곡읍',
+        lat:37.205946,
+        lon:127.244962,
         img:`${fivefive}`,
     },
     {
@@ -78,6 +94,8 @@ export default [
         title:'3rd',
         name:'제3사단 백골부대',
         desc:'강원도 철원군 서면',
+        lat:38.238738,
+        lon:127.439755,
         img:`${three}`,
     },
     {
@@ -85,6 +103,8 @@ export default [
         title:'5th',
         name:'제5사단 열쇠부대',
         desc:'강원도 연천군 청산면',
+        lat:38.023472,
+        lon:127.109643,
         img:`${five}`,
     },
     {
@@ -92,6 +112,8 @@ export default [
         title:'6th',
         name:'제6사단 청성부대',
         desc:'강원도 철원군 동송읍',
+        lat:38.162313,
+        lon:127.419614,
         img:`${six}`,
     },
     {
@@ -99,6 +121,8 @@ export default [
         title:'n23th',
         name:'육군훈련소 제23신병교육연대',
         desc:'충청남도 논산시 연무읍',
+        lat:36.115065,
+        lon:127.102151,
         img:`${ns}`,
     },
     {
@@ -106,6 +130,8 @@ export default [
         title:'n25th',
         name:'육군훈련소 제25신병교육연대',
         desc:'충청남도 논산시 연무읍',
+        lat:36.115065,
+        lon:127.102151,
         img:`${ns}`,
     },
     {
@@ -113,6 +139,8 @@ export default [
         title:'n26th',
         name:'육군훈련소 제26신병교육연대',
         desc:'충청남도 논산시 연무읍',
+        lat:36.115065,
+        lon:127.102151,
         img:`${ns}`,
     },
     {
@@ -120,6 +148,8 @@ export default [
         title:'n27th',
         name:'육군훈련소 제27신병교육연대',
         desc:'충청남도 논산시 연무읍',
+        lat:36.115065,
+        lon:127.102151,
         img:`${ns}`,
     },  
     {
@@ -127,6 +157,8 @@ export default [
         title:'n28th',
         name:'육군훈련소 제28신병교육연대',
         desc:'충청남도 논산시 연무읍',
+        lat:36.115065,
+        lon:127.102151,
         img:`${ns}`,
     }, 
     {
@@ -134,6 +166,8 @@ export default [
         title:'n29th',
         name:'육군훈련소 제29신병교육연대',
         desc:'충청남도 논산시 연무읍',
+        lat:36.115065,
+        lon:127.102151,
         img:`${ns}`,
     }, 
     {
@@ -141,6 +175,8 @@ export default [
         title:'n30th',
         name:'육군훈련소 제30신병교육연대',
         desc:'충청남도 논산시 연무읍',
+        lat:36.115065,
+        lon:127.102151,
         img:`${ns}`,
     },          
 ]

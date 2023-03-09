@@ -15,6 +15,7 @@ import { Grid } from "@mui/material";
 import Rating from '@mui/material/Rating';
 import Button from '@mui/material/Button';
 import CreateIcon from '@mui/icons-material/Create';
+import { Wrapper as MapWrapper } from "@googlemaps/react-wrapper";
 function Detail({userObj,isLoggedIn}){
     
     const [title,setTitle]=useState(null)
@@ -34,6 +35,7 @@ function Detail({userObj,isLoggedIn}){
     const {id}=useParams()
     const navigate=useNavigate() //리디렉션 처리위함
     
+    const MAP_API_KEY=process.env.REACT_APP_MAP_ID //구글맵 사용위한 api 키
     useEffect(()=>{
         setTitle(divisionData[id].name)
         setDesc(divisionData[id].desc)
@@ -76,10 +78,10 @@ function Detail({userObj,isLoggedIn}){
     }
     return (
         <Wrapper>
-            <Inner>
+            <Grid>
+                <Inner>
                 <Title>{title}</Title>
-                {/* <h2>{desc}</h2> */}
-                <Grid container spacing={2}>
+                <Grid container spacing={2} mb={1}>
                     <Grid item xs={5}>
                         <Grid mb={1}>
                             <Grid>생활관</Grid>
@@ -134,32 +136,39 @@ function Detail({userObj,isLoggedIn}){
                                     name="half-rating-read"  
                                     defaultValue={0}
                                     value={star} 
-                                    precision={0.5} 
+                                    precision={0.1} 
                                     readOnly 
                                     size="large" 
                                     sx={{fontSize: "4rem",margin:'0 auto',display:'flex',justifyContent:'center',}}/>
                             </Grid>
                         </Grid>
                        <Grid height='60%'>
-                     <Map/>
-
+                            <MapWrapper apiKey={MAP_API_KEY}>
+                                <Map id={id}/>
+                            </MapWrapper> 
                        </Grid>
                     </Grid>
                     
                 </Grid>
-                <Grid display='flex' justifyContent='right' mt={5}>
-                    <Button variant="contained" onClick={goToReviewForm}>
-                        <CreateIcon/>
-                        리뷰 작성하기
-                    </Button>
-                </Grid>
-                {reviewArr.map((value,idx)=>(
-                    <Reviews
-                        key={idx}
-                        reviewObj={value}
-                        />
-                ))}
-            </Inner>
+                </Inner>
+            </Grid>
+            <Grid mt={2}>
+                <Inner>
+                    <Grid display='flex' justifyContent='right' mt={1} sx={{borderBottom:'2px solid #e4e4e4'}} >
+                        <Button variant="contained" onClick={goToReviewForm}>
+                            <CreateIcon/>리뷰 작성하기
+                        </Button>
+                    </Grid>
+                    <Grid>
+                        {reviewArr.map((value,idx)=>(
+                            <Reviews
+                                key={idx}
+                                reviewObj={value}
+                                />
+                        ))}
+                    </Grid>
+                </Inner>
+            </Grid>
         </Wrapper>
     )
 }
