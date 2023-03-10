@@ -9,6 +9,8 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Error from '../components/login/Error';
+
+import { Link as LinkKakao } from 'react-router-dom';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -20,6 +22,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 
+import KaKaoTalkLogin from '../components/login/KaKaoTalkLogin';
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -44,13 +47,13 @@ export default function Login() {
     const [error, setError] = useState("")
     const [open, setOpen] = useState(false)
     const toggleAccount = () => setNewAccount((prev) => !prev)
-    const onSocialClick = async (event) => {
+    const onSocialClick = async (event) => { //구글로 로그인시
         event.preventDefault()
         const {target: {
                 name
             }} = event
         let provider
-        if (name === "google") {
+        if (name === "google") { 
             provider = new GoogleAuthProvider()
         } else if (name === "github") {
             provider = new GithubAuthProvider()
@@ -68,6 +71,7 @@ export default function Login() {
             }
         )
     }
+    
     const onChange = (event) => {
         const {
             target: {
@@ -125,6 +129,8 @@ export default function Login() {
     function callBack(value) { //자식 컴포넌트의 데이터 부모 컴포넌트(app)로 보내기 위함
         setOpen(value)
     }
+   
+    
     return (
         <ThemeProvider theme={theme}>
             {/* {redirect?<Route path="/login"/>} */}
@@ -231,6 +237,8 @@ export default function Login() {
                             <FontAwesomeIcon icon={faGoogle}></FontAwesomeIcon>
                             구글로 로그인
                         </Button>
+                        <KaKaoTalkLogin/>
+
                     </Box>
                 </Box>
                 <Copyright
