@@ -167,20 +167,20 @@ export default function Login() {
                             newAccount
                                 ? <TextField
                                         margin="normal"
-                                        required="required"
-                                        fullWidth="fullWidth"
+                                        required
+                                        fullWidth
                                         id="nickname"
                                         label="닉네임"
                                         name="nickname"
                                         onChange={onChange}
                                         value={nickName}
-                                        autoFocus="autoFocus"/>
+                                        />
                                 : null
                         }
                         <TextField
                             margin="normal"
-                            required="required"
-                            fullWidth="fullWidth"
+                            required
+                            fullWidth
                             id="email"
                             label="이메일"
                             name="email"
@@ -189,8 +189,8 @@ export default function Login() {
                             onChange={onChange}/>
                         <TextField
                             margin="normal"
-                            required="required"
-                            fullWidth="fullWidth"
+                            required
+                            fullWidth
                             name="password"
                             label="비밀번호"
                             type="password"
@@ -201,7 +201,7 @@ export default function Login() {
 
                         <Button
                             type="submit"
-                            fullWidth="fullWidth"
+                            fullWidth
                             variant="contained"
                             sx={{
                                 mt: 3,
@@ -214,9 +214,9 @@ export default function Login() {
                                     : "로그인"
                             }
                         </Button>
-                        <Grid container="container">
-                            <Grid item="item" xs="xs"></Grid>
-                            <Grid item="item">
+                        <Grid container>
+                            <Grid item></Grid>
+                            <Grid item>
                                 <span className="login_toggle" onClick={toggleAccount} style={{textDecoration:'underline'}}>{
                                         newAccount
                                             ? "로그인 하기"
@@ -226,7 +226,7 @@ export default function Login() {
                         </Grid>
                         <Button
                             type="submit"
-                            fullWidth="fullWidth"
+                            fullWidth
                             variant="outlined"
                             sx={{
                                 mt: 3,
