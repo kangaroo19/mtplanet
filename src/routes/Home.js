@@ -11,14 +11,8 @@ import TitleImg from "../components/home/TitleImg";
 import { useEffect } from "react";
 function Home({userObj}) {
     useEffect(()=>{
-        let params = new URL(document.location.toString()).searchParams;
-        let code = params.get("code"); //인가코드
         
-        let grant_type = "authorization_code";
-        let client_id = process.env.REACT_APP_KAKAO_KEY
-        console.log(code);
     })
-    // https://velog.io/@sgsg9447/oAuth-Kakao-Login
     return (
         <div>
             <TitleImg/>

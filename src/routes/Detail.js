@@ -56,7 +56,7 @@ function Detail({userObj,isLoggedIn}){
     const testF=async()=>{
         const allRatingRef=doc(dbService,`${divisionData[id].title}`,'allrating') //allrating문서에 대한 참조        
         const allData=await getDoc(allRatingRef)
-        setStar((allData.data().count===0)?0:allData.data().star/allData.data().count)
+        setStar((allData.data().count===0)?0:(allData.data().star/allData.data().count).toFixed(1))
         setRoom((allData.data().count===0)?0:(allData.data().room/allData.data().count).toFixed(1))
         setShower((allData.data().count===0)?0:(allData.data().shower/allData.data().count).toFixed(1))
         setToliet((allData.data().count===0)?0:(allData.data().toliet/allData.data().count).toFixed(1))

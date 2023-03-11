@@ -6,6 +6,7 @@ function Profile({refreshUser,userObj}){
     const navigate=useNavigate()
     const onLogOutClick=()=>{
         signOut(authService)
+        // 카톡로그아웃 구현해야됨
         navigate('/') //homepage로 리다이렉트
     }
     return (
