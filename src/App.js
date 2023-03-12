@@ -7,7 +7,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useEffect,useState } from "react";
 import axios from "axios";
 import Footer from "./components/app/Footer";
-import { signInWithCustomToken } from "firebase/auth";
+import { signInWithCustomToken,createCustomToken } from "firebase/auth";
 
 const {Kakao}=window
 function App() {
@@ -30,12 +30,22 @@ function App() {
                 }
             ).then(function (res) {
                 // console.log(res);
+                console.log(res.data)
                 Kakao.Auth.setAccessToken(res.data.access_token);
+                
                 Kakao.API.request({
                     url: '/v2/user/me',
                   }).then(function(response) { //유저정보
                     console.log(response);
+                    console.log(Kakao.Auth.getAccessToken())
+                    
                     setIsLoggedIn(true)
+                    signInWithCustomToken(authService, res.data.id_token) //커스텀 토큰 들어가야함
+                        .then((userCredential) => {
+                            console.log(userCredential)
+                            const user = userCredential.user;
+                            // ...
+                        })
                   })
                   .catch(function(error) {
                     console.log(error);
@@ -66,3 +76,8 @@ function App() {
 
 export default App;
 
+//signWithCustomToken의 두번째 인자는 두개의 점으로 나눠진 세개의 부분이 있어야하는데 access 토큰은 그 형식 따르지 않음,
+//카카오톡 id토큰이 이 형식을 따름
+
+//커스텀 토큰 만들기 위해선 백엔드단 언어 사용해야 하는듯
+//firebase cloud function 사용,공부해야될듯
