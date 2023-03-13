@@ -8,6 +8,7 @@ import { collection, doc, getCountFromServer, getDoc, setDoc } from "firebase/fi
 import { dbService } from "../../fbase";
 import { useEffect, useState } from "react";
 import StarIcon from '@mui/icons-material/Star';
+import bootcamp from '../../img/bootcamp.jpg'
 function BootCamp({id,title}){
     const [star,setStar]=useState(0)
     const navigate=useNavigate()
@@ -64,11 +65,19 @@ function BootCamp({id,title}){
     return (
         <Grid item xs={4}>
             <Wrapper onClick={onClickRouting}>
-            <CardImg>
-                <img src={divisionData[id].img} style={{width:'200px',height:'155px'}}></img>
-            </CardImg>
+            <ImgWrapper>
+                <CardImg>
+                    <img src={divisionData[id].img} style={{width:'100px',height:'100px',}}></img>
+                </CardImg>
+            </ImgWrapper>
+            <ClassContainer>
+                <ClassRating>
+                    <ClassType>별점</ClassType>
+                    <ClassFormat><StarIcon/>{star}</ClassFormat>
+                </ClassRating>
+            </ClassContainer>
             <CardText>
-                <Title>{divisionData[id].name} <StarIcon/>{star}</Title>
+                <Title>{divisionData[id].name} </Title>
                 <Desc>{divisionData[id].desc}</Desc>
             </CardText>
             </Wrapper>
@@ -79,21 +88,37 @@ function BootCamp({id,title}){
 export default BootCamp
 
 const Wrapper=styled.div`
-    max-width:240px;
+    width:240px;
     box-shadow: 10px 10px 10px -5px rgba(25,42,70,0.2);
     border-radius:8px;
     margin:0 10px;
     transition: 0.4s;
     flex-shrink: 0;
+    &:hover{
+        box-shadow: 10px 10px 10px 0px rgba(236, 8, 8, 0.2);
+        transform: translate(0,-5px);
+    }
 `
+
+const ImgWrapper=styled.div`
+    width:100%;
+    background-image: url(${bootcamp});
+    background-size:100%;
+`
+
 const CardImg=styled.div`
-    width:222px;
-    height:155px;
+    background-color:rgba(26,115,35,0.5);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    height:140px;
     border-radius:8px 8px 0 0;
 `
 const CardText=styled.div`
     width:100%;
     padding:0.5rem 0 1rem 0;
+    background-color:ghostwhite;
 `
 
 const Title=styled.div`
@@ -103,11 +128,40 @@ const Title=styled.div`
     white-space:nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-left:10px;
     font-size:1rem;  
 `
 
 const Desc=styled.div`
-font-size: 0.9rem;
-color:inherit;
-line-height: 1.5rem;
+    font-size: 0.9rem;
+    margin-left:10px;
+    color:inherit;
+    line-height: 1.5rem;
+`
+
+const ClassContainer=styled.div`
+    width:100%;
+    padding:0.5rem 0 1rem 0;
+    background-color:ghostwhite;
+
+`
+
+const ClassRating=styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+`
+
+const ClassType=styled.div`
+    color:#949393;
+    font-size: 0.9rem;
+    margin-left:10px;
+`
+
+const ClassFormat=styled.div`
+    color:white;
+    font-size:0.9rem;
+    background-color:#0d47a1 ;
+    padding:0.2rem;
+    margin-right:10px;
 `

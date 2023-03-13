@@ -10,17 +10,15 @@ import Grid from '@mui/material/Grid';
 import TitleImg from "../components/home/TitleImg";
 import { useEffect } from "react";
 function Home({userObj}) {
-    useEffect(()=>{
-        
-    })
+    
     return (
-        <div>
+        <div style={{backgroundColor:'#e9e9e9',}}>
             <TitleImg/>
             <Wrapper>
                 <SearchInput/>
                 <Grid
                     container
-                    rowSpacing={0}
+                    rowSpacing={2}
                     columnSpacing={{
                         xs: 2,
                         sm: 2,
@@ -39,11 +37,13 @@ function Home({userObj}) {
 
 export default Home
 const Wrapper = styled.div `
+    background-color:white;
+    padding:20px;
     width:100%;
     height:100%;
     margin:0 auto;
     overflow: hidden;
-    @media only screen and (min-width:1000px){
-        max-width:1000px;
+    @media only screen and (min-width:800px){
+        max-width:800px;
     }
 `

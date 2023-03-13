@@ -15,7 +15,7 @@ function Router({userObj,isLoggedIn}){
             <Route path="/news" element={<News/>}></Route>
             <Route path="login" element={<Login/>}></Route>
             <Route path='/detail/:id' element={<Detail userObj={userObj} isLoggedIn={isLoggedIn}/>}></Route>
-            <Route path='/profile' element={<Profile/>}></Route>
+            <Route path='/profile' element={<Profile userObj={userObj}/>}></Route>
             <Route path='/reviewform' element={<ReviewForm userObj={userObj} isLoggedIn={isLoggedIn}/>}></Route>
         </Routes>
     )

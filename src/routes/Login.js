@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import {signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, GithubAuthProvider} from "firebase/auth";
+import {signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, GithubAuthProvider, updateProfile} from "firebase/auth";
 import {authService} from '../fbase';
 import {dbService} from '../fbase';
 import {doc, setDoc} from "firebase/firestore";
@@ -89,13 +89,15 @@ export default function Login() {
     }
     const onSubmit = async (event) => { //async함수는 반드시 프로미스 리턴
         event.preventDefault()
-
         try {
             let data
             if (newAccount) { //create acc
                 data = await createUserWithEmailAndPassword(authService, email, password).then(
                     async (result) => {
-                        console.log(result)
+                        updateProfile(result.user,{
+                            displayName:nickName
+                        })
+                        console.log(result.user)
                         const {uid, displayName, photoURL} = result.user
                         await setDoc(doc(dbService, "users", `${uid}`), {
                             uid: `${uid}`,
@@ -110,6 +112,7 @@ export default function Login() {
             } else { //log in
                 data = await signInWithEmailAndPassword(authService, email, password).then(
                     async (result) => {
+                        
                         const {uid, displayName, photoURL} = result.user
                         await setDoc(doc(dbService, "users", `${uid}`), {
                             uid: `${uid}`,

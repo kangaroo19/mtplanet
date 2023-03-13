@@ -54,6 +54,7 @@ function App() {
 
 
         onAuthStateChanged(authService, async (user) => {
+            // console.log(user)
             if (user) {
                 setIsLoggedIn(true)
                 setUserObj(
@@ -81,3 +82,4 @@ export default App;
 
 //커스텀 토큰 만들기 위해선 백엔드단 언어 사용해야 하는듯
 //firebase cloud function 사용,공부해야될듯
+//firebase cloud function 사용하려면 돈내야됨
