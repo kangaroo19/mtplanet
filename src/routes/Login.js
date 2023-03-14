@@ -67,7 +67,7 @@ export default function Login() {
                     userName: `${displayName}`,
                     userImg: `${photoURL}`
                 })
-                navigate('/')
+                navigate('/home')
             }
         )
     }

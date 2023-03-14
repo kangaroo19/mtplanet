@@ -7,7 +7,7 @@ function Navigation({userObj,isLoggedIn}){
         <Wrapper>
             <Inner>
                 <HeadContainer>
-                    <Link to="/" style={{ textDecoration: 'none', }}><Content>홈</Content></Link>
+                    <Link to="/home" style={{ textDecoration: 'none', }}><Content>홈</Content></Link>
                     <Link to="/ranking" style={{ textDecoration: 'none', }}><Content>랭킹</Content></Link>
                     <Link to="/news" style={{ textDecoration: 'none', }}><Content>뉴스</Content></Link>
                     {isLoggedIn?

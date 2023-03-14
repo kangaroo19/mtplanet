@@ -10,7 +10,7 @@ import ReviewForm from "../../routes/ReviewForm";
 function Router({userObj,isLoggedIn,innerWidth}){
     return (
         <Routes>
-            <Route path="/" element={<Home userObj={userObj} innerWidth={innerWidth}/>}></Route>
+            <Route path="/home" element={<Home userObj={userObj} innerWidth={innerWidth}/>}></Route>
             <Route path="/ranking" element={<Ranking/>}></Route>
             <Route path="/news" element={<News/>}></Route>
             <Route path="login" element={<Login/>}></Route>
