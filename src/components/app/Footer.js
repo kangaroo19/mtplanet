@@ -17,7 +17,6 @@ const Wrapper=styled.div`
     height:120px;
     border-top:1px solid #e4e4e4;
     background-color:#f8f9fa ;
-    
 `
 const Message=styled.div`
 font-weight: bold;

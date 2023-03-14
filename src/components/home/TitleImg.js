@@ -22,9 +22,13 @@ const Section=styled.div`
     background-color: white;
     position: relative;
     margin-top:50px;
+    @media only screen and (max-width:800px){
+        display:none;
+    }
 `
 const Wrapper=styled.div`
     height:360px;
+    width:100%;
     background-image: url(${img});
     background-size: cover;
     background-position:center 1%;

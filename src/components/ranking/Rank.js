@@ -1,5 +1,6 @@
 //랭킹 페이지에서 각 랭킹 표현
 
+import { useEffect,useState } from "react"
 import styled from "styled-components"
 import { Grid } from "@mui/material"
 import { useNavigate } from "react-router-dom"
@@ -8,13 +9,22 @@ function Rank({id,armyObj}){
     const onClick=()=>{
         navigate(`/detail/${armyObj.routing}`)
     }
+    const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+    useEffect(()=>{
+        const resizeListener = () => { //현재 화면 크기값
+            setInnerWidth(window.innerWidth);
+          };
+          window.addEventListener("resize", resizeListener);
+    })
     return (
         <Wrapper>
             <Grid container>
                 <Grid item xs={2}>{id+1}</Grid>
                 <Grid item xs={6}>
                     <Inner onClick={onClick}>
-                        <Image src={armyObj.img} alt="" />{armyObj.title}
+                        {innerWidth>=420?
+                        <><Image src={armyObj.img}/>{armyObj.title}</>:
+                        <><Image src={armyObj.img}/>{armyObj.title.length>=11?(<>{(armyObj.title).substring(0,9)+'...'}</>):<>{armyObj.title}</>}</>}
                     </Inner>
                 </Grid>
                 <Grid item xs={2}>{armyObj.rating}</Grid>
@@ -36,6 +46,9 @@ const Inner=styled.div`
     display:flex;
     justify-content:center;
     align-items:center;
+    @media only screen and (max-width:420px){
+        font-size:0.8rem;
+    }
 `
 
 const Image=styled.img`

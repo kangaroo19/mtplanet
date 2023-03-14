@@ -61,9 +61,15 @@ function BootCamp({id,title}){
         getStarRating() //별점평균값 가져오기 위함
         setArmyDB() //이 부대가 처음 생겼을때 초기화 위함,reviewform 컴포넌트에서 재사용 하였음
     },[])
-    
+    const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+    useEffect(()=>{
+        const resizeListener = () => { //현재 화면 크기값
+            setInnerWidth(window.innerWidth);
+          };
+          window.addEventListener("resize", resizeListener);
+    })
     return (
-        <Grid item xs={4}>
+        <Grid item xs={innerWidth>=420?4:6}>
             <Wrapper onClick={onClickRouting}>
             <ImgWrapper>
                 <CardImg>
@@ -78,7 +84,7 @@ function BootCamp({id,title}){
             </ClassContainer>
             <CardText>
                 <Title>{divisionData[id].name} </Title>
-                <Desc>{divisionData[id].desc}</Desc>
+                <Desc>{divisionData[id].desc.length<12?divisionData[id].desc:divisionData[id].desc.substring(0,10)+'...'}</Desc>
             </CardText>
             </Wrapper>
         </Grid>
@@ -88,7 +94,7 @@ function BootCamp({id,title}){
 export default BootCamp
 
 const Wrapper=styled.div`
-    width:240px;
+    max-width:240px;
     box-shadow: 10px 10px 10px -5px rgba(25,42,70,0.2);
     border-radius:8px;
     margin:0 10px;
@@ -97,6 +103,9 @@ const Wrapper=styled.div`
     &:hover{
         box-shadow: 10px 10px 10px 0px rgba(236, 8, 8, 0.2);
         transform: translate(0,-5px);
+    }
+    @media only screen and (max-width:420px){
+        width:160px;
     }
 `
 
@@ -119,6 +128,7 @@ const CardText=styled.div`
     width:100%;
     padding:0.5rem 0 1rem 0;
     background-color:ghostwhite;
+    
 `
 
 const Title=styled.div`

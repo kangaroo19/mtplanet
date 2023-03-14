@@ -9,13 +9,13 @@ import styled from "styled-components";
 import Grid from '@mui/material/Grid';
 import TitleImg from "../components/home/TitleImg";
 import { useEffect } from "react";
-function Home({userObj}) {
+function Home({userObj,innerWidth}) {
     
     return (
         <div style={{backgroundColor:'#e9e9e9',}}>
             <TitleImg/>
             <Wrapper>
-                <SearchInput/>
+                <SearchInput innerWidth={innerWidth}/>
                 <Grid
                     container
                     rowSpacing={2}
@@ -45,5 +45,9 @@ const Wrapper = styled.div `
     overflow: hidden;
     @media only screen and (min-width:800px){
         max-width:800px;
+    }
+    @media only screen and (max-width:420px){
+        padding:5px;
+        margin-bottom:70px;
     }
 `

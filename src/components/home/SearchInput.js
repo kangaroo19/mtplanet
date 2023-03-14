@@ -56,10 +56,15 @@ const Wrapper=styled.div`
     margin-top:10px;
     align-items:center;
     margin-bottom:30px;
+    
 `
 const Button=styled.button`
     width:5%;
     background-color:#2186c4;
     border:none;
     height:57px;
+    @media only screen and (max-width:420px){
+        width:10%;
+        margin-bottom:1px;
+    }
 `

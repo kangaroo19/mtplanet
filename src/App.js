@@ -7,50 +7,61 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useEffect,useState } from "react";
 import axios from "axios";
 import Footer from "./components/app/Footer";
+import MobileAppBar from './components/app/MobileAppBar'
+import MobileNavi from './components/app/MobileNavi'
+
 import { signInWithCustomToken,createCustomToken } from "firebase/auth";
 
 const {Kakao}=window
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false) //로그인 되기 전에는 false
     const [userObj, setUserObj] = useState(null)
+    const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+    useEffect(()=>{
+        const resizeListener = () => { //현재 화면 크기값
+            setInnerWidth(window.innerWidth);
+          };
+          window.addEventListener("resize", resizeListener);
+    })
     useEffect(() => {
-        let params = new URL(document.location.toString()).searchParams;
-        let code = params.get("code"); //인가코드
-        const REDIRECT_URI='http://localhost:3000'
         
-        let grant_type = "authorization_code";
-        const restAPI='86acccbfed266d61c08015418840b6f3'
-        axios
-            .post(
-                `https://kauth.kakao.com/oauth/token?grant_type=${grant_type}&client_id=${restAPI}&redirect_uri=${REDIRECT_URI}&code=${code}`,
-                {
-                headers: {
-                    "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
-                },
-                }
-            ).then(function (res) {
-                // console.log(res);
-                console.log(res.data)
-                Kakao.Auth.setAccessToken(res.data.access_token);
+        // let params = new URL(document.location.toString()).searchParams;
+        // let code = params.get("code"); //인가코드
+        // const REDIRECT_URI='http://localhost:3000'
+        
+        // let grant_type = "authorization_code";
+        // const restAPI='86acccbfed266d61c08015418840b6f3'
+        // axios
+        //     .post(
+        //         `https://kauth.kakao.com/oauth/token?grant_type=${grant_type}&client_id=${restAPI}&redirect_uri=${REDIRECT_URI}&code=${code}`,
+        //         {
+        //         headers: {
+        //             "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
+        //         },
+        //         }
+        //     ).then(function (res) {
+        //         // console.log(res);
+        //         console.log(res.data)
+        //         Kakao.Auth.setAccessToken(res.data.access_token);
                 
-                Kakao.API.request({
-                    url: '/v2/user/me',
-                  }).then(function(response) { //유저정보
-                    console.log(response);
-                    console.log(Kakao.Auth.getAccessToken())
+        //         Kakao.API.request({
+        //             url: '/v2/user/me',
+        //           }).then(function(response) { //유저정보
+        //             console.log(response);
+        //             console.log(Kakao.Auth.getAccessToken())
                     
-                    setIsLoggedIn(true)
-                    signInWithCustomToken(authService, res.data.id_token) //커스텀 토큰 들어가야함
-                        .then((userCredential) => {
-                            console.log(userCredential)
-                            const user = userCredential.user;
-                            // ...
-                        })
-                  })
-                  .catch(function(error) {
-                    console.log(error);
-                  });
-            })
+        //             setIsLoggedIn(true)
+        //             signInWithCustomToken(authService, res.data.id_token) //커스텀 토큰 들어가야함
+        //                 .then((userCredential) => {
+        //                     console.log(userCredential)
+        //                     const user = userCredential.user;
+        //                     // ...
+        //                 })
+        //           })
+        //           .catch(function(error) {
+        //             console.log(error);
+        //           });
+        //     })
 
 
         onAuthStateChanged(authService, async (user) => {
@@ -66,11 +77,21 @@ function App() {
             }
         })
     }, [])
+    
     return (
       <>
-        <Navigation userObj={userObj} isLoggedIn={isLoggedIn}/>
-        <Router userObj={userObj} isLoggedIn={isLoggedIn}/>
-        <Footer/>
+        {innerWidth>=430?
+            <>
+                <Navigation userObj={userObj} isLoggedIn={isLoggedIn}/>
+                <Router userObj={userObj} isLoggedIn={isLoggedIn}/>
+                <Footer/>
+            </>:
+            <>
+                <MobileAppBar/>
+                <Router userObj={userObj} isLoggedIn={isLoggedIn} innerWidth={innerWidth}/>
+                <MobileNavi userObj={userObj} isLoggedIn={isLoggedIn}/>
+            </>   
+        }
       </>
     );
 }

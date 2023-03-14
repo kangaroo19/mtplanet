@@ -76,80 +76,159 @@ function Detail({userObj,isLoggedIn}){
         }
         navigate('/reviewform',{state:{id:id,},})
     }
+
+    const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+    useEffect(()=>{
+        const resizeListener = () => { //현재 화면 크기값
+            setInnerWidth(window.innerWidth);
+          };
+          window.addEventListener("resize", resizeListener);
+    })
     return (
         <Wrapper>
             <Grid>
                 <Inner>
                 <Title>{title}</Title>
+                {innerWidth>=420?
                 <Grid container spacing={2} mb={1}>
-                    <Grid item xs={5}>
-                        <Grid mb={1}>
-                            <Grid>생활관</Grid>
-                            <Grid display='flex' alignContent='center'>
-                                <ProgressBar value={room*20}/>
-                                <Grid ml={2}>{room}</Grid>
-                            </Grid>
+                <Grid item xs={5}>
+                    <Grid mb={1}>
+                        <Grid>생활관</Grid>
+                        <Grid display='flex' alignContent='center'>
+                            <ProgressBar value={room*20}/>
+                            <Grid ml={2}>{room}</Grid>
                         </Grid>
-                        <Grid mb={1}>
-                            <Grid>샤워장</Grid>
-                            <Grid display='flex' alignContent='center'>
-                                <ProgressBar value={shower*20}/>
-                                <Grid ml={2}>{shower}</Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid mb={1}>
-                            <Grid>화장실</Grid>
-                            <Grid display='flex' alignContent='center'>
-                                <ProgressBar value={toliet*20}/>
-                                <Grid ml={2}>{toliet}</Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid mb={1}>
-                            <Grid>훈련강도</Grid>
-                            <Grid display='flex' alignContent='center'>
-                                <ProgressBar value={training*20}/>
-                                <Grid ml={2}>{training}</Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid mb={1}>
-                            <Grid>교장거리</Grid>
-                            <Grid display='flex' alignContent='center'>
-                                <ProgressBar value={distance*20}/>
-                                <Grid ml={2}>{distance}</Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid mb={1}>
-                            <Grid>밥</Grid>
-                            <Grid display='flex' alignContent='center'>
-                                <ProgressBar value={food*20}/>
-                                <Grid ml={2}>{food}</Grid>
-                            </Grid>
-                        </Grid>
-                        <DetailTable px={px} tv={tv} smoke={smoke}/>
                     </Grid>
-                    <Grid item xs={7} >
-                        <Grid height='40%'>
-                            <Grid lineHeight='3rem'>
-                            <Grid textAlign='center' fontWeight={100} fontSize='1.2rem'>평균별점 : {star}</Grid>
+                    <Grid mb={1}>
+                        <Grid>샤워장</Grid>
+                        <Grid display='flex' alignContent='center'>
+                            <ProgressBar value={shower*20}/>
+                            <Grid ml={2}>{shower}</Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid mb={1}>
+                        <Grid>화장실</Grid>
+                        <Grid display='flex' alignContent='center'>
+                            <ProgressBar value={toliet*20}/>
+                            <Grid ml={2}>{toliet}</Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid mb={1}>
+                        <Grid>훈련강도</Grid>
+                        <Grid display='flex' alignContent='center'>
+                            <ProgressBar value={training*20}/>
+                            <Grid ml={2}>{training}</Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid mb={1}>
+                        <Grid>교장거리</Grid>
+                        <Grid display='flex' alignContent='center'>
+                            <ProgressBar value={distance*20}/>
+                            <Grid ml={2}>{distance}</Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid mb={1}>
+                        <Grid>밥</Grid>
+                        <Grid display='flex' alignContent='center'>
+                            <ProgressBar value={food*20}/>
+                            <Grid ml={2}>{food}</Grid>
+                        </Grid>
+                    </Grid>
+                    <DetailTable px={px} tv={tv} smoke={smoke}/>
+                </Grid>
+                <Grid item xs={7} >
+                    <Grid height='40%'>
+                        <Grid lineHeight='3rem'>
+                        <Grid textAlign='center' fontWeight={100} fontSize='1.2rem'>평균별점 : {star}</Grid>
 
-                                <Rating 
-                                    name="half-rating-read"  
-                                    defaultValue={0}
-                                    value={star} 
-                                    precision={0.1} 
-                                    readOnly 
-                                    size="large" 
-                                    sx={{fontSize: "4rem",margin:'0 auto',display:'flex',justifyContent:'center',}}/>
+                            <Rating 
+                                name="half-rating-read"  
+                                defaultValue={0}
+                                value={star} 
+                                precision={0.1} 
+                                readOnly 
+                                size="large" 
+                                // fontSize="4rem"
+                                sx={{fontSize:"4rem",margin:'0 auto',display:'flex',justifyContent:'center',}}/>
+                        </Grid>
+                    </Grid>
+                   <Grid height='60%'>
+                        <MapWrapper apiKey={MAP_API_KEY}>
+                            <Map id={id}/>
+                        </MapWrapper> 
+                   </Grid>
+                </Grid>
+                
+            </Grid>:
+            // 모바일 화면
+            <Grid>
+                <Grid height='40%'>
+                        <Grid lineHeight='3rem'>
+                            <Grid textAlign='center' fontWeight={100} fontSize='1.2rem'>평균별점 : {star}</Grid>
+                            <Rating 
+                                name="half-rating-read"  
+                                defaultValue={0}
+                                value={star} 
+                                precision={0.1} 
+                                readOnly 
+                                size="large" 
+                                sx={{fontSize:"4rem",margin:'0 auto',display:'flex',justifyContent:'center',}}/>
+                        </Grid>
+                       <Grid> 
+                            <Grid mb={1}>
+                                <Grid>생활관</Grid>
+                                <Grid display='flex' alignContent='center'>
+                                    <ProgressBar value={room*20}/>
+                                    <Grid ml={2}>{room}</Grid>
+                                </Grid>
+                            </Grid>
+                            <Grid mb={1}>
+                                <Grid>샤워장</Grid>
+                                <Grid display='flex' alignContent='center'>
+                                    <ProgressBar value={shower*20}/>
+                                    <Grid ml={2}>{shower}</Grid>
+                                </Grid>
+                            </Grid>
+                            <Grid mb={1}>
+                                <Grid>화장실</Grid>
+                                <Grid display='flex' alignContent='center'>
+                                    <ProgressBar value={toliet*20}/>
+                                    <Grid ml={2}>{toliet}</Grid>
+                                </Grid>
+                            </Grid>
+                            <Grid mb={1}>
+                                <Grid>훈련강도</Grid>
+                                <Grid display='flex' alignContent='center'>
+                                    <ProgressBar value={training*20}/>
+                                    <Grid ml={2}>{training}</Grid>
+                                </Grid>
+                            </Grid>
+                            <Grid mb={1}>
+                                <Grid>교장거리</Grid>
+                                <Grid display='flex' alignContent='center'>
+                                    <ProgressBar value={distance*20}/>
+                                    <Grid ml={2}>{distance}</Grid>
+                                </Grid>
+                            </Grid>
+                            <Grid mb={1}>
+                                <Grid>밥</Grid>
+                                <Grid display='flex' alignContent='center'>
+                                    <ProgressBar value={food*20}/>
+                                    <Grid ml={2}>{food}</Grid>
+                                </Grid>
                             </Grid>
                         </Grid>
-                       <Grid height='60%'>
+                        <Grid>
+                            <DetailTable px={px} tv={tv} smoke={smoke}/>
+                        </Grid>
+                        <Grid height={100}>
                             <MapWrapper apiKey={MAP_API_KEY}>
                                 <Map id={id}/>
                             </MapWrapper> 
-                       </Grid>
+                        </Grid>
                     </Grid>
-                    
                 </Grid>
+            }
                 </Inner>
             </Grid>
             <Grid mt={2}>
@@ -159,7 +238,7 @@ function Detail({userObj,isLoggedIn}){
                             <CreateIcon/>리뷰 작성하기
                         </Button>
                     </Grid>
-                    <Grid>
+                    <Grid mb={5}>
                         {reviewArr.map((value,idx)=>(
                             <Reviews
                                 key={idx}

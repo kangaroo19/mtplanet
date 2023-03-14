@@ -49,6 +49,7 @@ function Ranking(){
     return (
         <Wrapper>
             <Inner>
+                <input type="checkbox" name="color" value="blue"/> Blue
                 <Select onChange={onChangeSort}>
                     <Option value="desc">평점 높은순</Option>
                     <Option value="asc">평점 낮은순</Option>
