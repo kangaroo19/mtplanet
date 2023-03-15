@@ -18,6 +18,7 @@ import CreateIcon from '@mui/icons-material/Create';
 import { Wrapper as MapWrapper } from "@googlemaps/react-wrapper";
 function Detail({userObj,isLoggedIn}){
     
+    const [count,setCount]=useState(0)
     const [title,setTitle]=useState(null)
     const [desc,setDesc]=useState(null)
     const [reviewArr,setReviewArr]=useState([]) // 나 포함 다른 사용자들이 쓴 리뷰들
@@ -56,6 +57,7 @@ function Detail({userObj,isLoggedIn}){
     const testF=async()=>{
         const allRatingRef=doc(dbService,`${divisionData[id].title}`,'allrating') //allrating문서에 대한 참조        
         const allData=await getDoc(allRatingRef)
+        setCount((allData.data().count))
         setStar((allData.data().count===0)?0:(allData.data().star/allData.data().count).toFixed(1))
         setRoom((allData.data().count===0)?0:(allData.data().room/allData.data().count).toFixed(1))
         setShower((allData.data().count===0)?0:(allData.data().shower/allData.data().count).toFixed(1))
@@ -239,12 +241,15 @@ function Detail({userObj,isLoggedIn}){
                         </Button>
                     </Grid>
                     <Grid mb={5}>
-                        {reviewArr.map((value,idx)=>(
+                        {count===0?
+                        <None>😭아무것도 없어요😭</None>:
+                        <>{reviewArr.map((value,idx)=>(
                             <Reviews
                                 key={idx}
                                 reviewObj={value}
                                 />
-                        ))}
+                        ))}</>    
+                    }
                     </Grid>
                 </Inner>
             </Grid>
@@ -286,4 +291,12 @@ const Title=styled.div`
     margin-top:10px;
     margin-bottom:30px;
     font-weight:900;
+`
+
+const None=styled.div`
+    font-size:3rem;
+    font-weight:900;
+    text-align:center;
+    height:300px;
+    line-height:300px;
 `

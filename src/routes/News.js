@@ -11,11 +11,24 @@ function News(){
     const [loading,setLoading]=useState(true)
     const NEWS_API_KEY=process.env.REACT_APP_NEWS_ID //env에 저장된 news api 키
     const topic='국방'
-    let url =`https://newsapi.org/v2/everything?q=${topic}&apiKey=${NEWS_API_KEY}`;
+    // let url =`https://newsapi.org/v2/everything?q=${topic}&apiKey=${NEWS_API_KEY}`;
+    const q='korea army'
+    const lang='en'
+    const sortBy='relevancy'
+    const page='1'
+    const pageSize='10'
+    let url=`https://api.newscatcherapi.com/v2/search?q=${q}&lang=${lang}&sort_by=${sortBy}&page=${page}&page_size=${pageSize}`
+    const options={
+        method:'GET',
+        headers: {
+                    'x-api-key': 'CD91Izea5fqPFfWPLplh-_Eep0ifrsanmCbXyObZsjY'
+                }
+    }
     const getNews=async ()=>{
         const json=await(
-            await fetch(url)
+            await fetch(url,options)
         ).json()
+        console.log(json)
         setNews(json.articles)
         setLoading(false)
     }
@@ -23,7 +36,20 @@ function News(){
         getNews() //뉴스 가져옴
     },[])
 
-
+    // let options = {
+    //     method: 'GET',
+    //     url: 'https://api.newscatcherapi.com/v2/search',
+    //     params: {q: 'Korea army', lang: 'en', sort_by: 'relevancy', page: '1'},
+    //     headers: {
+    //         'x-api-key': 'CD91Izea5fqPFfWPLplh-_Eep0ifrsanmCbXyObZsjY'
+    //     }
+    //     };
+    
+    //     axios.request(options).then(function (response) {
+    //         console.log(response.data);
+    //     }).catch(function (error) {
+    //         console.error(error);
+    //     });
 
     
 

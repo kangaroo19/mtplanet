@@ -79,7 +79,7 @@ function BootCamp({id,title}){
             <ClassContainer>
                 <ClassRating>
                     <ClassType>별점</ClassType>
-                    <ClassFormat><StarIcon/>{star}</ClassFormat>
+                    <ClassFormat>⭐{star}</ClassFormat>
                 </ClassRating>
             </ClassContainer>
             <CardText>
@@ -170,7 +170,7 @@ const ClassType=styled.div`
 
 const ClassFormat=styled.div`
     color:white;
-    font-size:0.9rem;
+    font-size:1.2rem;
     background-color:#0d47a1 ;
     padding:0.2rem;
     margin-right:10px;
