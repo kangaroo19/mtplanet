@@ -10,13 +10,13 @@ import ReviewForm from "../../routes/ReviewForm";
 function Router({userObj,isLoggedIn,innerWidth}){
     return (
         <Routes>
-            <Route path="/home" element={<Home userObj={userObj} innerWidth={innerWidth}/>}></Route>
-            <Route path="/ranking" element={<Ranking/>}></Route>
-            <Route path="/news" element={<News/>}></Route>
-            <Route path="login" element={<Login/>}></Route>
-            <Route path='/detail/:id' element={<Detail userObj={userObj} isLoggedIn={isLoggedIn} innerWidth={innerWidth}/>}></Route>
-            <Route path='/profile' element={<Profile userObj={userObj}/>}></Route>
-            <Route path='/reviewform' element={<ReviewForm userObj={userObj} isLoggedIn={isLoggedIn} innerWidth={innerWidth}/>}></Route>
+            <Route exact path="/" element={<Home userObj={userObj} innerWidth={innerWidth}/>}></Route>
+            <Route exact path="/ranking" element={<Ranking/>}></Route>
+            <Route exact path="/news" element={<News/>}></Route>
+            <Route exact path="login" element={<Login/>}></Route>
+            <Route exact path='/detail/:id' element={<Detail userObj={userObj} isLoggedIn={isLoggedIn} innerWidth={innerWidth}/>}></Route>
+            <Route exact path='/profile' element={<Profile userObj={userObj}/>}></Route>
+            <Route exact path='/reviewform' element={<ReviewForm userObj={userObj} isLoggedIn={isLoggedIn} innerWidth={innerWidth}/>}></Route>
         </Routes>
     )
 }

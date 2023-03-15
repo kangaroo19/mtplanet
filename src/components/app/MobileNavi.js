@@ -20,7 +20,7 @@ export default function MobileNavi({isLoggedIn}) {
     <BottomNavigation sx={{ width: '100%',position:'fixed',bottom:0,left:0,right:0, }} value={value} onChange={handleChange}>
       
       <BottomNavigationAction
-        onClick={()=>navigate(`/home`)}
+        onClick={()=>navigate(`/`)}
         label="홈"
         value="home"
         icon={<HomeIcon />}
