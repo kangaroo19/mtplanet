@@ -6,16 +6,19 @@ function Reviews({reviewObj}){
     return (
         <Wrapper>
             <OneLineReview>
-                <Title>{reviewObj.userReview}</Title> 
-                <Grid sx={{fontSize:'0.8rem'}}>입영일자:{reviewObj.userYear}/{reviewObj.userMonth}</Grid>
+                <TitleContainer>
+                    <Title>{reviewObj.userReview}</Title>
+                    <Grid sx={{fontSize:'0.8rem',fontWeight:'300'}}>입영일자:{reviewObj.userYear}/{reviewObj.userMonth}</Grid>
+                </TitleContainer> 
+                
             </OneLineReview>
             <Rating name="half-rating-read" defaultValue={Number(reviewObj.userStarReview)} precision={0.5} readOnly />
             <GoodReview>
-                <Grid fontWeight={700} color='#0f7ccf'>장점</Grid>
+                <Grid fontWeight={900} lineHeight='30px' color='#0f7ccf'>장점</Grid>
                 {reviewObj.userGoodReview}
             </GoodReview>
             <BadReview>
-                <Grid fontWeight={700} color='#fc4a13'>단점</Grid>
+                <Grid fontWeight={900} lineHeight='30px' color='#fc4a13'>단점</Grid>
                 {reviewObj.userBadReview}</BadReview>
         </Wrapper>
 
@@ -28,9 +31,12 @@ const Wrapper=styled.div`
     border-bottom:1px solid #e4e4e4;
     margin-top:10px;
 `
-const Title=styled.div`
+const TitleContainer=styled.div`
     font-size:1.5rem;   
-    font-weight:900 
+    font-weight:900
+`
+const Title=styled.div`
+    line-height:40px;
 `
 const OneLineReview=styled.div`
     display:flex;

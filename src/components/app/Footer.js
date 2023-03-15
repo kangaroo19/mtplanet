@@ -19,32 +19,32 @@ const Wrapper=styled.div`
     background-color:#f8f9fa ;
 `
 const Message=styled.div`
-font-weight: bold;
-font-size:0.9rem;
-color:#545e6f;
-margin-bottom:0.1rem;
-margin-left:30px;
+    font-weight: bold;
+    font-size:0.9rem;
+    color:#545e6f;
+    margin-bottom:0.1rem;
+    margin-left:30px;
 `
 
 const Contact=styled.div`
-font-size:0.9rem;
-color:#545e6f;
-margin-bottom:1rem;
-margin-left:30px;
+    font-size:0.9rem;
+    color:#545e6f;
+    margin-bottom:1rem;
+    margin-left:30px;
 `
 
 const Copyright=styled.div`
-font-size:0.9rem;
-color:#545e6f;
-margin-left:30px;
+    font-size:0.9rem;
+    color:#545e6f;
+    margin-left:30px;
 `
 
 const Inner=styled.div`
-width:100%;
-height:100%;
-margin:0 auto;
-overflow: hidden;
-@media only screen and (min-width:1200px){
-    max-width:1200px;
-}
+    width:100%;
+    margin:0 auto;
+    margin-top:20px;
+    overflow: hidden;
+    @media only screen and (min-width:1200px){
+        max-width:1200px;
+    }
 `

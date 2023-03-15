@@ -1,5 +1,5 @@
 //리뷰 작성부분 컴포넌트
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useLocation,useNavigate } from "react-router-dom";
 import { doc,addDoc,setDoc,  collection,getDoc, getCountFromServer } from "firebase/firestore";
 import { dbService } from "../fbase";
@@ -32,7 +32,7 @@ function ReviewForm({userObj,isLoggedIn}){
     const [tvReview,setTvReview]=useState(1)
     const [pxReview,setPxReview]=useState(1)
     const [year,setYear]=useState('2023')
-    const [month,setMonth]=useState('1')
+    const [month,setMonth]=useState('01')
      
     const onSubmit=async(event)=>{ //리뷰 제출
         event.preventDefault()
@@ -147,18 +147,26 @@ function ReviewForm({userObj,isLoggedIn}){
         setYear(year)
         setMonth(month)
     }
+
+    const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+    useEffect(()=>{
+        const resizeListener = () => { //현재 화면 크기값
+            setInnerWidth(window.innerWidth);
+          };
+          window.addEventListener("resize", resizeListener);
+    })
     return (
         <Wrapper>
             <Inner>
             <Title>리뷰 작성하기</Title>
             <Grid mb={5}>
-                <Grid>
+                <Grid width='50%'>
                     <DatePicker childToParentDate={childToParentDate}/>
                 </Grid>
                 <Grid container style={{justifyContent:'space-between'}} mb={5} mt={2}>
                     <RadioInner onChange={onRadioChange} title='room'>
                         <Grid style={{textAlign:'center',fontWeight:'900'}}>생활관</Grid>
-                        <RadioGroupRating n='room'/>
+                        <RadioGroupRating/>
                     </RadioInner>
                     <RadioInner onChange={onRadioChange} title='shower'>
                         <Grid style={{textAlign:'center',fontWeight:'900',}}>샤워장</Grid>
@@ -248,7 +256,10 @@ export default ReviewForm
 const Wrapper=styled.div`
     background-color:#e9e9e9;
     margin-top:50px;
-    
+    @media only screen and (max-width:420px){
+        margin-top:10px;
+        margin-bottom:60px;
+    }
 `
 
 const Inner=styled.div`
@@ -260,6 +271,9 @@ const Inner=styled.div`
     padding:30px;
     @media only screen and (min-width:500px){
         max-width:500px;
+    }
+    @media only screen and (max-width:420px){
+        padding:5px;
     }
     border:1px solid rgba(0, 0, 0, 0.12);
 `
@@ -281,5 +295,8 @@ const RadioInner=styled.div`
     flex-direction:column;
     align-items:center;
     justify-content:center;
+    @media only screen and (max-width:420px){
+        width:33%;
+    }
 `
 

@@ -17,7 +17,7 @@ export default function MobileNavi({isLoggedIn}) {
   };
   
   return (
-    <BottomNavigation sx={{ width: '100%',position:'fixed',bottom:0,left:0,right:0, }} value={value} onChange={handleChange}>
+    <BottomNavigation sx={{ width: '100%',position:'fixed',bottom:0,left:0,right:0,zIndex:'9999', }} value={value} onChange={handleChange}>
       
       <BottomNavigationAction
         onClick={()=>navigate(`/`)}

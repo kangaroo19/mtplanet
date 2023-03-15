@@ -3,6 +3,7 @@ import styled from "styled-components"
 import NewsDetail from "../components/news/NewsDetail";
 import CircularProgress from '@mui/material/CircularProgress';
 import { Grid } from "@mui/material";
+import axios from "axios";
 import { display } from "@mui/system";
 //e148feed44c547518a6d46d96af92278
 function News(){
@@ -10,7 +11,7 @@ function News(){
     const [loading,setLoading]=useState(true)
     const NEWS_API_KEY=process.env.REACT_APP_NEWS_ID //env에 저장된 news api 키
     const topic='국방'
-    var url =`https://newsapi.org/v2/everything?q=${topic}&apiKey=${NEWS_API_KEY}`;
+    let url =`https://newsapi.org/v2/everything?q=${topic}&apiKey=${NEWS_API_KEY}`;
     const getNews=async ()=>{
         const json=await(
             await fetch(url)
@@ -21,6 +22,12 @@ function News(){
     useEffect(()=>{
         getNews() //뉴스 가져옴
     },[])
+
+
+
+    
+
+    
     return (
         <Wrapper>
             <Inner>
@@ -48,7 +55,10 @@ export default News
 const Wrapper=styled.div`
     margin-top:50px;
     background-color:#e9e9e9;
-    
+    @media only screen and (max-width:420px){
+        margin-top:20px;
+        margin-bottom:60px;
+    }
 `
 const Inner = styled.div `
     background-color:white;

@@ -1,7 +1,15 @@
+import { useEffect,useState } from "react"
 import { Grid } from "@mui/material"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
 function NewsDetail({newsObj}){
+    const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+    useEffect(()=>{
+        const resizeListener = () => { //현재 화면 크기값
+            setInnerWidth(window.innerWidth);
+          };
+          window.addEventListener("resize", resizeListener);
+    })
     return (
         <Wrapper>
             <Grid container>
@@ -10,8 +18,12 @@ function NewsDetail({newsObj}){
                 </Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={8}>
-                    <Link to={newsObj.url} style={{textDecoration:'none',}}><Title>{newsObj.title}</Title></Link>
+                    {innerWidth>=420?
+                    <><Link to={newsObj.url} style={{textDecoration:'none',}}><Title>{newsObj.title}</Title></Link></>:
+                    <><Link to={newsObj.url} style={{textDecoration:'none',}}><Title>{newsObj.title.length>=28?(newsObj.title).substring(0,28)+'...':newsObj.title}</Title></Link></>}
+                    {/* <Link to={newsObj.url} style={{textDecoration:'none',}}><Title>{newsObj.title}</Title></Link> */}
                     <Desc>{newsObj.description}</Desc>
+                    <Publisher>{newsObj.source.name}</Publisher>
                 </Grid>
             </Grid>
         </Wrapper>
@@ -31,7 +43,9 @@ const Inner=styled.div`
 const Image=styled.img`
     width:100%;
     height:150px;
-    
+    @media only screen and (max-width:420px){
+        height:100px;
+    }
 `
 
 const Title=styled.div`
@@ -48,5 +62,11 @@ const Title=styled.div`
 
 const Desc=styled.div`
     font-size:1rem;
+    @media only screen and (max-width:420px){
+        display:none;
+    }
+`
 
+const Publisher=styled.div`
+    color:#949393;
 `
