@@ -14,7 +14,7 @@ import ColorToggleButton from "../components/reviewform/ColorToggleButton";
 import DatePicker from "../components/reviewform/DatePicker";
 
 function ReviewForm({userObj,isLoggedIn}){
-    
+    console.log(userObj)
     const location=useLocation()
     const navigate=useNavigate()
     const id=location.state.id //현재 보고있는 부대의 id값 , Detail에서 useNavigate에서 전달받음
@@ -38,7 +38,7 @@ function ReviewForm({userObj,isLoggedIn}){
         event.preventDefault()
         if(oneLineReview!=='' && goodReview!=='' && badReview!==''){
             const reviewObj={ //reviewArr에 저장되는 데이터,db에 저장됨
-                displayName:userObj.displayName,
+                displayName:await userObj.displayName,
                 uid:userObj.uid,
                 userImg:userObj.userImg,
                 userReview:oneLineReview,

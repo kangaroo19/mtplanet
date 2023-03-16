@@ -11,22 +11,13 @@ function News(){
     const [loading,setLoading]=useState(true)
     const NEWS_API_KEY=process.env.REACT_APP_NEWS_ID //env에 저장된 news api 키
     const topic='국방'
-    // let url =`https://newsapi.org/v2/everything?q=${topic}&apiKey=${NEWS_API_KEY}`;
-    const q='korea army'
-    const lang='en'
-    const sortBy='relevancy'
-    const page='1'
-    const pageSize='10'
-    let url=`https://api.newscatcherapi.com/v2/search?q=${q}&lang=${lang}&sort_by=${sortBy}&page=${page}&page_size=${pageSize}`
-    const options={
-        method:'GET',
-        headers: {
-                    'x-api-key': 'CD91Izea5fqPFfWPLplh-_Eep0ifrsanmCbXyObZsjY'
-                }
-    }
+    
+
+    
+    
     const getNews=async ()=>{
         const json=await(
-            await fetch(url,options)
+            await fetch('https://gnews.io/api/v4/search?q=korea army&apikey=63dd90b4e650e4cdadbeb54a98dbf2bf')
         ).json()
         console.log(json)
         setNews(json.articles)

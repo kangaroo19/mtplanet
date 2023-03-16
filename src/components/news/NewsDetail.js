@@ -3,7 +3,6 @@ import { Grid } from "@mui/material"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
 function NewsDetail({newsObj}){
-    console.log(newsObj)
     const [innerWidth, setInnerWidth] = useState(window.innerWidth);
     useEffect(()=>{
         const resizeListener = () => { //현재 화면 크기값
@@ -15,15 +14,14 @@ function NewsDetail({newsObj}){
         <Wrapper>
             <Grid container>
                 <Grid item xs={3}>
-                    <Image src={newsObj.media}></Image>
+                    <Image src={newsObj.image}></Image>
                 </Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={8}>
                     {innerWidth>=420?
-                    <><Link to={newsObj.link} style={{textDecoration:'none',}}><Title>{newsObj.title}</Title></Link></>:
-                    <><Link to={newsObj.link} style={{textDecoration:'none',}}><Title>{newsObj.title.length>=28?(newsObj.title).substring(0,28)+'...':newsObj.title}</Title></Link></>}
-                    {/* <Link to={newsObj.url} style={{textDecoration:'none',}}><Title>{newsObj.title}</Title></Link> */}
-                    <Desc>{newsObj.summary}</Desc>
+                    <><Link to={newsObj.url} style={{textDecoration:'none',}}><Title>{newsObj.title}</Title></Link></>:
+                    <><Link to={newsObj.url} style={{textDecoration:'none',}}><Title>{newsObj.title.length>=28?(newsObj.title).substring(0,28)+'...':newsObj.title}</Title></Link></>}
+                    <Desc>{newsObj.content}</Desc>
                     <Publisher>{newsObj.rights}</Publisher>
                 </Grid>
             </Grid>

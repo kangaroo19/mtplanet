@@ -8,7 +8,7 @@ function Profile({refreshUser,userObj}){
     const [img,setImg]=useState(null)
     useEffect(()=>{
         setDisplay()
-    })
+    },[])
     const setDisplay=async()=>{ 
         await setName(userObj.displayName)
         await setImg(userObj.userImg)

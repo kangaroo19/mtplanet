@@ -88,6 +88,7 @@ export default function Login() {
         }
     }
     const onSubmit = async (event) => { //async함수는 반드시 프로미스 리턴
+        if(nickName==="") return
         event.preventDefault()
         try {
             let data

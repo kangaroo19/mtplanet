@@ -17,7 +17,7 @@ import Button from '@mui/material/Button';
 import CreateIcon from '@mui/icons-material/Create';
 import { Wrapper as MapWrapper } from "@googlemaps/react-wrapper";
 function Detail({userObj,isLoggedIn}){
-    
+    // console.log(userObj)
     const [count,setCount]=useState(0)
     const [title,setTitle]=useState(null)
     const [desc,setDesc]=useState(null)
@@ -51,10 +51,10 @@ function Detail({userObj,isLoggedIn}){
             })
             setReviewArr(arr) 
             //console.log(reviewArr)
-            testF()
+            setReviewData()
         })
     },[])
-    const testF=async()=>{
+    const setReviewData=async()=>{
         const allRatingRef=doc(dbService,`${divisionData[id].title}`,'allrating') //allrating문서에 대한 참조        
         const allData=await getDoc(allRatingRef)
         setCount((allData.data().count))
@@ -86,6 +86,8 @@ function Detail({userObj,isLoggedIn}){
           };
           window.addEventListener("resize", resizeListener);
     })
+
+    
     return (
         <Wrapper>
             <Grid>
@@ -242,7 +244,7 @@ function Detail({userObj,isLoggedIn}){
                     </Grid>
                     <Grid mb={5}>
                         {count===0?
-                        <None>😭아무것도 없어요😭</None>:
+                        <None>😭아무것도 없어요😭</None>: //리뷰 없을때 나타남
                         <>{reviewArr.map((value,idx)=>(
                             <Reviews
                                 key={idx}
@@ -299,4 +301,11 @@ const None=styled.div`
     text-align:center;
     height:300px;
     line-height:300px;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    @media only screen and (max-width:420px){
+        font-size:2rem;
+    }
 `
