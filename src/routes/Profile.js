@@ -1,17 +1,22 @@
+//내이름과 사진 볼 수 있는 프로필 컴포넌트
+
 import { getAuth, signOut, updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../fbase";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 function Profile({refreshUser,userObj}){
+    const [init,setInit]=useState(false)
     const [name,setName]=useState(null)
     const [img,setImg]=useState(null)
     useEffect(()=>{
+        console.log(userObj)
         setDisplay()
-    },[])
-    const setDisplay=async()=>{ 
-        await setName(userObj.displayName)
-        await setImg(userObj.userImg)
+    },[]) 
+    const setDisplay= ()=>{  //userObj 객체를 불러오는게 느린지 await 문 없으면 userObj가 null값으로 들어옴
+        setName(userObj.displayName)
+        setImg(userObj.userImg)
+        setInit(true)
     }
     const navigate=useNavigate()
     const onLogOutClick=()=>{
@@ -20,12 +25,16 @@ function Profile({refreshUser,userObj}){
         navigate('/') //homepage로 리다이렉트
     }
     return (
-        <Wrapper>
+        <>
+        {init?
+            <Wrapper>
             <h1>내 이름:{name}</h1>
             {/* <h1>내 id : {userObj.uid}</h1> */}
             <img src={img} alt="" />
             <button onClick={onLogOutClick}>로그아웃</button>
-        </Wrapper>
+        </Wrapper>:'init'
+        }
+        </>
     )
 }
 

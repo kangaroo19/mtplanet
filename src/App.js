@@ -4,18 +4,18 @@ import Navigation from "./components/app/Navigation";
 import Router from "./components/app/Router";
 import { authService } from "./fbase";
 import { onAuthStateChanged } from "firebase/auth";
-import { useEffect,useState } from "react";
-import axios from "axios";
+import { useEffect,useRef,useState } from "react";
 import Footer from "./components/app/Footer";
 import MobileAppBar from './components/app/MobileAppBar'
 import MobileNavi from './components/app/MobileNavi'
-
-import { signInWithCustomToken,createCustomToken } from "firebase/auth";
+import Profile from "./routes/Profile";
 
 const {Kakao}=window
 function App() {
+    const [init,setInit]=useState(false)
     const [isLoggedIn, setIsLoggedIn] = useState(false) //로그인 되기 전에는 false
     const [userObj, setUserObj] = useState(null)
+    const testObj=useRef(null)
     const [innerWidth, setInnerWidth] = useState(window.innerWidth);
     useEffect(()=>{
         const resizeListener = () => { //현재 화면 크기값
@@ -25,78 +25,50 @@ function App() {
     })
     useEffect(() => {
         
-        // let params = new URL(document.location.toString()).searchParams;
-        // let code = params.get("code"); //인가코드
-        // const REDIRECT_URI='http://localhost:3000'
-        
-        // let grant_type = "authorization_code";
-        // const restAPI='86acccbfed266d61c08015418840b6f3'
-        // axios
-        //     .post(
-        //         `https://kauth.kakao.com/oauth/token?grant_type=${grant_type}&client_id=${restAPI}&redirect_uri=${REDIRECT_URI}&code=${code}`,
-        //         {
-        //         headers: {
-        //             "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
-        //         },
-        //         }
-        //     ).then(function (res) {
-        //         // console.log(res);
-        //         console.log(res.data)
-        //         Kakao.Auth.setAccessToken(res.data.access_token);
-                
-        //         Kakao.API.request({
-        //             url: '/v2/user/me',
-        //           }).then(function(response) { //유저정보
-        //             console.log(response);
-        //             console.log(Kakao.Auth.getAccessToken())
-                    
-        //             setIsLoggedIn(true)
-        //             signInWithCustomToken(authService, res.data.id_token) //커스텀 토큰 들어가야함
-        //                 .then((userCredential) => {
-        //                     console.log(userCredential)
-        //                     const user = userCredential.user;
-        //                     // ...
-        //                 })
-        //           })
-        //           .catch(function(error) {
-        //             console.log(error);
-        //           });
-        //     })
-
-
-        onAuthStateChanged(authService, async (user) => {
-            // console.log(user)
+        onAuthStateChanged(authService, (user) => {
+            console.log(user)
             if (user) {
                 setIsLoggedIn(true)
                 setUserObj(
                     {displayName: user.displayName, uid: user.uid, userImg: user.photoURL}
                 )
+                testObj.current={diaplayName:user.displayName,uid: user.uid, userImg: user.photoURL}
             } else {
                 setUserObj(null)
                 setIsLoggedIn(false)
             }
+            setInit(true)
         })
-    }, [])
+    },[])
     
     return (
       <>
-        {innerWidth>=430?
-            <>
-                <Navigation userObj={userObj} isLoggedIn={isLoggedIn}/>
-                <Router userObj={userObj} isLoggedIn={isLoggedIn}/>
-                <Footer/>
-            </>:
-            <>
-                <MobileAppBar/>
-                <Router userObj={userObj} isLoggedIn={isLoggedIn} innerWidth={innerWidth}/>
-                <MobileNavi userObj={userObj} isLoggedIn={isLoggedIn}/>
-            </>   
-        }
+      {init?
+      <>
+      {innerWidth>=430?
+          <>
+              <Navigation userObj={userObj} isLoggedIn={isLoggedIn}/>
+              <Router userObj={userObj} isLoggedIn={isLoggedIn} testObj={testObj}/>
+              <Footer/>
+          </>:
+          <>
+              <MobileAppBar/>
+              <Router userObj={userObj} isLoggedIn={isLoggedIn} innerWidth={innerWidth}/>
+              <MobileNavi userObj={userObj} isLoggedIn={isLoggedIn}/>
+          </>   
+      }
+    </>
+        :'init'}
       </>
     );
 }
 
 export default App;
+
+//setInit이 없으면
+//userObj에 정확한 값이 들어가기도 전에 router에 프롭으로 들어가서 router에 콘솔을 찍어보면 널값이 나옴 (결과적으로 router하위 컴포넌트인 profile에도 null값이 들어감)
+//콘솔로그 찍히는 순서도 app->router 가 정확한 순서이지만 router 다음에 app이 나옴
+//이를 막기 위해 사용
 
 //signWithCustomToken의 두번째 인자는 두개의 점으로 나눠진 세개의 부분이 있어야하는데 access 토큰은 그 형식 따르지 않음,
 //카카오톡 id토큰이 이 형식을 따름

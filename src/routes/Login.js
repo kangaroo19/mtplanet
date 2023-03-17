@@ -88,17 +88,18 @@ export default function Login() {
         }
     }
     const onSubmit = async (event) => { //async함수는 반드시 프로미스 리턴
-        if(nickName==="") return
+        
         event.preventDefault()
         try {
             let data
             if (newAccount) { //create acc
+                if(nickName==="") return
                 data = await createUserWithEmailAndPassword(authService, email, password).then(
                     async (result) => {
                         updateProfile(result.user,{
                             displayName:nickName
                         })
-                        console.log(result.user)
+                        
                         const {uid, displayName, photoURL} = result.user
                         await setDoc(doc(dbService, "users", `${uid}`), {
                             uid: `${uid}`,
@@ -111,6 +112,7 @@ export default function Login() {
                 navigate('/')
 
             } else { //log in
+                console.log(123)
                 data = await signInWithEmailAndPassword(authService, email, password).then(
                     async (result) => {
                         
