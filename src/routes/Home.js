@@ -8,8 +8,9 @@ import BootCamp from "../components/home/BootCamp";
 import styled from "styled-components";
 import Grid from '@mui/material/Grid';
 import TitleImg from "../components/home/TitleImg";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 function Home({userObj,innerWidth}) {
+    
     return (
         <div style={{backgroundColor:'#e9e9e9',}}>
             <TitleImg/>

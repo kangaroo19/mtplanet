@@ -8,7 +8,7 @@
 //onSnapshot 문제인거같음 (bootcamp컴포넌트의 useEffect문제)
 import { useEffect,useState } from "react"
 import { dbService } from "../fbase"
-import { collection,query,onSnapshot,orderBy } from "firebase/firestore"
+import { collection,query,onSnapshot,orderBy,where } from "firebase/firestore"
 import styled from "styled-components"
 import Rank from "../components/ranking/Rank"
 import { Grid } from "@mui/material"
@@ -22,13 +22,13 @@ function Ranking(){
                 q=query(collection(dbService,"allarmy"),orderBy("rating","desc"))
                 break
             case 'asc' : //평점 낮은순
-                q=query(collection(dbService,"allarmy"),orderBy("rating","asc"))
+                q=query(collection(dbService,"allarmy"),where('rating','!=',0),orderBy("rating","asc"))
                 break
             case 'rdesc' : //리뷰 많은순
                 q=query(collection(dbService,"allarmy"),orderBy("count","desc"))
                 break
             case 'rasc' : //리뷰 적은순
-                q=query(collection(dbService,"allarmy"),orderBy("count","asc"))
+                q=query(collection(dbService,"allarmy"),where('count','!=',0),orderBy("count","asc"))
                 break
         }
         const un=onSnapshot(q,(snapshot)=>{ //데이터베이스에 변화가 생기면 onSnapshot 실행됨
@@ -49,7 +49,7 @@ function Ranking(){
     return (
         <Wrapper>
             <Inner>
-                <input type="checkbox" name="color" value="blue"/> Blue
+                {/* <input type="checkbox" name="color" value="blue"/> Blue */}
                 <Select onChange={onChangeSort}>
                     <Option value="desc">평점 높은순</Option>
                     <Option value="asc">평점 낮은순</Option>
@@ -57,10 +57,10 @@ function Ranking(){
                     <Option value="rasc">리뷰 적은순</Option>
                 </Select>
                 <Grid container sx={{borderBottom:'1px solid #e4e4e4'}} pb={1}>
-                    <Grid item xs={2}>순위</Grid>
-                    <Grid item xs={6}>부대명</Grid>
-                    <Grid item xs={2}>별점</Grid>
-                    <Grid item xs={2}>리뷰 수</Grid>
+                    <Grid item xs={2} fontWeight='900'>순위</Grid>
+                    <Grid item xs={6} fontWeight='900'>부대명</Grid>
+                    <Grid item xs={2} fontWeight='900'>별점</Grid>
+                    <Grid item xs={2} fontWeight='900'>리뷰 수</Grid>
                 </Grid>
                 {armys.map((v,i)=>(
                     <Rank

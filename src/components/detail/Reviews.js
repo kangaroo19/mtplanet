@@ -4,7 +4,6 @@ import Rating from '@mui/material/Rating';
 import Avatar from '@mui/material/Avatar';
 import { Grid } from '@mui/material';
 function Reviews({reviewObj}){
-    console.log(reviewObj)
     return (
         <Wrapper>
             <Inner>

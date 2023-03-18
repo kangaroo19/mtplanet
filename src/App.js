@@ -4,6 +4,7 @@ import Navigation from "./components/app/Navigation";
 import Router from "./components/app/Router";
 import { authService } from "./fbase";
 import { onAuthStateChanged } from "firebase/auth";
+import { updateProfile } from "firebase/auth";
 import { useEffect,useRef,useState } from "react";
 import Footer from "./components/app/Footer";
 import MobileAppBar from './components/app/MobileAppBar'
@@ -15,7 +16,6 @@ function App() {
     const [init,setInit]=useState(false)
     const [isLoggedIn, setIsLoggedIn] = useState(false) //로그인 되기 전에는 false
     const [userObj, setUserObj] = useState(null)
-    const testObj=useRef(null)
     const [innerWidth, setInnerWidth] = useState(window.innerWidth);
     useEffect(()=>{
         const resizeListener = () => { //현재 화면 크기값
@@ -25,14 +25,22 @@ function App() {
     })
     useEffect(() => {
         
-        onAuthStateChanged(authService, (user) => {
-            console.log(user)
+        onAuthStateChanged(authService,async (user) => {
             if (user) {
-                setIsLoggedIn(true)
-                setUserObj(
-                    {displayName: user.displayName, uid: user.uid, userImg: user.photoURL}
-                )
-                testObj.current={diaplayName:user.displayName,uid: user.uid, userImg: user.photoURL}
+                
+                await updateProfile(user.auth.currentUser, {  //계정생성시 내가 정한 이름(nickname)업데이트 되도록
+                    displayName:user.auth.currentUser.displayName
+                  }).then((res) => {
+                    setIsLoggedIn(true)
+                    setUserObj({
+                        displayName: user.auth.currentUser.displayName,
+                        uid: user.uid,
+                        userImg: user.photoURL})
+                  }).catch((error) => {
+                    
+                  });
+                  
+                
             } else {
                 setUserObj(null)
                 setIsLoggedIn(false)
@@ -48,7 +56,7 @@ function App() {
       {innerWidth>=430?
           <>
               <Navigation userObj={userObj} isLoggedIn={isLoggedIn}/>
-              <Router userObj={userObj} isLoggedIn={isLoggedIn} testObj={testObj}/>
+              <Router userObj={userObj} isLoggedIn={isLoggedIn}/>
               <Footer/>
           </>:
           <>

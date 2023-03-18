@@ -17,7 +17,6 @@ import Button from '@mui/material/Button';
 import CreateIcon from '@mui/icons-material/Create';
 import { Wrapper as MapWrapper } from "@googlemaps/react-wrapper";
 function Detail({userObj,isLoggedIn}){
-    // console.log(userObj)
     const [count,setCount]=useState(0)
     const [title,setTitle]=useState(null)
     const [desc,setDesc]=useState(null)
@@ -50,7 +49,6 @@ function Detail({userObj,isLoggedIn}){
                 })
             })
             setReviewArr(arr) 
-            //console.log(reviewArr)
             setReviewData()
         })
     },[])

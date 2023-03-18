@@ -60,7 +60,6 @@ export default function Login() {
         }
         const data = await signInWithPopup(authService, provider).then(
             async (result) => {
-                console.log(result)
                 const {uid, displayName, photoURL} = result.user
                 await setDoc(doc(dbService, "users", `${uid}`), {
                     uid: `${uid}`,
@@ -96,7 +95,7 @@ export default function Login() {
                 if(nickName==="") return
                 data = await createUserWithEmailAndPassword(authService, email, password).then(
                     async (result) => {
-                        updateProfile(result.user,{
+                        await updateProfile(result.user,{
                             displayName:nickName
                         })
                         
@@ -112,7 +111,6 @@ export default function Login() {
                 navigate('/')
 
             } else { //log in
-                console.log(123)
                 data = await signInWithEmailAndPassword(authService, email, password).then(
                     async (result) => {
                         
@@ -139,7 +137,6 @@ export default function Login() {
     
     return (
         <ThemeProvider theme={theme}>
-            {/* {redirect?<Route path="/login"/>} */}
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
                 <Box
