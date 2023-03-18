@@ -3,8 +3,7 @@
 import Navigation from "./components/app/Navigation";
 import Router from "./components/app/Router";
 import { authService } from "./fbase";
-import { onAuthStateChanged } from "firebase/auth";
-import { updateProfile } from "firebase/auth";
+import { onAuthStateChanged,updateProfile } from "firebase/auth";
 import { useEffect,useRef,useState } from "react";
 import Footer from "./components/app/Footer";
 import MobileAppBar from './components/app/MobileAppBar'
@@ -27,20 +26,20 @@ function App() {
         
         onAuthStateChanged(authService,async (user) => {
             if (user) {
-                
-                await updateProfile(user.auth.currentUser, {  //계정생성시 내가 정한 이름(nickname)업데이트 되도록
-                    displayName:user.auth.currentUser.displayName
-                  }).then((res) => {
-                    setIsLoggedIn(true)
-                    setUserObj({
-                        displayName: user.auth.currentUser.displayName,
-                        uid: user.uid,
-                        userImg: user.photoURL})
+                console.log(user.displayName)
+                updateProfile(user, {
+                    displayName: user.displayName
+                  }).then(() => {
+                    // Profile updated!
+                    // ...
                   }).catch((error) => {
-                    
+                    // An error occurred
+                    // ...
                   });
-                  
-                
+                setIsLoggedIn(true)
+                setUserObj(
+                    {displayName: user.displayName, uid: user.uid, userImg: user.photoURL}
+                )
             } else {
                 setUserObj(null)
                 setIsLoggedIn(false)
