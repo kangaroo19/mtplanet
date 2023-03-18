@@ -1,5 +1,15 @@
 //최상위 컴포넌트 
 //navigation,footer 컴포넌트는 어느 페이지에서건 보임
+
+
+//2023/03/17
+//새로운 사용자가 회원가입 후 프로필 화면으로 이동하면 내 닉네임 안나옴
+//app.js에서는 제대로 받고 있는데 router.js 에서는 userObj가 제대로 넘어가지 않음
+//새로고침하면 제대로된 값 들어감
+//===>app.js에서 파이어베이스 함수인 updateProfile함수 추가하여 프로필 업데이트 하도록 하여 해결...
+//===>다시 확인해보니까 안됨..
+//===>일단 새로고침시 제대로된 값이 들어온다는 것 이용하여
+//===>useNavigate 이용해 홈페이지로 이동하고 새로고침함수 사용,개선 필요할듯
 import Navigation from "./components/app/Navigation";
 import Router from "./components/app/Router";
 import { authService } from "./fbase";
@@ -9,9 +19,9 @@ import Footer from "./components/app/Footer";
 import MobileAppBar from './components/app/MobileAppBar'
 import MobileNavi from './components/app/MobileNavi'
 import Profile from "./routes/Profile";
-
-const {Kakao}=window
+import { useNavigate } from "react-router-dom";
 function App() {
+    const navigate=useNavigate()
     const [init,setInit]=useState(false)
     const [isLoggedIn, setIsLoggedIn] = useState(false) //로그인 되기 전에는 false
     const [userObj, setUserObj] = useState(null)
@@ -26,8 +36,13 @@ function App() {
         
         onAuthStateChanged(authService,async (user) => {
             if (user) {
+                if(user.displayName===null){
+                    navigate('/')
+                    window.location.reload()
+                    
+                }
                 console.log(user.displayName)
-                updateProfile(user, {
+                await updateProfile(user, {
                     displayName: user.displayName
                   }).then(() => {
                     // Profile updated!

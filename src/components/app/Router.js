@@ -1,11 +1,6 @@
 //라우팅 처리
 
-//2023/03/17
-//새로운 사용자가 회원가입 후 프로필 화면으로 이동하면 내 닉네임 안나옴
-//app.js에서는 제대로 받고 있는데 router.js 에서는 userObj가 제대로 넘어가지 않음
-//새로고침하면 제대로된 값 들어감
-//===>app.js에서 파이어베이스 함수인 updateProfile함수 추가하여 프로필 업데이트 하도록 하여 해결...
-//===>다시 확인해보니까 안됨..
+
 import { Routes,Route, Navigate } from "react-router-dom";
 import News from "../../routes/News";
 import Home from "../../routes/Home";
