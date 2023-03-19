@@ -13,15 +13,10 @@ function Map({id}){
         position: { lat:divisionData[id].lat, lng: divisionData[id].lon},
         map: newMap,
       });     
-      console.log(id)    
       setMap(newMap);
   },[])
     return (
-      <div
-        className="map"
-        style={{ width: "100%", height: "100%" }}
-        ref={ref}
-      ></div>
+      <div className="map" style={{ width: "100%", height: "100%" }} ref={ref}></div>
     );
 }
 

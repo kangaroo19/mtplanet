@@ -5,33 +5,46 @@ import { useNavigate } from "react-router-dom";
 import { authService } from "../fbase";
 import styled from "styled-components";
 import Avatar from '@mui/material/Avatar';
-import { useEffect, useState,useRef } from "react";
+import { useEffect, useState } from "react";
 function Profile({refreshUser,userObj}){
     const [name,setName]=useState(null)
     const [img,setImg]=useState(null)
+    const [updateName,setUpdateName]=useState(userObj.displayName)
     useEffect(()=>{
         setDisplay()
     },[]) 
-    const setDisplay= ()=>{  //userObj 객체를 불러오는게 느린지 await 문 없으면 userObj가 null값으로 들어옴
+    const setDisplay= ()=>{  //userObj 객체를 불러오는게 느린지 await 문 없으면 userObj가 null값으로 들어옴 ==> 느려서 그런게 아니라 애초에 router컴포넌트에서부터 잘못받고있엇음
         setName(userObj.displayName)
         setImg(userObj.userImg)
     }
     const navigate=useNavigate()
-    const onLogOutClick=()=>{
+    const onClickLogOut=()=>{
         signOut(authService)
         // 카톡로그아웃 구현해야됨
         navigate('/') //homepage로 리다이렉트
+    }
+    const onChangeName=(event)=>{
+        const {target:{value}}=event
+        setUpdateName(value)
+    }
+    const onClickUpdateBtn=async(event)=>{
+        event.preventDefault()
+        if(userObj.displayName!==updateName){
+            await updateProfile(authService.currentUser, { displayName: updateName });
+            refreshUser() //이 함수는 appjs에서 정의됨 //바뀐 user이름을 리랜더링 위해 부모컴포넌트(app.js)로 보냄
+            setName(updateName)
+        }
     }
     return (
          <Wrapper>
             <Inner>
                 <Title>{name}님의 프로필입니다</Title>
                 <UserContainer>
-                    <Avatar alt="Remy Sharp" src={img} sx={{ width:'16%', height: '16%' }}/>
-                    {/* <Name type="text" value={name}/> */}
+                    <Avatar alt="Remy Sharp" src={img} sx={{ width: 56, height: 56 }}/>
+                    <Name type="text" value={updateName} onChange={onChangeName}/>
                 </UserContainer>
-                <UpdateButton>업데이트</UpdateButton>
-                <LogOutButton onClick={onLogOutClick}>로그아웃</LogOutButton>
+                <UpdateButton onClick={onClickUpdateBtn}>업데이트</UpdateButton>
+                <LogOutButton onClick={onClickLogOut}>로그아웃</LogOutButton>
             </Inner>
         </Wrapper>
     )
@@ -80,9 +93,12 @@ const UserContainer=styled.div`
 
 const Name=styled.input`
     margin-top:20px;
-    width:40%;
+    width:50%;
     height:30px;
     border-radius:20px;
+    @media only screen and (max-width:420px){
+        width:60%;
+    }
 `
 
 const Image=styled.img`
@@ -98,6 +114,9 @@ const UpdateButton=styled.button`
     cursor:pointer;
     background-color:#04aaff;
     height:30px;
+    @media only screen and (max-width:420px){
+        width:60%;
+    }
 `
 
 const LogOutButton=styled.button`
@@ -111,4 +130,7 @@ const LogOutButton=styled.button`
     border:1px solid #fc4a13;
     cursor:pointer;
     background-color:#fc4a13;
+    @media only screen and (max-width:420px){
+        width:60%;
+    }
 `

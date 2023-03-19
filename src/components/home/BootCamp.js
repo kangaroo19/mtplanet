@@ -84,7 +84,7 @@ function BootCamp({id,title}){
             </ClassContainer>
             <CardText>
                 <Title>{divisionData[id].name} </Title>
-                <Desc>{divisionData[id].desc.length<12?divisionData[id].desc:divisionData[id].desc.substring(0,13)+'...'}</Desc>
+                <Desc>{divisionData[id].desc.length<12?divisionData[id].desc:divisionData[id].desc.substring(0,10)+'...'}</Desc>
             </CardText>
             </Wrapper>
         </Grid>

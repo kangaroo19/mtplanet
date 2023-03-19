@@ -18,14 +18,16 @@ import { useEffect,useRef,useState } from "react";
 import Footer from "./components/app/Footer";
 import MobileAppBar from './components/app/MobileAppBar'
 import MobileNavi from './components/app/MobileNavi'
-import Profile from "./routes/Profile";
 import { useNavigate } from "react-router-dom";
+import LoginSnackbar from "./components/app/LoginSnackbar";
+
 function App() {
     const navigate=useNavigate()
     const [init,setInit]=useState(false)
     const [isLoggedIn, setIsLoggedIn] = useState(false) //로그인 되기 전에는 false
     const [userObj, setUserObj] = useState(null)
     const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+    const [openSnackbar,setOpenSnackbar]=useState(false)
     useEffect(()=>{
         const resizeListener = () => { //현재 화면 크기값
             setInnerWidth(window.innerWidth);
@@ -36,12 +38,12 @@ function App() {
         
         onAuthStateChanged(authService,async (user) => {
             if (user) {
+                setOpenSnackbar(true)
                 if(user.displayName===null){
                     navigate('/')
                     window.location.reload()
                     
                 }
-                console.log(user.displayName)
                 await updateProfile(user, {
                     displayName: user.displayName
                   }).then(() => {
@@ -62,7 +64,16 @@ function App() {
             setInit(true)
         })
     },[])
-    
+    const refreshUser=()=>{
+        const user=authService.currentUser
+        setUserObj({
+          displayName:user.displayName,
+          uid:user.uid,
+          userImg:user.photoURL,
+          //updateProfile:(args)=>updateProfile(user,{displayName:user.displayName})
+        })
+      }
+      console.log(userObj)
     return (
       <>
       {init?
@@ -70,13 +81,15 @@ function App() {
       {innerWidth>=430?
           <>
               <Navigation userObj={userObj} isLoggedIn={isLoggedIn}/>
-              <Router userObj={userObj} isLoggedIn={isLoggedIn}/>
+              <Router userObj={userObj} isLoggedIn={isLoggedIn} refreshUser={refreshUser}/>
               <Footer/>
+              {openSnackbar?<LoginSnackbar openSnackbar={openSnackbar}/>:null}
           </>:
           <>
               <MobileAppBar/>
-              <Router userObj={userObj} isLoggedIn={isLoggedIn} innerWidth={innerWidth}/>
+              <Router userObj={userObj} isLoggedIn={isLoggedIn} refreshUser={refreshUser}/>
               <MobileNavi userObj={userObj} isLoggedIn={isLoggedIn}/>
+              {openSnackbar?<LoginSnackbar openSnackbar={openSnackbar}/>:null}
           </>   
       }
     </>

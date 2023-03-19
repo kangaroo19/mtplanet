@@ -10,7 +10,7 @@ import Login from '../../routes/Login'
 import Profile from "../../routes/Profile";
 import ReviewForm from "../../routes/ReviewForm";
 
-function Router({userObj,isLoggedIn,innerWidth,}){
+function Router({userObj,isLoggedIn,innerWidth,refreshUser}){
     return (
         <Routes>
             <Route exact path="/" element={<Home userObj={userObj} innerWidth={innerWidth}/>}></Route>
@@ -18,7 +18,7 @@ function Router({userObj,isLoggedIn,innerWidth,}){
             <Route exact path="/news" element={<News/>}></Route>
             <Route exact path="login" element={<Login/>}></Route>
             <Route exact path='/detail/:id' element={<Detail userObj={userObj} isLoggedIn={isLoggedIn} innerWidth={innerWidth}/>}></Route>
-            <Route exact path='/profile' element={<Profile userObj={userObj}/>}></Route>
+            <Route exact path='/profile' element={<Profile userObj={userObj} refreshUser={refreshUser}/>}></Route>
             <Route exact path='/reviewform' element={<ReviewForm userObj={userObj} isLoggedIn={isLoggedIn} innerWidth={innerWidth}/>}></Route>
         </Routes>
     )

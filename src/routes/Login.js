@@ -92,7 +92,7 @@ export default function Login() {
         try {
             let data
             if (newAccount) { //create acc
-                if(nickName==="") return
+                
                 data = await createUserWithEmailAndPassword(authService, email, password).then(
                     async (result) => {
                         await updateProfile(result.user,{
@@ -129,6 +129,7 @@ export default function Login() {
             setOpen(true)
             setError(error.message)
         }
+        
     }
     function callBack(value) { //자식 컴포넌트의 데이터 부모 컴포넌트(app)로 보내기 위함
         setOpen(value)
@@ -240,7 +241,7 @@ export default function Login() {
                             <FontAwesomeIcon icon={faGoogle}></FontAwesomeIcon>
                             구글로 로그인
                         </Button>
-                        <KaKaoTalkLogin/>
+                        {/* <KaKaoTalkLogin/> */}
 
                     </Box>
                 </Box>

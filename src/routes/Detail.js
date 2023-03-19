@@ -7,6 +7,7 @@ import divisionData from "../data/divisionData";
 import { dbService } from "../fbase";
 import { query, collection, onSnapshot, orderBy,doc,getCountFromServer,setDoc,getDoc } from "firebase/firestore";
 import Reviews from "../components/detail/Reviews";
+import Error from '../components/login/Error'
 import DetailTable from '../components/detail/DetailTable'
 import Map from "../components/detail/Map";
 import styled from "styled-components";
@@ -32,11 +33,14 @@ function Detail({userObj,isLoggedIn}){
     const [tv,setTv]=useState(0)
     const [px,setPx]=useState(0)
     
+    const [error,setError]=useState(false)
+
     const {id}=useParams()
     const navigate=useNavigate() //리디렉션 처리위함
     
     const MAP_API_KEY=process.env.REACT_APP_MAP_ID //구글맵 사용위한 api 키
     useEffect(()=>{
+        window.scrollTo(0,0)
         setTitle(divisionData[id].name)
         setDesc(divisionData[id].desc)
         const q=query(collection(dbService,`${divisionData[id].title}`),orderBy('date','desc'))
@@ -69,10 +73,9 @@ function Detail({userObj,isLoggedIn}){
 
     }
     const goToReviewForm=()=>{ //리뷰작성하는 화면으로 이동 (로그인상태 아닐때는 로그인 페이지로 리디렉션)
-        if(!isLoggedIn){ 
-            alert('로그인 필요')
-            navigate('/login')
-            return 
+        if(isLoggedIn===false){ 
+            //alert('ㄴㅇ')
+            return setError(true)
         }
         navigate('/reviewform',{state:{id:id,},})
     }
@@ -85,7 +88,9 @@ function Detail({userObj,isLoggedIn}){
           window.addEventListener("resize", resizeListener);
     })
 
-    
+    function callBack(value) { //자식 컴포넌트의 데이터 부모 컴포넌트(app)로 보내기 위함
+        setError(value)
+    }
     return (
         <Wrapper>
             <Grid>
@@ -253,6 +258,10 @@ function Detail({userObj,isLoggedIn}){
                     </Grid>
                 </Inner>
             </Grid>
+            {error
+                ? <Error error='리뷰를 작성하려면 로그인이 필요합니다.' callBack={callBack}/>
+                : null
+            }
         </Wrapper>
     )
 }

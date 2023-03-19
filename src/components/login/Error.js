@@ -6,15 +6,17 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
-
+import { useNavigate } from "react-router-dom";
 function Error({error,callBack}){
+  const navigate=useNavigate()
   const [newOpen,setNewOpen]=useState(true)
   const handleClose = () => {
+    navigate('/login')
     setNewOpen(false)
   };
-  useEffect(()=>{ //부모 컴포넌트로 값 보냄
+  useEffect(()=>{ //부모 컴포넌트로 값 보냄,이렇게 부모로 값을 보내지 않으면 newOpen값이 true로 고정되어 다음번 클릭때는 에러창 나타나지 않음
     callBack(newOpen)
-  })
+  },[newOpen])
     return (
         <Dialog
         open={newOpen}

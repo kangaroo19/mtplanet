@@ -10,6 +10,12 @@ import three from '../img/3rd.png'
 import five from '../img/5th.svg'
 import six from '../img/6th.svg'
 import ns from '../img/ns.svg'
+import threefive from '../img/35th.svg'
+import threeone from '../img/31st.svg'
+import threetwo from '../img/32nd.svg'
+import threeseven from '../img/37st.svg'
+import threenine from '../img/39st.webp'
+import fivezero from '../img/50th.svg'
 export default [
     {
         id:0,
@@ -178,5 +184,59 @@ export default [
         lat:36.115065,
         lon:127.102151,
         img:`${ns}`,
-    },          
+    },
+    {
+        id:18,
+        title:'31st',
+        name:'제31사단 충장부대',
+        desc:'광주광역시 북구 오치동',
+        lat:35.195383,
+        lon:126.905265,
+        img:`${threeone}`,
+    },
+    {
+        id:19,
+        title:'32nd',
+        name:'제32사단 백룡부대',
+        desc:'세종특별자치시 금남면',
+        lat:36.426635,
+        lon:127.268681,
+        img:`${threetwo}`,
+    },
+    {
+        id:20,
+        title:'35th',
+        name:'제35사단 충경부대',
+        desc:'전라북도 임실군 임실읍',
+        lat:35.602258,
+        lon:127.293363,
+        img:`${threefive}`,
+    },
+    {
+        id:21,
+        title:'37th',
+        name:'제37사단 충용부대',
+        desc:'충청북도 증평군 증평읍',
+        lat:36.794397,
+        lon:127.558813,
+        img:`${threeseven}`,
+    },
+    {
+        id:22,
+        title:'39th',
+        name:'제39사단 충무부대',
+        desc:'경상남도 함안군 군북면',
+        lat:35.262558,
+        lon:128.352116,
+        img:`${threenine}`,
+    },
+    {
+        id:23,
+        title:'50th',
+        name:'제50사단 강철부대',
+        desc:'대구광역시 북구 국우동',
+        lat:35.948118,
+        lon:128.573543,
+        img:`${fivezero}`,
+    },                  
 ]
