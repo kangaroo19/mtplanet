@@ -48,12 +48,12 @@ export default function Login() {
     const [open, setOpen] = useState(false)
     const toggleAccount = () => setNewAccount((prev) => !prev)
     const onSocialClick = async (event) => { //구글로 로그인시
-        event.preventDefault()
+        event.preventDefault() //새로고침 방지
         const {target: {
                 name
             }} = event
         let provider
-        if (name === "google") { 
+        if (name === "google") { //구글로그인
             provider = new GoogleAuthProvider()
         } else if (name === "github") {
             provider = new GithubAuthProvider()
@@ -91,7 +91,7 @@ export default function Login() {
         
         try {
             let data
-            if (newAccount) { //create acc
+            if (newAccount) { //계정생성
                 if(nickName==="") {
                     console.log(nickName)
                     console.log('닉넴입력')
@@ -114,7 +114,7 @@ export default function Login() {
                 setNewAccount(false)
                 navigate('/')
 
-            } else { //log in
+            } else { //로그인 버튼 setNewAccount가 false 일때
                 data = await signInWithEmailAndPassword(authService, email, password).then(
                     async (result) => {
                         

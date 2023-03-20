@@ -62,7 +62,7 @@ function ReviewForm({userObj,isLoggedIn}){
 
             let starDocRef=doc(dbService,`${divisionData[id].title}`,'allrating')
             const starSnapshot=await getDoc(starDocRef)
-            
+                
             const countDocRef = collection(dbService, `${divisionData[id].title}`); //총 리뷰 개수
             const countSnapshot = await getCountFromServer(countDocRef);
             const starObj={ //부대의 평균 별점 내기 위함

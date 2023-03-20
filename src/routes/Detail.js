@@ -70,7 +70,7 @@ function Detail({userObj,isLoggedIn}){
         setSmoke((allData.data().smoke/allData.data().count<=0.5)?false:true)
         setTv((allData.data().tv/allData.data().count<=0.5)?false:true)
         setPx((allData.data().px/allData.data().count<=0.5)?false:true)
-
+        
     }
     const goToReviewForm=()=>{ //리뷰작성하는 화면으로 이동 (로그인상태 아닐때는 로그인 페이지로 리디렉션)
         if(isLoggedIn===false){ 
