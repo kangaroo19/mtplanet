@@ -20,7 +20,8 @@ import MobileAppBar from './components/app/MobileAppBar'
 import MobileNavi from './components/app/MobileNavi'
 import { useNavigate } from "react-router-dom";
 import LoginSnackbar from "./components/app/LoginSnackbar";
-
+import CircularProgress from '@mui/material/CircularProgress';
+import { Grid } from "@mui/material";
 function App() {
     const navigate=useNavigate()
     const [init,setInit]=useState(false)
@@ -76,9 +77,10 @@ function App() {
       console.log(userObj)
     return (
       <>
+      
       {init?
       <>
-      {innerWidth>=430?
+      {innerWidth>=430? //모바일 or 데스크탑
           <>
               <Navigation userObj={userObj} isLoggedIn={isLoggedIn}/>
               <Router userObj={userObj} isLoggedIn={isLoggedIn} refreshUser={refreshUser}/>
@@ -93,7 +95,8 @@ function App() {
           </>   
       }
     </>
-        :'init'}
+        : //로딩스피너
+        <Grid display='flex' justifyContent='center' minHeight='100vh' alignItems='center'><CircularProgress/></Grid>}
       </>
     );
 }
