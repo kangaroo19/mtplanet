@@ -87,12 +87,16 @@ export default function Login() {
         }
     }
     const onSubmit = async (event) => { //async함수는 반드시 프로미스 리턴
-        
         event.preventDefault()
+        
         try {
             let data
             if (newAccount) { //create acc
-                
+                if(nickName==="") {
+                    console.log(nickName)
+                    console.log('닉넴입력')
+                    return
+                }
                 data = await createUserWithEmailAndPassword(authService, email, password).then(
                     async (result) => {
                         await updateProfile(result.user,{

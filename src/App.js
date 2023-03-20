@@ -39,13 +39,11 @@ function App() {
         
         onAuthStateChanged(authService,async (user) => {
             if (user) {
+                console.log(user.displayName)
                 setOpenSnackbar(true)
                 if(user.displayName===null){
-                    navigate('/')
-                    window.location.reload()
-                    
-                }
-                await updateProfile(user, {
+                  console.log(user.displayName)
+                  await updateProfile(user, {
                     displayName: user.displayName
                   }).then(() => {
                     // Profile updated!
@@ -54,10 +52,24 @@ function App() {
                     // An error occurred
                     // ...
                   });
-                setIsLoggedIn(true)
-                setUserObj(
-                    {displayName: user.displayName, uid: user.uid, userImg: user.photoURL}
-                )
+                    navigate('/')
+                    window.location.reload()
+                    //return
+                    
+                }
+                await updateProfile(user, {
+                  displayName: user.displayName
+                }).then(() => {
+                  // Profile updated!
+                  // ...
+                }).catch((error) => {
+                  // An error occurred
+                  // ...
+                });
+              setIsLoggedIn(true)
+              setUserObj(
+                  {displayName: user.displayName, uid: user.uid, userImg: user.photoURL}
+              )
             } else {
                 setUserObj(null)
                 setIsLoggedIn(false)
