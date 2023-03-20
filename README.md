@@ -41,5 +41,110 @@ MTPLANET은 크게 4가지 화면으로 구성되어 있습니다.
 ![dcc](https://user-images.githubusercontent.com/86513078/226252247-9732385f-c615-445c-88d7-2ec0d2eea94a.PNG)
 게시완료
 
+## 4.코드
+### - 회원가입
 
-  
+로그인과 회원가입기능은 Firebase Authentication를 사용하여 구현하였습니다.
+```JS
+if (newAccount) { //계정생성
+                if(nickName==="") return //nickName 안썼을때
+                data = await createUserWithEmailAndPassword(authService, email, password).then( //email,password는 각각 내가 작성한 값
+                    async (result) => {
+                        await updateProfile(result.user,{
+                            displayName:nickName 
+                        })
+                        
+                        const {uid, displayName, photoURL} = result.user
+                        await setDoc(doc(dbService, "users", `${uid}`), {  //db에 유저정보 저장
+                            uid: `${uid}`,
+                            userName: `${nickName}`,
+                            userImg: `${photoURL}`
+                        })
+                    }
+                )
+                setNewAccount(false)
+                navigate('/')
+```
+- email,password,nickName 변수는 각각 내가 회원가입 화면에서 작성한 값입니다.
+- newAccount값이 true이면 계정생성,false이면 로그인 화면으로 바뀜니다
+- createUserWithEmailAndPassword함수 사용하여 회원가입시 displayName은 null로 초기화 되므로 내가 작성한 nickName을 displayName프로퍼티에 넣고 updateProfile함수 사용하여 업데이트합니다. 이후 유저 정보를 Firebase Firestore에 넣기 위해 setDoc 함수 사용하였습니다. 회원가입이 성공적으로 완료되면 홈 페이지로 리디렉션 됩니다.
+
+### - 로그인
+
+```JS
+else { //로그인 버튼 setNewAccount가 false 일때
+                data = await signInWithEmailAndPassword(authService, email, password).then(
+                    async (result) => {
+                    
+                        .
+                        .
+                        .
+                        
+                        })
+                        navigate('/')
+                    }
+                )
+            }
+
+```
+- signInWithEmailAndPassword 함수 사용하여 로그인 기능 구현,로그인 성공적으로 처리시 홈 페이지로 리디렉션
+
+
+### - 리뷰 작성
+리뷰 작성 기능은 firebase firestore 을 사용해 만들었습니다
+```JS
+const onSubmit=async(event)=>{ //리뷰 제출
+        event.preventDefault()
+        if(oneLineReview!=='' && goodReview!=='' && badReview!==''){
+            const reviewObj={ //reviewArr에 저장되는 데이터,db에 저장됨
+                displayName:userObj.displayName, 
+                uid:userObj.uid,
+                userImg:userObj.userImg,
+                .
+                .
+                .
+                userYear:year,
+                userMonth:month,
+                date:Date.now(),
+            }
+            const reviewDocRef=await addDoc(collection(dbService,`${divisionData[id].title}`),reviewObj) //ex)12사단 컬렉션에 저장됨
+```
+
+- reviewObj는 해당 부대의 컬렉션에 저장되는 객체입니다 이 객체에는 사용자정보,사용자가 선택한 각 요소들의 별점(생활관,훈련강도 등),장/단점,한줄평 들의 정보가 포함되어 있습니다.
+
+### -평균 별점
+
+
+![zxcvzcxv](https://user-images.githubusercontent.com/86513078/226341398-5007d8c8-599c-4641-8d3c-5e19d1a4b596.PNG)
+
+
+각 부대의 평균 별점을 내기 위해 각 부대 컬렉션안에 allrating이라는 문서필드 따로 만들어 각 부대의 총 별점값과 문서필드 갯수를 저장하였습니다.
+
+```JS
+const countDocRef = collection(dbService, `${divisionData[id].title}`) 
+            const countSnapshot = await getCountFromServer(countDocRef) //총 리뷰 개수
+            const starObj={ //부대의 평균 별점 내기 위함
+                star:starSnapshot.data().star+Number(reviewObj.userStarReview), //방금 내가 선택한 별점과 데이터베이스에 저장된 별점 더함
+                count:countSnapshot.data().count-1, //해당 부대에 저장된 문서 갯수 ,allrating 문서필드 있으므로 -1
+                room:starSnapshot.data().room+reviewObj.userRoomReview,
+                shower:starSnapshot.data().shower+reviewObj.userShowerReview,
+                toliet:starSnapshot.data().toliet+reviewObj.userTolietReview,
+                training:starSnapshot.data().training+reviewObj.userTolietReview,
+                distance:starSnapshot.data().distance+reviewObj.userDistanceReview,
+                food:starSnapshot.data().food+reviewObj.userFoodReivew,
+                smoke:starSnapshot.data().smoke+reviewObj.userSmokeReview,
+                tv:starSnapshot.data().tv+reviewObj.userTvReview,
+                px:starSnapshot.data().px+reviewObj.userPxReview,
+            }
+            starDocRef=await setDoc(doc(dbService,`${divisionData[id].title}`,'allrating'),starObj)
+            .
+            .
+            .
+            navigate(`/detail/${id}`) //리뷰 작성 완료 후 해당 부대 페이지로 리디렉션
+```
+내가 방금 작성한 별점과 firestore에 저장된 별점 값을 더해 새로 firebase에 저장합니다 리뷰작성이 성공적으로 완료되면 부대 페이지로 리디렉션됩니다.
+
+## 5.기술스택
+
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=JavaScript&logoColor=white"/><img src="https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=white"/><img src="https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=CSS3&logoColor=white"/><img src="https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=HTML5&logoColor=white"/>
+<img src="https://img.shields.io/badge/firebase-FFCA28?style=flat&logo=firebase&logoColor=white">
