@@ -1,70 +1,45 @@
-# Getting Started with Create React App
+# MTPLANET
+### 주소
+https://kangaroo19.github.io/mtplanet/#/
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 1.개요
+MTPLANET은 기업정보,리뷰 서비스를 제공하는 "잡플래닛"이라는 사이트와 비슷하게 군대 훈련소들의 리뷰를 볼 수 있는 웹페이지 입니다
 
-## Available Scripts
+## 2.미리보기
 
-In the project directory, you can run:
+![1111](https://user-images.githubusercontent.com/86513078/226244698-7cd1b224-90af-416b-9d8a-6b43a2094645.png)
 
-### `npm start`
+MTPLANET은 크게 4가지 화면으로 구성되어 있습니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- 홈페이지 : 부대들의 목록을 표시
+- 랭킹페이지 : 부대들의 별점별,리뷰개수별 랭킹을 표시
+- 뉴스페이지 : 국방관련 뉴스를 표시
+- 로그인 페이지 : 로그인,회원가입을 위한 페이지
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 3.사용법
 
-### `npm run build`
+![제목 없음](https://user-images.githubusercontent.com/86513078/226247553-2b1e1568-e67a-4c92-a051-815295aad33e.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+회원가입을 하지 않아도 리뷰를 볼 순 있지만 리뷰를 작성하기 위해선 먼저 로그인 페이지에서 닉네임(리뷰 작성시 표시됨),이메일,비밀번호를 작성하여 회원가입을 해야 합니다. 이 과정이 귀찮으면 구글로 로그인하여도 무방합니다.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+ &nbsp; &nbsp; &nbsp; -이메일은 양식만 지키면 어느것을 쓰든 상관없습니다.
 
-### `npm run eject`
+  &nbsp; &nbsp; &nbsp; -비밀번호는 6자 이상이어야 합니다.
+  
+ ![ㄴㅇㄹㄹ](https://user-images.githubusercontent.com/86513078/226251491-1254e2da-6034-48fb-9732-b775d93a7ad9.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+성공적으로 회원가입을 마치면 홈페이지로 이동해 리뷰를 작성할 부대를 선택해 이동합니다 이 화면은 해당 부대의 평균 별점 흡연 가능/불가능 여부 등을 볼 수 있습니다 하단의 "리뷰 작성하기 버튼" 클릭시 리뷰작성 페이지로 이동합니다
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+![ㄹㄹㄹ](https://user-images.githubusercontent.com/86513078/226251948-dfc3a69a-9f82-4c83-9b52-80206d868bd2.png)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+각 항목에서 해당되는 버튼을 클릭하고 한줄평,장 단점 작성 완료 후 글쓰기 버튼을 클릭하면 내가 작성한 리뷰가 게시됩니다.
 
-## Learn More
+![dcc](https://user-images.githubusercontent.com/86513078/226252247-9732385f-c615-445c-88d7-2ec0d2eea94a.PNG)
+게시완료
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+  
