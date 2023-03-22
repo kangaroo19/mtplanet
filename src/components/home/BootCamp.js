@@ -7,9 +7,8 @@ import divisionData from "../../data/divisionData";
 import { collection, doc, getCountFromServer, getDoc, setDoc } from "firebase/firestore";
 import { dbService } from "../../fbase";
 import { useEffect, useState } from "react";
-import StarIcon from '@mui/icons-material/Star';
 import bootcamp from '../../img/bootcamp.jpg'
-function BootCamp({id,title}){
+function BootCamp({id}){
     const [star,setStar]=useState(0)
     const navigate=useNavigate()
     const initDocRef=collection(dbService,`${divisionData[id].title}`)

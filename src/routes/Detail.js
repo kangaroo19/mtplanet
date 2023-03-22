@@ -17,7 +17,7 @@ import Rating from '@mui/material/Rating';
 import Button from '@mui/material/Button';
 import CreateIcon from '@mui/icons-material/Create';
 import { Wrapper as MapWrapper } from "@googlemaps/react-wrapper";
-function Detail({userObj,isLoggedIn}){
+function Detail({isLoggedIn}){
     const [count,setCount]=useState(0)
     const [title,setTitle]=useState(null)
     const [desc,setDesc]=useState(null)
@@ -47,10 +47,12 @@ function Detail({userObj,isLoggedIn}){
         const un=onSnapshot(q,(snapshot)=>{ //데이터베이스에 변화가 생기면 onSnapshot 실행됨
             const arr=[]
             snapshot.forEach((doc)=>{
+                
                 arr.push({
                     id:doc.id, //여기 id는 creatorid와 다름
                     ...doc.data()
                 })
+                console.log(arr)
             })
             setReviewArr(arr) 
             setReviewData()
@@ -73,11 +75,12 @@ function Detail({userObj,isLoggedIn}){
         
     }
     const goToReviewForm=()=>{ //리뷰작성하는 화면으로 이동 (로그인상태 아닐때는 로그인 페이지로 리디렉션)
-        if(isLoggedIn===false){ 
-            //alert('ㄴㅇ')
-            return setError(true)
+        if(isLoggedIn===false){
+            //setError(true)
+            return
         }
         navigate('/reviewform',{state:{id:id,},})
+        console.log(id)
     }
 
     const [innerWidth, setInnerWidth] = useState(window.innerWidth);
@@ -254,7 +257,7 @@ function Detail({userObj,isLoggedIn}){
                                 reviewObj={value}
                                 />
                         ))}</>    
-                    }
+                        }
                     </Grid>
                 </Inner>
             </Grid>

@@ -1,4 +1,12 @@
 //리뷰 작성부분 컴포넌트
+
+//2023/03/22
+//원래는 각각의 별점 요소들을 따로따로 변수로 선언해서 처리하였으나 
+//리펙토링 위해 하나의 객체로 묶으려고 함
+//===>근데 코드 리펙토링중 childToParentDate,childToParentToggle함수에서 오류발생
+//무한루프빠짐
+//둘 다 부모로 보내는 함수인 점이 공통점인것으로 보아 부모 컴포넌트 확인 해야될듯
+//나머지는 오류없음
 import { useState,useEffect } from "react";
 import { useLocation,useNavigate } from "react-router-dom";
 import { doc,addDoc,setDoc,  collection,getDoc, getCountFromServer } from "firebase/firestore";
@@ -13,78 +21,74 @@ import Button from '@mui/material/Button';
 import ColorToggleButton from "../components/reviewform/ColorToggleButton";
 import DatePicker from "../components/reviewform/DatePicker";
 
-function ReviewForm({userObj,isLoggedIn}){
-    console.log(userObj)
+function ReviewForm({userObj}){
     const location=useLocation()
     const navigate=useNavigate()
     const id=location.state.id //현재 보고있는 부대의 id값 , Detail에서 useNavigate에서 전달받음
-    const [oneLineReview,setOneLineReview]=useState('') //내가 방금 쓴 리뷰(한개)
-    const [goodReview,setGoodReview]=useState('')
-    const [badReview,setBadReview]=useState('')
-    const [starReview,setStarReview]=useState(3)
-    const [roomReview,setRoomReview]=useState(3)
-    const [showerReview,setShowerReview]=useState(3)
-    const [tolietReview,setTolietReview]=useState(3)
-    const [foodReview,setFoodReview]=useState(3)
-    const [trainingReview,setTrainingReview]=useState(3)
-    const [distanceReview,setDistanceReview]=useState(3)
-    const [smokeReview,setSmokeReview]=useState(1)
-    const [tvReview,setTvReview]=useState(1)
-    const [pxReview,setPxReview]=useState(1)
-    const [year,setYear]=useState('2023')
-    const [month,setMonth]=useState('01')
-     
+    
+
+    const [testObj,setTestObj]=useState({})
+    useEffect(()=>{
+        setTestObj({
+            displayName:userObj.displayName,
+            uid:userObj.uid,
+            userImg:userObj.userImg,
+            userReview:'',
+            userGoodReview:'',
+            userBadReview:'',
+            userStarReview:3,
+            userRoomReview:3,
+            userShowerReview:3,
+            userTolietReview:3,
+            userFoodReview:3,
+            userTrainingReview:3,
+            userDistanceReview:3,
+            userSmokeReview:1,
+            userTvReview:1,
+            userPxReview:1,
+            userYear:'2023',
+            userMonth:'01',
+            date:Date.now(),
+        })
+    },[])
+    console.log(testObj)
     const onSubmit=async(event)=>{ //리뷰 제출
         event.preventDefault()
-        if(oneLineReview!=='' && goodReview!=='' && badReview!==''){
-            const reviewObj={ //reviewArr에 저장되는 데이터,db에 저장됨
-                displayName:await userObj.displayName,
-                uid:userObj.uid,
-                userImg:userObj.userImg,
-                userReview:oneLineReview,
-                userGoodReview:goodReview,
-                userBadReview:badReview,
-                userStarReview:starReview,
-                userRoomReview:roomReview,
-                userShowerReview:showerReview,
-                userTolietReview:tolietReview,
-                userTrainingReview:trainingReview,
-                userDistanceReview:distanceReview,
-                userFoodReivew:foodReview,
-                userSmokeReview:smokeReview,
-                userTvReview:tvReview,
-                userPxReview:pxReview,
-                userYear:year,
-                userMonth:month,
-                date:Date.now(),
-            }
-            const reviewDocRef=await addDoc(collection(dbService,`${divisionData[id].title}`),reviewObj) //내가 작성한 reviewObj 해당 부대의 데이터베이스 저장
+        if(testObj.userReview==='' || testObj.userGoodReview==='' || testObj.userBadReview===''){
+            //alert('입력되지 않은 입력필드가 있습니다') //후에 error컴포넌트로 대체
+            // setTestObj({
+            //     ...testObj, // 기존의 input 객체를 복사한 뒤
+            //     year: '2000' // name 키를 가진 값을 value 로 설정
+            //   });
 
-            let starDocRef=doc(dbService,`${divisionData[id].title}`,'allrating')
-            const starSnapshot=await getDoc(starDocRef)
+            return
+        } 
+            
+            await addDoc(collection(dbService,`${divisionData[id].title}`),testObj) //내가 작성한 reviewObj 해당 부대의 데이터베이스 저장
+
+            let starDocRef=doc(dbService,`${divisionData[id].title}`,'allrating') //starDocRef는 부대이름(컬렉션)->allrating(문서)에 대한 참조
+            const starSnapshot=await getDoc(starDocRef) //allrating 데이터 가져옴
                 
             const countDocRef = collection(dbService, `${divisionData[id].title}`); //총 리뷰 개수
             const countSnapshot = await getCountFromServer(countDocRef);
             const starObj={ //부대의 평균 별점 내기 위함
-                star:starSnapshot.data().star+Number(reviewObj.userStarReview), //방금 내가 선택한 별점과 데이터베이스에 저장된 별점 더함
+                star:starSnapshot.data().star+Number(testObj.userStarReview), //방금 내가 선택한 별점과 데이터베이스에 저장된 별점 더함
                 count:countSnapshot.data().count-1, //해당 부대에 저장된 문서 갯수
-                room:starSnapshot.data().room+reviewObj.userRoomReview,
-                shower:starSnapshot.data().shower+reviewObj.userShowerReview,
-                toliet:starSnapshot.data().toliet+reviewObj.userTolietReview,
-                training:starSnapshot.data().training+reviewObj.userTolietReview,
-                distance:starSnapshot.data().distance+reviewObj.userDistanceReview,
-                food:starSnapshot.data().food+reviewObj.userFoodReivew,
-                smoke:starSnapshot.data().smoke+reviewObj.userSmokeReview,
-                tv:starSnapshot.data().tv+reviewObj.userTvReview,
-                px:starSnapshot.data().px+reviewObj.userPxReview,
+                room:starSnapshot.data().room+testObj.userRoomReview,
+                shower:starSnapshot.data().shower+testObj.userShowerReview,
+                toliet:starSnapshot.data().toliet+testObj.userTolietReview,
+                training:starSnapshot.data().training+testObj.userTrainingReview,
+                distance:starSnapshot.data().distance+testObj.userDistanceReview,
+                food:starSnapshot.data().food+testObj.userFoodReview,
+                smoke:starSnapshot.data().smoke+testObj.userSmokeReview,
+                tv:starSnapshot.data().tv+testObj.userTvReview,
+                px:starSnapshot.data().px+testObj.userPxReview,
             }
             starDocRef=await setDoc(doc(dbService,`${divisionData[id].title}`,'allrating'),starObj)
-            setOneLineReview('')
-            setGoodReview('')
-            setBadReview('')
+            
             navigate(`/detail/${id}`) //리뷰 작성 완료 후 해당 부대 페이지로 리디렉션
        
-        }
+        
         setArmyDB() //해당 부대의 리뷰개수 +1, 내가 준 별점까지 평균값 내기 위함 
         //여기서 이 함수 없으면 ranking에서 바로 반영 안되고
         //home 컴포넌트(useEffect) 한번 거쳐야됨
@@ -105,47 +109,64 @@ function ReviewForm({userObj,isLoggedIn}){
     }
     const onChangeReviews=(event)=>{ //한줄평,장점,단점 값 설정
         const {target:{value,name}}=event
-        if(name==='onelinereview') setOneLineReview(value)
-        else if(name==='goodreview') setGoodReview(value)
-        else setBadReview(value)
+        if(name==='onelinereview') {
+            setTestObj({
+                ...testObj,
+                userReview:value  
+            })
+        }
+        else if(name==='goodreview'){
+            setTestObj({
+                ...testObj,
+                userGoodReview:value  
+            })
+        }
+        else {
+            setTestObj({
+                ...testObj,
+                userBadReview:value,
+            })
+        }
     }
     const onChangeStar=(event)=>{ //별점 값 설정 
-        setStarReview(event.target.value)
+        setTestObj({...testObj,userStarReview:event.target.value})
     }
     const onRadioChange=(event)=>{ //colorTogglebutton 컴포넌트 값 설정
         const {parentNode:{title}}=event.target.parentNode
         const value=Number(event.target.value)
         switch(title){
             case 'room': 
-                setRoomReview(value)
+                setTestObj({...testObj,userRoomReview:value})
                 break
             case 'shower':
-                setShowerReview(value)
+                setTestObj({...testObj,userShowerReview:value})
                 break
             case 'toliet':
-                setTolietReview(value)
+                setTestObj({...testObj,userTolietReview:value})
                 break
             case 'training':
-                setTrainingReview(value)
+                setTestObj({...testObj,userTrainingReview:value})
                 break
             case 'distance':
-                setDistanceReview(value)
+                setTestObj({...testObj,userDistanceReview:value})
                 break
             case 'food':
-                setFoodReview(value)
+                setTestObj({...testObj,userFoodReview:value})
                 break    
         }
     }
     
     const childToParentToggle=(id,value)=>{ //원래상태 그대로(true,아무것도 클릭안햇을때(onChange가 트리거되지 않을때))보내면 id는 null이지만 초기값이 true라 상관없음
-        if(id==='smoke') setSmokeReview(Number(value))
-        else if(id==='tv') setTvReview(Number(value))
-        else if(id==='px') setPxReview(Number(value))
+        // if(id==='smoke')  setTestObj({...testObj,userSmokeReview:value})
+        // else if(id==='tv') setTestObj({...testObj,userTvReview:value})
+        // else if(id==='px') setTestObj({...testObj,userPxReview:value})
+
     }
     
     const childToParentDate=(year,month)=>{
-        setYear(year)
-        setMonth(month)
+        // setTestObj({...testObj,userYear:year})
+        // setTestObj({...testObj,userMonth:month})
+
     }
 
     const [innerWidth, setInnerWidth] = useState(window.innerWidth);
@@ -197,14 +218,14 @@ function ReviewForm({userObj,isLoggedIn}){
                     <Grid id='tv' ><Grid mb={1} style={{fontWeight:'900'}}>TV</Grid><ColorToggleButton childToParentToggle={childToParentToggle}/></Grid>
                     <Grid id='px'><Grid mb={1} style={{fontWeight:'900'}}>PX</Grid><ColorToggleButton childToParentToggle={childToParentToggle}/></Grid>
                 </Grid>
-                <Grid style={{display:'flex',justifyContent:"center",}}>
+                <Grid style={{display:'flex',justifyContent:"center",marginTop:'10px'}}>
                     <TextField 
                         style={{width:'80%'}} 
                         id="standard-basic" 
                         label="한줄평" 
-                        variant="standard" 
+                        variant="filled" 
                         onChange={onChangeReviews} 
-                        value={oneLineReview} 
+                        value={testObj.oneLineReview} 
                         name='onelinereview'/>
                 </Grid>
                 <Grid mt={2} style={{display:'flex',justifyContent:"center",}}>
@@ -216,7 +237,7 @@ function ReviewForm({userObj,isLoggedIn}){
                         rows={4}
                         variant="filled"
                         onChange={onChangeReviews}
-                        value={goodReview} 
+                        value={testObj.goodReview} 
                         name='goodreview'
                     />
                 </Grid>
@@ -229,7 +250,7 @@ function ReviewForm({userObj,isLoggedIn}){
                         rows={4}
                         variant="filled"
                         onChange={onChangeReviews} 
-                        value={badReview} 
+                        value={testObj.badReview} 
                         name='badreview'
                     />
                 </Grid>

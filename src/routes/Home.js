@@ -8,8 +8,7 @@ import BootCamp from "../components/home/BootCamp";
 import styled from "styled-components";
 import Grid from '@mui/material/Grid';
 import TitleImg from "../components/home/TitleImg";
-import { useEffect, useState } from "react";
-function Home({userObj,innerWidth}) {
+function Home({innerWidth}) {
     
     return (
         <div style={{backgroundColor:'#e9e9e9',}}>
@@ -25,7 +24,7 @@ function Home({userObj,innerWidth}) {
                         md: 2
                     }}>
                     {
-                        divisionData.map((v, i) => (
+                        divisionData.map((v, _) => (
                             <BootCamp key={v.id} id={v.id} title={v.title}/>
                         ))
                     }

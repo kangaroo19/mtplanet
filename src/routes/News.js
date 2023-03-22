@@ -3,33 +3,21 @@ import styled from "styled-components"
 import NewsDetail from "../components/news/NewsDetail";
 import CircularProgress from '@mui/material/CircularProgress';
 import { Grid } from "@mui/material";
-import axios from "axios";
-import { display } from "@mui/system";
-//e148feed44c547518a6d46d96af92278
+
 function News(){
     const [news,setNews]=useState([])
     const [loading,setLoading]=useState(true)
-    const NEWS_API_KEY=process.env.REACT_APP_NEWS_ID //env에 저장된 news api 키
-    const topic='국방'
-    
-
-    
     
     const getNews=async ()=>{
         const json=await(
-            await fetch('https://gnews.io/api/v4/search?q=korea army&apikey=63dd90b4e650e4cdadbeb54a98dbf2bf')
+            await fetch(`https://gnews.io/api/v4/search?q=korea army&apikey=${process.env.REACT_APP_NEWS_ID}`)
         ).json()
-        console.log(json)
         setNews(json.articles)
         setLoading(false)
     }
     useEffect(()=>{
         getNews() //뉴스 가져옴
     },[])
-
-    
-    
-
     
     return (
         <Wrapper>
@@ -80,4 +68,3 @@ const Title=styled.div`
     font-size:1.5rem;
     margin-bottom:10px;
 `
-{/* <Title>국방</Title> */}

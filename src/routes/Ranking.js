@@ -96,10 +96,6 @@ const Inner=styled.div`
     }
 `
 
-const Title=styled.div`
-    border-bottom:1px solid #e4e4e4;
-`
-
 const Select=styled.select`
     float:right;
     margin-bottom:10px;

@@ -6,7 +6,7 @@ import NewspaperIcon from '@mui/icons-material/Newspaper';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import LoginIcon from '@mui/icons-material/Login';
-import { Link,useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 export default function MobileNavi({isLoggedIn}) {
   const navigate=useNavigate()

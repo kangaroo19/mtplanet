@@ -14,7 +14,7 @@ import Navigation from "./components/app/Navigation";
 import Router from "./components/app/Router";
 import { authService } from "./fbase";
 import { onAuthStateChanged,updateProfile } from "firebase/auth";
-import { useEffect,useRef,useState } from "react";
+import { useEffect,useState } from "react";
 import Footer from "./components/app/Footer";
 import MobileAppBar from './components/app/MobileAppBar'
 import MobileNavi from './components/app/MobileNavi'
@@ -39,10 +39,8 @@ function App() {
         
         onAuthStateChanged(authService,async (user) => {
             if (user) {
-                console.log(user.displayName)
                 setOpenSnackbar(true)
                 if(user.displayName===null){
-                  console.log(user.displayName)
                   await updateProfile(user, {
                     displayName: user.displayName
                   }).then(() => {

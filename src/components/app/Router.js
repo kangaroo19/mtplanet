@@ -1,7 +1,7 @@
 //라우팅 처리
 
 
-import { Routes,Route, Navigate } from "react-router-dom";
+import { Routes,Route } from "react-router-dom";
 import News from "../../routes/News";
 import Home from "../../routes/Home";
 import Ranking from "../../routes/Ranking";

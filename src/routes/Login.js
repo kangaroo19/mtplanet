@@ -10,19 +10,17 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Error from '../components/login/Error';
 
-import { Link as LinkKakao } from 'react-router-dom';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-import {faGoogle, faGithub} from "@fortawesome/free-brands-svg-icons";
+import {faGoogle} from "@fortawesome/free-brands-svg-icons";
 
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 
-import KaKaoTalkLogin from '../components/login/KaKaoTalkLogin';
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -103,7 +101,7 @@ export default function Login() {
                             displayName:nickName
                         })
                         
-                        const {uid, displayName, photoURL} = result.user
+                        const {uid,  photoURL} = result.user
                         await setDoc(doc(dbService, "users", `${uid}`), {
                             uid: `${uid}`,
                             userName: `${nickName}`,
@@ -118,7 +116,7 @@ export default function Login() {
                 data = await signInWithEmailAndPassword(authService, email, password).then(
                     async (result) => {
                         
-                        const {uid, displayName, photoURL} = result.user
+                        const {uid, photoURL} = result.user
                         await setDoc(doc(dbService, "users", `${uid}`), {
                             uid: `${uid}`,
                             userName: `${nickName}`,

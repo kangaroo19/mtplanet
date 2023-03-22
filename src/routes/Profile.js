@@ -1,6 +1,6 @@
 //내이름과 사진 볼 수 있는 프로필 컴포넌트
 
-import { getAuth, signOut, updateProfile } from "firebase/auth";
+import { signOut, updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../fbase";
 import styled from "styled-components";
@@ -12,7 +12,7 @@ function Profile({refreshUser,userObj}){
     const [updateName,setUpdateName]=useState(userObj.displayName)
     useEffect(()=>{
         setDisplay()
-    },[]) 
+    },[userObj]) 
     const setDisplay= ()=>{  //userObj 객체를 불러오는게 느린지 await 문 없으면 userObj가 null값으로 들어옴 ==> 느려서 그런게 아니라 애초에 router컴포넌트에서부터 잘못받고있엇음
         setName(userObj.displayName)
         setImg(userObj.userImg)
@@ -20,7 +20,6 @@ function Profile({refreshUser,userObj}){
     const navigate=useNavigate()
     const onClickLogOut=()=>{
         signOut(authService)
-        // 카톡로그아웃 구현해야됨
         navigate('/') //homepage로 리다이렉트
     }
     const onChangeName=(event)=>{
@@ -101,8 +100,7 @@ const Name=styled.input`
     }
 `
 
-const Image=styled.img`
-`
+
 const UpdateButton=styled.button`
     display:block;
     margin:0 auto;
