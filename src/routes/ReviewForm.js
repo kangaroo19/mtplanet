@@ -7,7 +7,8 @@
 //무한루프빠짐
 //둘 다 부모로 보내는 함수인 점이 공통점인것으로 보아 부모 컴포넌트 확인 해야될듯
 //나머지는 오류없음
-import { useState,useEffect } from "react";
+//자식에서 부모로 보내는 함수를 useEffect사용하여 특정 값 바뀔때만 함수 실행되도록 하였음
+import { useState,useEffect, useMemo } from "react";
 import { useLocation,useNavigate } from "react-router-dom";
 import { doc,addDoc,setDoc,  collection,getDoc, getCountFromServer } from "firebase/firestore";
 import { dbService } from "../fbase";
@@ -28,6 +29,7 @@ function ReviewForm({userObj}){
     
 
     const [testObj,setTestObj]=useState({})
+    
     useEffect(()=>{
         setTestObj({
             displayName:userObj.displayName,
@@ -46,21 +48,15 @@ function ReviewForm({userObj}){
             userSmokeReview:1,
             userTvReview:1,
             userPxReview:1,
-            userYear:'2023',
+            userYear:'',
             userMonth:'01',
             date:Date.now(),
         })
     },[])
-    console.log(testObj)
     const onSubmit=async(event)=>{ //리뷰 제출
         event.preventDefault()
         if(testObj.userReview==='' || testObj.userGoodReview==='' || testObj.userBadReview===''){
-            //alert('입력되지 않은 입력필드가 있습니다') //후에 error컴포넌트로 대체
-            // setTestObj({
-            //     ...testObj, // 기존의 input 객체를 복사한 뒤
-            //     year: '2000' // name 키를 가진 값을 value 로 설정
-            //   });
-
+            alert('입력되지 않은 입력필드가 있습니다') //후에 error컴포넌트로 대체
             return
         } 
             
@@ -131,7 +127,7 @@ function ReviewForm({userObj}){
     const onChangeStar=(event)=>{ //별점 값 설정 
         setTestObj({...testObj,userStarReview:event.target.value})
     }
-    const onRadioChange=(event)=>{ //colorTogglebutton 컴포넌트 값 설정
+    const onChangeRadio=(event)=>{ //colorTogglebutton 컴포넌트 값 설정
         const {parentNode:{title}}=event.target.parentNode
         const value=Number(event.target.value)
         switch(title){
@@ -155,20 +151,24 @@ function ReviewForm({userObj}){
                 break    
         }
     }
-    
-    const childToParentToggle=(id,value)=>{ //원래상태 그대로(true,아무것도 클릭안햇을때(onChange가 트리거되지 않을때))보내면 id는 null이지만 초기값이 true라 상관없음
-        // if(id==='smoke')  setTestObj({...testObj,userSmokeReview:value})
-        // else if(id==='tv') setTestObj({...testObj,userTvReview:value})
-        // else if(id==='px') setTestObj({...testObj,userPxReview:value})
-
+    const onClickToggle=(event)=>{ //onChangeRadio 함수(위에거)와 사실상 동일한 기능이라 같이 넣을라 했는데 mui에서 가져온 토글 버튼은 onChange함수 안되서 나눔
+        const {parentNode:{id}}=event.target.parentNode
+        const value=Number(event.target.value)
+        if(id==='smoke')  setTestObj({...testObj,userSmokeReview:value})
+        else if(id==='tv') setTestObj({...testObj,userTvReview:value})
+        else setTestObj({...testObj,userPxReview:value})
     }
     
+   
     const childToParentDate=(year,month)=>{
-        // setTestObj({...testObj,userYear:year})
-        // setTestObj({...testObj,userMonth:month})
+        console.log(year,month)
+        setTestObj({...testObj,userYear:year})
+        setTestObj({...testObj,userMonth:month})
+        
 
     }
-
+    console.log(testObj.userYear)
+    console.log(testObj.userMonth)
     const [innerWidth, setInnerWidth] = useState(window.innerWidth);
     useEffect(()=>{
         const resizeListener = () => { //현재 화면 크기값
@@ -176,47 +176,49 @@ function ReviewForm({userObj}){
           };
           window.addEventListener("resize", resizeListener);
     })
+    
     return (
         <Wrapper>
             <Inner>
             <Title>리뷰 작성하기</Title>
             <Grid mb={5}>
-                <Grid width='50%'>
-                    <DatePicker childToParentDate={childToParentDate}/>
+                <Grid container width='100%' display='flex' justifyContent='center' alignItems='center'>
+                    <Grid><DatePicker childToParentDate={childToParentDate}/></Grid>
+                    
                 </Grid>
                 <Grid container style={{justifyContent:'space-between'}} mb={5} mt={2}>
-                    <RadioInner onChange={onRadioChange} title='room'>
+                    <RadioInner onChange={onChangeRadio} title='room'>
                         <Grid style={{textAlign:'center',fontWeight:'900'}}>생활관</Grid>
                         <RadioGroupRating/>
                     </RadioInner>
-                    <RadioInner onChange={onRadioChange} title='shower'>
+                    <RadioInner onChange={onChangeRadio} title='shower'>
                         <Grid style={{textAlign:'center',fontWeight:'900',}}>샤워장</Grid>
                         <RadioGroupRating/>
                     </RadioInner>
-                    <RadioInner onChange={onRadioChange} title='toliet'>
+                    <RadioInner onChange={onChangeRadio} title='toliet'>
                         <Grid style={{textAlign:'center',fontWeight:'900',}}>화장실</Grid>
                         <RadioGroupRating/>
                     </RadioInner>
                 </Grid>
                 <Grid container style={{justifyContent:'space-between'}}>
-                    <RadioInner onChange={onRadioChange} title='training'>
+                    <RadioInner onChange={onChangeRadio} title='training'>
                         <Grid style={{textAlign:'center',fontWeight:'900',}}>훈련강도</Grid>
                         <RadioGroupRating/>
                     </RadioInner>
-                    <RadioInner onChange={onRadioChange} title='distance'>
+                    <RadioInner onChange={onChangeRadio} title='distance'>
                         <Grid style={{textAlign:'center',fontWeight:'900',}}>교장거리</Grid>
                         <RadioGroupRating/>
                     </RadioInner>
-                    <RadioInner onChange={onRadioChange} title='food'>
+                    <RadioInner onChange={onChangeRadio} title='food'>
                         <Grid style={{textAlign:'center',fontWeight:'900',}}>밥</Grid>
                         <RadioGroupRating/>
                     </RadioInner>
                     </Grid>
                 </Grid>
                 <Grid container style={{display:'flex',justifyContent:"space-around",}}>
-                    <Grid id='smoke'><Grid mb={1} style={{fontWeight:'900'}}>흡연</Grid><ColorToggleButton childToParentToggle={childToParentToggle}/></Grid>
-                    <Grid id='tv' ><Grid mb={1} style={{fontWeight:'900'}}>TV</Grid><ColorToggleButton childToParentToggle={childToParentToggle}/></Grid>
-                    <Grid id='px'><Grid mb={1} style={{fontWeight:'900'}}>PX</Grid><ColorToggleButton childToParentToggle={childToParentToggle}/></Grid>
+                    <Grid id='smoke' onClick={onClickToggle}><Grid mb={1} style={{fontWeight:'900'}}>흡연</Grid><ColorToggleButton name={'smoke'}/></Grid>
+                    <Grid id='tv' onClick={onClickToggle}><Grid mb={1} style={{fontWeight:'900'}}>TV</Grid><ColorToggleButton name={'tv'}/></Grid>
+                    <Grid id='px' onClick={onClickToggle}><Grid mb={1} style={{fontWeight:'900'}}>PX</Grid><ColorToggleButton name={'px'}/></Grid>
                 </Grid>
                 <Grid style={{display:'flex',justifyContent:"center",marginTop:'10px'}}>
                     <TextField 

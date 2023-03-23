@@ -1,6 +1,6 @@
 //리뷰폼에서 입영년월 선택하는 컴포넌트
 
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -15,7 +15,9 @@ function DatePicker({childToParentDate}){
         setYear(`${newValue.$y}`)
         setMonth(`${newValue.$M+1}`.padStart(2,'0'))
     };
-    childToParentDate(year,month) //year,month 값 부모로 보냄
+    useEffect(()=>{
+        childToParentDate(year,month) //year,month 값 부모로 보냄
+    },[value])
     return (
         <LocalizationProvider  dateAdapter={AdapterDayjs}>
             <DesktopDatePicker

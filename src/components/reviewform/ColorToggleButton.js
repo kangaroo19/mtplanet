@@ -5,15 +5,12 @@ import { useState,useEffect } from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
-export default function ColorToggleButton({childToParentToggle}) {
+export default function ColorToggleButton({name,}) {
   const [alignment, setAlignment] = React.useState(1);
-  const [id,setId]=useState(null)
+  // const [id,setId]=useState(null)
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
-    setId(event.target.parentNode.parentNode.id)
   };
-  childToParentToggle(id,alignment)
-
   return (
     <ToggleButtonGroup
       color="primary"

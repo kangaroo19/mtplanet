@@ -47,13 +47,13 @@ function Detail({isLoggedIn}){
         const un=onSnapshot(q,(snapshot)=>{ //데이터베이스에 변화가 생기면 onSnapshot 실행됨
             const arr=[]
             snapshot.forEach((doc)=>{
-                
+                console.log(doc.data())
                 arr.push({
                     id:doc.id, //여기 id는 creatorid와 다름
                     ...doc.data()
                 })
-                console.log(arr)
             })
+
             setReviewArr(arr) 
             setReviewData()
         })
@@ -80,7 +80,6 @@ function Detail({isLoggedIn}){
             return
         }
         navigate('/reviewform',{state:{id:id,},})
-        console.log(id)
     }
 
     const [innerWidth, setInnerWidth] = useState(window.innerWidth);
