@@ -9,14 +9,16 @@ import TextField from '@mui/material/TextField';
 function DatePicker({childToParentDate}){
     const [value, setValue] = useState(dayjs('2023-01-18T21:11:54'));
     const [year,setYear]=useState('2023')
-    const [month,setMonth]=useState('1')
+    const [month,setMonth]=useState('01')
     const handleChange = (newValue) => {
+        console.log(newValue)
         setValue(newValue);
         setYear(`${newValue.$y}`)
         setMonth(`${newValue.$M+1}`.padStart(2,'0'))
     };
     useEffect(()=>{
-        childToParentDate(year,month) //year,month 값 부모로 보냄
+        console.log(year,month)
+        childToParentDate(year,month,value) //year,month 값 부모로 보냄
     },[value])
     return (
         <LocalizationProvider  dateAdapter={AdapterDayjs}>

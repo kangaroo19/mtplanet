@@ -56,6 +56,9 @@ const Wrapper=styled.div`
     margin-top:10px;
     align-items:center;
     margin-bottom:30px;
+    @media only screen and (max-width:800px){
+        margin-top:50px;
+    }
     
 `
 const Button=styled.button`

@@ -38,7 +38,6 @@ const Wrapper=styled.div`
 const Inner=styled.div`
     width:100%;
     height:100%; 
-    /* height 100%는 상속된 값인 360px  */
     background-color:rgb(47,48,89);
     opacity: 0.8;
     z-index: 2;
