@@ -6,8 +6,11 @@ https://kangaroo19.github.io/mtplanet/#/
 MTPLANET은 기업정보,리뷰 서비스를 제공하는 "잡플래닛"이라는 사이트와 비슷하게 군대 훈련소들의 리뷰를 볼 수 있는 웹페이지 입니다
 
 ## 2.미리보기
+### PC버전
+![ㅋㅋㅋㅋㅋ](https://user-images.githubusercontent.com/86513078/228157468-abd0d2ca-e8f0-4d80-88dd-9fc69a0ff0d5.png)
+### 모바일버전
+![dddd](https://user-images.githubusercontent.com/86513078/228160103-f53d9bef-471b-49c3-bd4b-e003c2ec8497.PNG)
 
-![1111](https://user-images.githubusercontent.com/86513078/226244698-7cd1b224-90af-416b-9d8a-6b43a2094645.png)
 
 MTPLANET은 크게 4가지 화면으로 구성되어 있습니다.
 
