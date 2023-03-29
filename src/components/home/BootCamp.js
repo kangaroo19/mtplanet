@@ -37,22 +37,23 @@ function BootCamp({id}){
             routing:id,
           })
     }
+    
     const initArmy=async(ref)=>{
         const initSnapshot=await getCountFromServer(ref)
-        if(initSnapshot.data().count===0){ 
-            await setDoc(doc(dbService,`${divisionData[id].title}`,'allrating'),{
-                star:0,
-                count:0,
-                room:0,
-                shower:0,
-                px:0,
-                tv:0,
-                distance:0,
-                training:0,
-                toliet:0,
-                smoke:0,
-                food:0,
-            })
+        if(initSnapshot.data().count===0){  //건들지말기 ,건들면 초기화됨
+        await setDoc(doc(dbService,`${divisionData[id].title}`,'allrating'),{
+            star:0,
+            count:0,
+            room:0,
+            shower:0,
+            px:0,
+            tv:0,
+            distance:0,
+            training:0,
+            toliet:0,
+            smoke:0,
+            food:0,
+        })
         }
     }
     useEffect(()=>{
