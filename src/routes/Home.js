@@ -8,13 +8,12 @@ import BootCamp from "../components/home/BootCamp";
 import styled from "styled-components";
 import Grid from '@mui/material/Grid';
 import TitleImg from "../components/home/TitleImg";
-function Home({innerWidth}) {
-    
+function Home() {
     return (
         <div style={{backgroundColor:'#e9e9e9',}}>
             <TitleImg/>
             <Wrapper>
-                <SearchInput innerWidth={innerWidth}/>
+                <SearchInput/>
                 <Grid
                     container
                     rowSpacing={2}

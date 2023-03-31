@@ -10,6 +10,7 @@ function Profile({refreshUser,userObj}){
     const [name,setName]=useState(null)
     const [img,setImg]=useState(null)
     const [updateName,setUpdateName]=useState(userObj.displayName)
+    const navigate=useNavigate()
     useEffect(()=>{
         setDisplay()
     },[userObj]) 
@@ -17,16 +18,15 @@ function Profile({refreshUser,userObj}){
         setName(userObj.displayName)
         setImg(userObj.userImg)
     }
-    const navigate=useNavigate()
-    const onClickLogOut=()=>{
+    const onClickLogOutBtn=()=>{ //로그아웃버튼 클릭시 로그아웃하고 홈페이지로 이동
         signOut(authService)
-        navigate('/') //homepage로 리다이렉트
+        navigate('/') 
     }
     const onChangeName=(event)=>{
         const {target:{value}}=event
         setUpdateName(value)
     }
-    const onClickUpdateBtn=async(event)=>{
+    const onClickUpdateBtn=async(event)=>{ //업데이트 버튼 클릭시 내 이름 업데이트
         event.preventDefault()
         if(userObj.displayName!==updateName){
             await updateProfile(authService.currentUser, { displayName: updateName });
@@ -43,7 +43,7 @@ function Profile({refreshUser,userObj}){
                     <Name type="text" value={updateName} onChange={onChangeName}/>
                 </UserContainer>
                 <UpdateButton onClick={onClickUpdateBtn}>업데이트</UpdateButton>
-                <LogOutButton onClick={onClickLogOut}>로그아웃</LogOutButton>
+                <LogOutButton onClick={onClickLogOutBtn}>로그아웃</LogOutButton>
             </Inner>
         </Wrapper>
     )

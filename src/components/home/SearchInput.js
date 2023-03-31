@@ -14,13 +14,11 @@ function SearchInput(){
     const onClickAutoComplete=(event)=>{ //자동완성된 부대 클릭했을때
         setArmy(event.target.innerText)
     }
-    const onClickSearchButton=(event)=>{ //검색버튼 눌렀을때
-        divisionData.map((value,index)=>{
+    const onClickSearchButton=()=>{ //검색버튼 눌렀을때
+        divisionData.map((value,_)=>{
             if(value.name===army){
-                console.log(army)
                 navigation(`/detail/${value.id}`)
             }
-            
         })
     }
     return (

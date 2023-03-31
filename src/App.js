@@ -7,9 +7,15 @@
 //app.js에서는 제대로 받고 있는데 router.js 에서는 userObj가 제대로 넘어가지 않음
 //새로고침하면 제대로된 값 들어감
 //===>app.js에서 파이어베이스 함수인 updateProfile함수 추가하여 프로필 업데이트 하도록 하여 해결...
-//===>다시 확인해보니까 안됨..
+//===>다시 확인해보니까 안됨.. 
 //===>일단 새로고침시 제대로된 값이 들어온다는 것 이용하여
-//===>useNavigate 이용해 홈페이지로 이동하고 새로고침함수 사용,개선 필요할듯
+//===>useNavigate 이용해 홈페이지로 이동하고 새로고침함수 사용,개선 필요할듯 ===>(2023/03/31)제거했음
+
+//2023/03/31
+//새로운 사용자가 회원가입시 userObj.displayName 값이 제대로 들어가지 않는 오류가 있었음
+//그래서 displayName이 null 값인 경우(if문사용) updateProfile 함수를 사용하고
+//if문을 빠져나오면 한번더 updateProfile을 하였음
+//useEffect에서 deps가 [] 였는데 [isloggedin]을 줘서 해결 
 import Navigation from "./components/app/Navigation";
 import Router from "./components/app/Router";
 import { authService } from "./fbase";
@@ -18,12 +24,10 @@ import { useEffect,useState } from "react";
 import Footer from "./components/app/Footer";
 import MobileAppBar from './components/app/MobileAppBar'
 import MobileNavi from './components/app/MobileNavi'
-import { useNavigate } from "react-router-dom";
 import LoginSnackbar from "./components/app/LoginSnackbar";
 import CircularProgress from '@mui/material/CircularProgress';
 import { Grid } from "@mui/material";
 function App() {
-    const navigate=useNavigate()
     const [init,setInit]=useState(false)
     const [isLoggedIn, setIsLoggedIn] = useState(false) //로그인 되기 전에는 false
     const [userObj, setUserObj] = useState(null)
@@ -34,32 +38,15 @@ function App() {
             setInnerWidth(window.innerWidth);
           };
           window.addEventListener("resize", resizeListener);
-    })
+    },[innerWidth])
     useEffect(() => {
-        
         onAuthStateChanged(authService,async (user) => {
             if (user) {
-                setOpenSnackbar(true)
-                if(user.displayName===null){
-                  await updateProfile(user, {
-                    displayName: user.displayName
-                  }).then(() => {
-                    // Profile updated!
-                    // ...
-                  }).catch((error) => {
-                    // An error occurred
-                    // ...
-                  });
-                    navigate('/')
-                    window.location.reload()
-                    //return
-                    
-                }
+                setOpenSnackbar(true) //로그인 성공했다는 팝업창
                 await updateProfile(user, {
                   displayName: user.displayName
                 }).then(() => {
-                  // Profile updated!
-                  // ...
+                  //로그인 성공 /프로필에 값 제대로 들어갔는지 확인
                 }).catch((error) => {
                   // An error occurred
                   // ...
@@ -74,8 +61,8 @@ function App() {
             }
             setInit(true)
         })
-    },[])
-    const refreshUser=()=>{
+    },[isLoggedIn])
+    const refreshUser=()=>{ //프로필화면에서 업테이트시 userObj값 변경,Profile 컴포넌트에서 호출
         const user=authService.currentUser
         setUserObj({
           displayName:user.displayName,
@@ -84,27 +71,28 @@ function App() {
           //updateProfile:(args)=>updateProfile(user,{displayName:user.displayName})
         })
       }
-      console.log(userObj)
+      
     return (
       <>
-      
-      {init?
-      <>
-      {innerWidth>=430? //모바일 or 데스크탑
-          <>
-              <Navigation userObj={userObj} isLoggedIn={isLoggedIn}/>
-              <Router userObj={userObj} isLoggedIn={isLoggedIn} refreshUser={refreshUser}/>
-              <Footer/>
-              {openSnackbar?<LoginSnackbar openSnackbar={openSnackbar}/>:null}
-          </>:
-          <>
-              <MobileAppBar/>
-              <Router userObj={userObj} isLoggedIn={isLoggedIn} refreshUser={refreshUser}/>
-              <MobileNavi userObj={userObj} isLoggedIn={isLoggedIn}/>
-              {openSnackbar?<LoginSnackbar openSnackbar={openSnackbar}/>:null}
-          </>   
-      }
-    </>
+        {init? //로딩
+        <>
+        {innerWidth>=430? //모바일 or 데스크탑
+            <>  
+                {/* 데스크탑 */}
+                <Navigation userObj={userObj} isLoggedIn={isLoggedIn}/>
+                <Router userObj={userObj} isLoggedIn={isLoggedIn} refreshUser={refreshUser}/>
+                <Footer/>
+                {openSnackbar?<LoginSnackbar openSnackbar={openSnackbar}/>:null}
+            </>:
+            <>
+                {/* 모바일 */}
+                <MobileAppBar/>
+                <Router userObj={userObj} isLoggedIn={isLoggedIn} refreshUser={refreshUser}/>
+                <MobileNavi userObj={userObj} isLoggedIn={isLoggedIn}/>
+                {openSnackbar?<LoginSnackbar openSnackbar={openSnackbar}/>:null}
+            </>   
+        }
+      </>
         : //로딩스피너
         <Grid display='flex' justifyContent='center' minHeight='100vh' alignItems='center'><CircularProgress/></Grid>}
       </>
@@ -124,3 +112,4 @@ export default App;
 //커스텀 토큰 만들기 위해선 백엔드단 언어 사용해야 하는듯
 //firebase cloud function 사용,공부해야될듯
 //firebase cloud function 사용하려면 돈내야됨
+
