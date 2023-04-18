@@ -20,7 +20,7 @@ import Navigation from "./components/app/Navigation";
 import Router from "./components/app/Router";
 import { authService } from "./fbase";
 import { onAuthStateChanged,updateProfile } from "firebase/auth";
-import { useEffect,useState } from "react";
+import { useEffect,useMemo,useState } from "react";
 import Footer from "./components/app/Footer";
 import MobileAppBar from './components/app/MobileAppBar'
 import MobileNavi from './components/app/MobileNavi'
@@ -33,6 +33,7 @@ function App() {
     const [userObj, setUserObj] = useState(null)
     const [innerWidth, setInnerWidth] = useState(window.innerWidth);
     const [openSnackbar,setOpenSnackbar]=useState(false)
+
     useEffect(()=>{
         const resizeListener = () => { //현재 화면 크기값
             setInnerWidth(window.innerWidth);

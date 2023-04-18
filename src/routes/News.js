@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useMemo,useCallback } from "react";
 import styled from "styled-components"
 import NewsDetail from "../components/news/NewsDetail";
 import CircularProgress from '@mui/material/CircularProgress';
@@ -8,16 +8,17 @@ function News(){
     const [news,setNews]=useState([])
     const [loading,setLoading]=useState(true)
     
-    const getNews=async ()=>{
+    const getNews=useCallback(async ()=>{
         const json=await(
             await fetch(`https://gnews.io/api/v4/search?q=korea army&apikey=${process.env.REACT_APP_NEWS_ID}`)
         ).json()
         setNews(json.articles)
         setLoading(false)
-    }
-    useEffect(()=>{
-        getNews() //뉴스 가져옴
     },[])
+    
+    useEffect(()=>{
+        getNews()
+    },[getNews])
     
     return (
         <Wrapper>

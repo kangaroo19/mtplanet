@@ -3,13 +3,24 @@ import { Grid } from "@mui/material"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
 function NewsDetail({newsObj}){
+    console.log('child')
     const [innerWidth, setInnerWidth] = useState(window.innerWidth);
-    useEffect(()=>{
-        const resizeListener = () => { //현재 화면 크기값
-            setInnerWidth(window.innerWidth);
-          };
-          window.addEventListener("resize", resizeListener);
-    })
+    useEffect(() => {
+        const handleResize = () => {
+          setInnerWidth(window.innerWidth);
+        };
+    
+        window.addEventListener("resize", handleResize);
+    
+        return () => { //메모리 누수 막기위한 클린업 함수
+          window.removeEventListener("resize", handleResize); 
+        };
+      }, []);
+      const truncatedTitle = innerWidth >= 420
+        ? newsObj.title
+        : newsObj.title.length >= 28
+        ? `${newsObj.title.substring(0, 28)}...`
+        : newsObj.title;
     return (
         <Wrapper>
             <Grid container>
@@ -18,9 +29,9 @@ function NewsDetail({newsObj}){
                 </Grid>
                 <Grid item xs={1}></Grid>
                 <Grid item xs={8}>
-                    {innerWidth>=420?
-                    <><Link to={newsObj.url} style={{textDecoration:'none',}}><Title>{newsObj.title}</Title></Link></>:
-                    <><Link to={newsObj.url} style={{textDecoration:'none',}}><Title>{newsObj.title.length>=28?(newsObj.title).substring(0,28)+'...':newsObj.title}</Title></Link></>}
+                    <Link to={newsObj.url} style={{ textDecoration: "none" }}>
+                    <Title>{truncatedTitle}</Title>
+                    </Link>
                     <Desc>{newsObj.content}</Desc>
                     <Publisher>{newsObj.rights}</Publisher>
                 </Grid>
@@ -36,9 +47,7 @@ const Wrapper=styled.div`
     width:100%;
     margin-bottom:10px;
 `
-const Inner=styled.div`
-    display:flex;
-`
+
 const Image=styled.img`
     width:100%;
     height:150px;
