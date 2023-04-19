@@ -1,17 +1,13 @@
 //랭킹 페이지에서 각각의 랭킹 표현
 
-import { useEffect,useState,useCallback } from "react"
 import styled from "styled-components"
 import { Grid } from "@mui/material"
 import { useNavigate } from "react-router-dom"
-import useWindowWidth from "../../functions/useWindowWidth"
 function Rank({id,armyObj,innerWidth}){
     const navigate=useNavigate()
     const onClick=()=>{
         navigate(`/detail/${armyObj.routing}`)
     }
-    // const [innerWidth, setInnerWidth] = useState(window.innerWidth);
-    
     return (
         <Wrapper>
             <Grid container>

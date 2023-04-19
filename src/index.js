@@ -9,13 +9,15 @@
 
 //###이미지 압축 후####
 
-//load time: 114 ms 
+//load time: 200 ms ~ 300ms 
 //performance grade : 89
 //page size : 727kb
 //request : 107
 
 //image percent : 27.78%
 //Script percent : 60.91%
+
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';

@@ -20,7 +20,7 @@ import Navigation from "./components/app/Navigation";
 import Router from "./components/app/Router";
 import { authService } from "./fbase";
 import { onAuthStateChanged,updateProfile } from "firebase/auth";
-import { useEffect,useMemo,useState } from "react";
+import { useEffect,useState } from "react";
 import Footer from "./components/app/Footer";
 import MobileAppBar from './components/app/MobileAppBar'
 import MobileNavi from './components/app/MobileNavi'
@@ -38,18 +38,13 @@ function App() {
         onAuthStateChanged(authService,async (user) => {
             if (user) {
                 setOpenSnackbar(true) //로그인 성공했다는 팝업창
-                await updateProfile(user, {
-                  displayName: user.displayName
-                }).then(() => {
-                  //로그인 성공 /프로필에 값 제대로 들어갔는지 확인
-                }).catch((error) => {
-                  // An error occurred
-                  // ...
-                });
-              setIsLoggedIn(true)
-              setUserObj(
-                  {displayName: user.displayName, uid: user.uid, userImg: user.photoURL}
-              )
+                await updateProfile(user,{displayName:user.displayName}) //프로필 업데이트
+                setIsLoggedIn(true)
+                setUserObj({
+                      displayName: user.displayName, 
+                      uid: user.uid, 
+                      userImg: user.photoURL
+                })
             } else {
                 setUserObj(null)
                 setIsLoggedIn(false)
@@ -57,15 +52,15 @@ function App() {
             setInit(true)
         })
     },[isLoggedIn])
+
     const refreshUser=()=>{ //프로필화면에서 업테이트시 userObj값 변경,Profile 컴포넌트에서 호출
         const user=authService.currentUser
         setUserObj({
-          displayName:user.displayName,
-          uid:user.uid,
-          userImg:user.photoURL,
-          //updateProfile:(args)=>updateProfile(user,{displayName:user.displayName})
+            displayName:user.displayName,
+            uid:user.uid,
+            userImg:user.photoURL,
         })
-      }
+    }
       
     return (
       <>
@@ -74,7 +69,7 @@ function App() {
         {innerWidth>=430? //모바일 or 데스크탑
             <>  
                 {/* 데스크탑 */}
-                <Navigation userObj={userObj} isLoggedIn={isLoggedIn}/>
+                <Navigation isLoggedIn={isLoggedIn}/>
                 <Router userObj={userObj} isLoggedIn={isLoggedIn} refreshUser={refreshUser}/>
                 <Footer/>
                 {openSnackbar?<LoginSnackbar openSnackbar={openSnackbar}/>:null}
@@ -83,7 +78,7 @@ function App() {
                 {/* 모바일 */}
                 <MobileAppBar/>
                 <Router userObj={userObj} isLoggedIn={isLoggedIn} refreshUser={refreshUser}/>
-                <MobileNavi userObj={userObj} isLoggedIn={isLoggedIn}/>
+                <MobileNavi isLoggedIn={isLoggedIn}/>
                 {openSnackbar?<LoginSnackbar openSnackbar={openSnackbar}/>:null}
             </>   
         }

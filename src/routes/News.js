@@ -1,4 +1,10 @@
-import { useEffect, useState,useMemo,useCallback } from "react";
+//2023/04/19
+
+//미디어 쿼리 위한 innerWidth 반환하는 함수(원래는 NewsDetail컴포넌트에 있엇음)를
+//따로 분리해서 커스텀 훅으로 만들고 innerWidth 값을 NewsDetail 컴포넌트에 프롭으로 내려줌
+
+
+import { useEffect, useState,useCallback } from "react";
 import styled from "styled-components"
 import NewsDetail from "../components/news/NewsDetail";
 import CircularProgress from '@mui/material/CircularProgress';
