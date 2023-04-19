@@ -1,21 +1,8 @@
-import { useEffect,useState } from "react"
 import { Grid } from "@mui/material"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
-function NewsDetail({newsObj}){
-    console.log('child')
-    const [innerWidth, setInnerWidth] = useState(window.innerWidth);
-    useEffect(() => {
-        const handleResize = () => {
-          setInnerWidth(window.innerWidth);
-        };
-    
-        window.addEventListener("resize", handleResize);
-    
-        return () => { //메모리 누수 막기위한 클린업 함수
-          window.removeEventListener("resize", handleResize); 
-        };
-      }, []);
+function NewsDetail({newsObj,innerWidth}){
+
       const truncatedTitle = innerWidth >= 420
         ? newsObj.title
         : newsObj.title.length >= 28

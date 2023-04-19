@@ -27,19 +27,13 @@ import MobileNavi from './components/app/MobileNavi'
 import LoginSnackbar from "./components/app/LoginSnackbar";
 import CircularProgress from '@mui/material/CircularProgress';
 import { Grid } from "@mui/material";
+import useWindowWidth from "./functions/useWindowWidth";
 function App() {
     const [init,setInit]=useState(false)
     const [isLoggedIn, setIsLoggedIn] = useState(false) //로그인 되기 전에는 false
     const [userObj, setUserObj] = useState(null)
-    const [innerWidth, setInnerWidth] = useState(window.innerWidth);
     const [openSnackbar,setOpenSnackbar]=useState(false)
-
-    useEffect(()=>{
-        const resizeListener = () => { //현재 화면 크기값
-            setInnerWidth(window.innerWidth);
-          };
-          window.addEventListener("resize", resizeListener);
-    },[innerWidth])
+    const innerWidth=useWindowWidth()
     useEffect(() => {
         onAuthStateChanged(authService,async (user) => {
             if (user) {

@@ -17,6 +17,7 @@ import Rating from '@mui/material/Rating';
 import Button from '@mui/material/Button';
 import CreateIcon from '@mui/icons-material/Create';
 import { Wrapper as MapWrapper } from "@googlemaps/react-wrapper";
+import useWindowWidth from "../functions/useWindowWidth";
 function Detail({isLoggedIn}){
     const [count,setCount]=useState(0)
     const [title,setTitle]=useState(null)
@@ -82,13 +83,7 @@ function Detail({isLoggedIn}){
         navigate('/reviewform',{state:{id:id,},})
     }
 
-    const [innerWidth, setInnerWidth] = useState(window.innerWidth);
-    useEffect(()=>{
-        const resizeListener = () => { //현재 화면 크기값
-            setInnerWidth(window.innerWidth);
-          };
-          window.addEventListener("resize", resizeListener);
-    })
+    const innerWidth=useWindowWidth()
 
     function callBack(value) { //자식 컴포넌트의 데이터 부모 컴포넌트(app)로 보내기 위함
         setError(value)

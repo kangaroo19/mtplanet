@@ -3,10 +3,12 @@ import styled from "styled-components"
 import NewsDetail from "../components/news/NewsDetail";
 import CircularProgress from '@mui/material/CircularProgress';
 import { Grid } from "@mui/material";
+import useWindowWidth from "../functions/useWindowWidth"
 
 function News(){
     const [news,setNews]=useState([])
     const [loading,setLoading]=useState(true)
+    const innerWidth=useWindowWidth()
     
     const getNews=useCallback(async ()=>{
         const json=await(
@@ -33,7 +35,8 @@ function News(){
                 {news.map((v,i)=>(
                     <NewsDetail 
                         key={i} 
-                        newsObj={v}/>
+                        newsObj={v}
+                        innerWidth={innerWidth}/>
                 ))}
                 </>
                 } 

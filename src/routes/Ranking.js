@@ -6,15 +6,17 @@
 //보니까 홈페이지로 이동할때만 제대로 등록되고
 //홈페이지가 아닌 랭킹페이지로 이동하면 등록이안됨
 //onSnapshot 문제인거같음 (bootcamp컴포넌트의 useEffect문제)
-import { useEffect,useState } from "react"
+import { useEffect,useState,useCallback } from "react"
 import { dbService } from "../fbase"
 import { collection,query,onSnapshot,orderBy,where } from "firebase/firestore"
 import styled from "styled-components"
 import Rank from "../components/ranking/Rank"
 import { Grid } from "@mui/material"
+import useWindowWidth from "../functions/useWindowWidth"
 function Ranking(){
     const [armys,setArmys]=useState([])
     const [sort,setSort]=useState('desc')
+    const innerWidth=useWindowWidth()
     useEffect(()=>{ 
         let q
         switch(sort){
@@ -66,7 +68,8 @@ function Ranking(){
                     <Rank
                         key={i}
                         id={i} 
-                        armyObj={v}/>
+                        armyObj={v}
+                        innerWidth={innerWidth}/>
                 ))}
             </Inner>
         </Wrapper>
