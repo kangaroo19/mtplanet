@@ -16,17 +16,15 @@ function News(){
     const [loading,setLoading]=useState(true)
     const innerWidth=useWindowWidth()
     
-    const getNews=useCallback(async ()=>{
-        const json=await(
-            await fetch(`https://gnews.io/api/v4/search?q=korea army&apikey=${process.env.REACT_APP_NEWS_ID}`)
-        ).json()
-        setNews(json.articles)
-        setLoading(false)
-    },[])
-    
     useEffect(()=>{
+        const getNews=async () => {
+            const response = await fetch(`https://gnews.io/api/v4/search?q=korea army&apikey=${process.env.REACT_APP_NEWS_ID}`)
+            const json = await response.json() //.json()은 프로미스 반환하므로 await 키워드 필요
+            setNews(json.articles)
+            setLoading(false)
+        }
         getNews()
-    },[getNews])
+    },[])
     
     return (
         <Wrapper>

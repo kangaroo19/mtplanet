@@ -1,6 +1,6 @@
 //라우팅 처리
 
-
+import { memo } from "react";
 import { Routes,Route } from "react-router-dom";
 import News from "../../routes/News";
 import Home from "../../routes/Home";

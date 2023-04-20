@@ -8,7 +8,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export default function LoginSnackbar({openSnackbar}) {
+function LoginSnackbar({openSnackbar}) {
   const [open, setOpen] = React.useState(true);
 
   
@@ -20,7 +20,6 @@ export default function LoginSnackbar({openSnackbar}) {
 
     setOpen(false);
   };
-
   return (
     <Stack spacing={2} sx={{ width: '100%' }}>
       
@@ -33,3 +32,5 @@ export default function LoginSnackbar({openSnackbar}) {
     </Stack>
   );
 }
+
+export default React.memo(LoginSnackbar)

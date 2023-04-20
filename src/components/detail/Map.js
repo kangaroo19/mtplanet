@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef,useState } from "react";
+import { useCallback, useEffect, useRef,useState } from "react";
 import divisionData from "../../data/divisionData";
 function Map({id}){
   const [map, setMap] = useState(null);
