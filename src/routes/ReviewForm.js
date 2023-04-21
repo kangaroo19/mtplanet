@@ -17,7 +17,7 @@
 //두줄로 나눈 useState문을 한줄로
 //useState(reviewObj.년,reviewObj.월) 이렇게하니까 제대로됨
 //useState를 연속으로 사용시 마지막 useState만 반영됨
-import { useState, } from "react";
+import { memo, useCallback, useState, } from "react";
 import { useLocation,useNavigate } from "react-router-dom";
 import { doc,addDoc,setDoc,  collection,getDoc, getCountFromServer } from "firebase/firestore";
 import { dbService } from "../fbase";
@@ -32,6 +32,7 @@ import ColorToggleButton from "../components/reviewform/ColorToggleButton";
 import DatePicker from "../components/reviewform/DatePicker";
 
 function ReviewForm({userObj}){
+    console.log('ReviewForm is rerendered')
     const location=useLocation()
     const navigate=useNavigate()
     const id=location.state.id //현재 보고있는 부대의 id값 , Detail에서 useNavigate에서 전달받음
@@ -154,6 +155,7 @@ function ReviewForm({userObj}){
                 break    
         }
     }
+    
     const onClickToggle=(event)=>{ //onChangeRadio 함수(위에거)와 사실상 동일한 기능이라 같이 넣을라 했는데 mui에서 가져온 토글 버튼은 onChange함수 안되서 나눔
         const {parentNode:{id}}=event.target.parentNode
         const value=Number(event.target.value)
@@ -162,8 +164,11 @@ function ReviewForm({userObj}){
         else setReviewObj({...reviewObj,userPxReview:value})
     }
     
-    const childToParentDate=(year,month,)=>{ //DatePicker(자식)에서 받아온 입영날짜 정보 reviewObj(부모)에 저장
+    const childToParentDate=useCallback((year,month,)=>{ //DatePicker(자식)에서 받아온 입영날짜 정보 reviewObj(부모)에 저장
         setReviewObj({...reviewObj,userYear:year,userMonth:month})
+    },[reviewObj.year])
+    const onClickTest=()=>{
+        console.log(reviewObj)
     }
     return (
         <Wrapper>
@@ -257,12 +262,12 @@ function ReviewForm({userObj}){
                         marginBottom:'20px'
                         }}>글쓰기
                 </Button>
+                <button onClick={onClickTest}>테스트</button>
             </Inner>
         </Wrapper>
     )
 }
-
-export default ReviewForm
+export default memo(ReviewForm)
 
 const Wrapper=styled.div`
     background-color:#e9e9e9;
