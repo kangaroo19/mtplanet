@@ -17,7 +17,15 @@
 //두줄로 나눈 useState문을 한줄로
 //useState(reviewObj.년,reviewObj.월) 이렇게하니까 제대로됨
 //useState를 연속으로 사용시 마지막 useState만 반영됨
-import { memo, useCallback, useState, } from "react";
+
+
+//2023/04/21
+//한줄평,장 단점 작성하는 TextField 컴포넌트를
+//불필요한 렌더링 막기위해 비제어 컴포넌트로 하기위해
+//ref속성을 줬으나 값을 찾을 수 없었음
+//mui 공식문서 확인해보니 속성값을 inputRef 로 해야됨
+//하나의 이벤트로 해결하는법 생각
+import { memo, useCallback, useRef, useState, } from "react";
 import { useLocation,useNavigate } from "react-router-dom";
 import { doc,addDoc,setDoc,  collection,getDoc, getCountFromServer } from "firebase/firestore";
 import { dbService } from "../fbase";
@@ -156,19 +164,26 @@ function ReviewForm({userObj}){
         }
     }
     
-    const onClickToggle=(event)=>{ //onChangeRadio 함수(위에거)와 사실상 동일한 기능이라 같이 넣을라 했는데 mui에서 가져온 토글 버튼은 onChange함수 안되서 나눔
+
+    const onClickToggle=useCallback((event)=>{ //onChangeRadio 함수(위에거)와 사실상 동일한 기능이라 같이 넣을라 했는데 mui에서 가져온 토글 버튼은 onChange함수 안되서 나눔
         const {parentNode:{id}}=event.target.parentNode
         const value=Number(event.target.value)
         if(id==='smoke')  setReviewObj({...reviewObj,userSmokeReview:value})
         else if(id==='tv') setReviewObj({...reviewObj,userTvReview:value})
         else setReviewObj({...reviewObj,userPxReview:value})
-    }
-    
-    const childToParentDate=useCallback((year,month,)=>{ //DatePicker(자식)에서 받아온 입영날짜 정보 reviewObj(부모)에 저장
+    },[])
+    const childToParentDate=useCallback((year,month)=>{ //DatePicker(자식)에서 받아온 입영날짜 정보 reviewObj(부모)에 저장
         setReviewObj({...reviewObj,userYear:year,userMonth:month})
-    },[reviewObj.year])
+    },[])
+    
     const onClickTest=()=>{
         console.log(reviewObj)
+    }
+    const oneLine=useRef("")
+    const onClickInputTest=()=>{
+        console.log(oneLine.current.value)
+        console.log(oneLine.current.name)
+
     }
     return (
         <Wrapper>
@@ -209,9 +224,9 @@ function ReviewForm({userObj}){
                     </Grid>
                 </Grid>
                 <Grid container style={{display:'flex',justifyContent:"space-around",}}>
-                    <Grid id='smoke' onClick={onClickToggle}><Grid mb={1} style={{fontWeight:'900'}}>흡연</Grid><ColorToggleButton name={'smoke'}/></Grid>
-                    <Grid id='tv' onClick={onClickToggle}><Grid mb={1} style={{fontWeight:'900'}}>TV</Grid><ColorToggleButton name={'tv'}/></Grid>
-                    <Grid id='px' onClick={onClickToggle}><Grid mb={1} style={{fontWeight:'900'}}>PX</Grid><ColorToggleButton name={'px'}/></Grid>
+                    <Grid id='smoke' onClick={onClickToggle}><Grid mb={1} style={{fontWeight:'900'}}>흡연</Grid><ColorToggleButton /></Grid>
+                    <Grid id='tv' onClick={onClickToggle}><Grid mb={1} style={{fontWeight:'900'}}>TV</Grid><ColorToggleButton/></Grid>
+                    <Grid id='px' onClick={onClickToggle}><Grid mb={1} style={{fontWeight:'900'}}>PX</Grid><ColorToggleButton/></Grid>
                 </Grid>
                 <Grid style={{display:'flex',justifyContent:"center",marginTop:'10px'}}>
                     <TextField 
@@ -221,7 +236,8 @@ function ReviewForm({userObj}){
                         variant="filled" 
                         onChange={onChangeReviews} 
                         value={reviewObj.oneLineReview} 
-                        name='onelinereview'/>
+                        name='onelinereview'
+                        inputRef={oneLine}/> 
                 </Grid>
                 <Grid mt={2} style={{display:'flex',justifyContent:"center",}}>
                     <TextField
@@ -260,14 +276,16 @@ function ReviewForm({userObj}){
                         margin:'0 auto',
                         display:'block',
                         marginBottom:'20px'
-                        }}>글쓰기
+                        }}>
+                    글쓰기
                 </Button>
                 <button onClick={onClickTest}>테스트</button>
+                <button onClick={onClickInputTest}>인풋 테스트</button>
             </Inner>
         </Wrapper>
     )
 }
-export default memo(ReviewForm)
+export default ReviewForm
 
 const Wrapper=styled.div`
     background-color:#e9e9e9;

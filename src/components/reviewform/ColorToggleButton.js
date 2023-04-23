@@ -1,11 +1,12 @@
 //리뷰폼에서 흡연 등 토글버튼
 
 import * as React from 'react';
-import { useState,useEffect } from 'react';
+import { memo } from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
-export default function ColorToggleButton({name,}) {
+function ColorToggleButton() {
+  console.log('colortogglebtn is rendered')
   const [alignment, setAlignment] = React.useState(1);
   // const [id,setId]=useState(null)
   const handleChange = (event, newAlignment) => {
@@ -24,3 +25,5 @@ export default function ColorToggleButton({name,}) {
     </ToggleButtonGroup>
   );
 }
+
+export default memo(ColorToggleButton)

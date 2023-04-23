@@ -24,13 +24,12 @@ function DatePicker({childToParentDate}){
     
     const [value, setValue] = useState(dayjs('2023-01-18T21:11:54'))
     const dateObj = useMemo(() => ({ year: value.$y, month: `${value.$M + 1}`.padStart(2, '0') }), [value]);
-    // const dateObj = useState({ year: value.$y, month: `${value.$M + 1}`.padStart(2, '0') })
     const handleChange = (newValue) => {
         setValue(newValue)
     };
 
     useEffect(() => {
-        childToParentDate(dateObj.year, dateObj.month, value)
+        childToParentDate(dateObj.year, dateObj.month)
     }, [value])
     
     return (
