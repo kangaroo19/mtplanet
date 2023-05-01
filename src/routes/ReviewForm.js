@@ -25,6 +25,14 @@
 //ref속성을 줬으나 값을 찾을 수 없었음
 //mui 공식문서 확인해보니 속성값을 inputRef 로 해야됨
 //하나의 이벤트로 해결하는법 생각
+
+
+//2023/05/01
+//onSubmit함수에 불필요한 리렌더링 막기위해 ref 사용한 유저가 글로쓴리뷰 추가
+//state사용하는 onChangeReview 함수 삭제
+//근데 에러있음
+//리뷰 작성시 글쓰기 버튼 클릭하면 입력되지않은 필드가 있다면서 에러창 나오고
+//다시 글쓰기 버튼 클릭해야 제대로됨
 import { memo, useCallback, useRef, useState, } from "react";
 import { useLocation,useNavigate } from "react-router-dom";
 import { doc,addDoc,setDoc,  collection,getDoc, getCountFromServer } from "firebase/firestore";
@@ -44,6 +52,10 @@ function ReviewForm({userObj}){
     const location=useLocation()
     const navigate=useNavigate()
     const id=location.state.id //현재 보고있는 부대의 id값 , Detail에서 useNavigate에서 전달받음
+    
+    const oneLine=useRef("")
+    const goodReview=useRef("")
+    const badReview=useRef("")
 
     const [reviewObj,setReviewObj]=useState({ //사용자가 작성한 리뷰의 정보(작성자 정보 포함)
         displayName:userObj.displayName,
@@ -69,8 +81,14 @@ function ReviewForm({userObj}){
     
     
     const onSubmit=async(event)=>{ //리뷰 제출
-        event.preventDefault()
         
+        event.preventDefault()
+        setReviewObj({  //ref사용한 유저가 글로쓴 리뷰
+            ...reviewObj,
+            userReview:oneLine.current.value,
+            userGoodReview:goodReview.current.value,
+            userBadReview:badReview.current.value
+        })
         if(reviewObj.userReview==='' || reviewObj.userGoodReview==='' || reviewObj.userBadReview===''){
             alert('입력되지 않은 입력필드가 있습니다') //후에 error컴포넌트로 대체
             return
@@ -115,27 +133,7 @@ function ReviewForm({userObj}){
             routing:id,
         })
     }
-    const onChangeReviews=(event)=>{ //한줄평,장점,단점 값 설정
-        const {target:{value,name}}=event
-        if(name==='onelinereview') {
-            setReviewObj({
-                ...reviewObj,
-                userReview:value  
-            })
-        }
-        else if(name==='goodreview'){
-            setReviewObj({
-                ...reviewObj,
-                userGoodReview:value  
-            })
-        }
-        else {
-            setReviewObj({
-                ...reviewObj,
-                userBadReview:value,
-            })
-        }
-    }
+    
     const onChangeStar=(event)=>{ //별점 값 설정 
         setReviewObj({...reviewObj,userStarReview:event.target.value})
     }
@@ -176,15 +174,7 @@ function ReviewForm({userObj}){
         setReviewObj({...reviewObj,userYear:year,userMonth:month})
     },[])
     
-    const onClickTest=()=>{
-        console.log(reviewObj)
-    }
-    const oneLine=useRef("")
-    const onClickInputTest=()=>{
-        console.log(oneLine.current.value)
-        console.log(oneLine.current.name)
-
-    }
+   
     return (
         <Wrapper>
             <Inner>
@@ -228,14 +218,13 @@ function ReviewForm({userObj}){
                     <Grid id='tv' onClick={onClickToggle}><Grid mb={1} style={{fontWeight:'900'}}>TV</Grid><ColorToggleButton/></Grid>
                     <Grid id='px' onClick={onClickToggle}><Grid mb={1} style={{fontWeight:'900'}}>PX</Grid><ColorToggleButton/></Grid>
                 </Grid>
+                <Grid>
                 <Grid style={{display:'flex',justifyContent:"center",marginTop:'10px'}}>
                     <TextField 
                         style={{width:'80%'}} 
                         id="standard-basic" 
                         label="한줄평" 
                         variant="filled" 
-                        onChange={onChangeReviews} 
-                        value={reviewObj.oneLineReview} 
                         name='onelinereview'
                         inputRef={oneLine}/> 
                 </Grid>
@@ -247,8 +236,7 @@ function ReviewForm({userObj}){
                         multiline
                         rows={4}
                         variant="filled"
-                        onChange={onChangeReviews}
-                        value={reviewObj.goodReview} 
+                        inputRef={goodReview} 
                         name='goodreview'
                     />
                 </Grid>
@@ -260,10 +248,10 @@ function ReviewForm({userObj}){
                         multiline
                         rows={4}
                         variant="filled"
-                        onChange={onChangeReviews} 
-                        value={reviewObj.badReview} 
+                        inputRef={badReview} 
                         name='badreview'
                     />
+                </Grid>
                 </Grid>
                 <Grid mt={2} mb={2} style={{display:'flex',justifyContent:"center",}}>
                     <Rating onChange={onChangeStar} name="half-rating" defaultValue={Number(3)} precision={0.5} size='large'/>
@@ -279,8 +267,6 @@ function ReviewForm({userObj}){
                         }}>
                     글쓰기
                 </Button>
-                <button onClick={onClickTest}>테스트</button>
-                <button onClick={onClickInputTest}>인풋 테스트</button>
             </Inner>
         </Wrapper>
     )
