@@ -33,7 +33,8 @@
 //근데 에러있음
 //리뷰 작성시 글쓰기 버튼 클릭하면 입력되지않은 필드가 있다면서 에러창 나오고
 //다시 글쓰기 버튼 클릭해야 제대로됨
-import { memo, useCallback, useRef, useState, } from "react";
+//useState함수 사용시 바로 반영안되기 때문인거같음 
+import { useCallback, useEffect, useRef, useState, } from "react";
 import { useLocation,useNavigate } from "react-router-dom";
 import { doc,addDoc,setDoc,  collection,getDoc, getCountFromServer } from "firebase/firestore";
 import { dbService } from "../fbase";
@@ -80,20 +81,23 @@ function ReviewForm({userObj}){
     })
     
     
-    const onSubmit=async(event)=>{ //리뷰 제출
-        
+    const onSubmit=async(event)=>{ //리뷰 제출,글쓰기 버튼 클릭시 호출
         event.preventDefault()
+        
         setReviewObj({  //ref사용한 유저가 글로쓴 리뷰
             ...reviewObj,
             userReview:oneLine.current.value,
             userGoodReview:goodReview.current.value,
             userBadReview:badReview.current.value
         })
-        if(reviewObj.userReview==='' || reviewObj.userGoodReview==='' || reviewObj.userBadReview===''){
+        // if(reviewObj.userReview==='' || reviewObj.userGoodReview==='' || reviewObj.userBadReview===''){
+        //     alert('입력되지 않은 입력필드가 있습니다') //후에 error컴포넌트로 대체
+        //     return
+        // } 
+        if(oneLine.current.value==='' || goodReview.current.value==='' || badReview.current.value===''){
             alert('입력되지 않은 입력필드가 있습니다') //후에 error컴포넌트로 대체
             return
-        } 
-            
+        }     
         await addDoc(collection(dbService,`${divisionData[id].title}`),reviewObj) //내가 작성한 reviewObj 해당 부대의 데이터베이스 저장
 
         let starDocRef=doc(dbService,`${divisionData[id].title}`,'allrating') //starDocRef는 부대이름(컬렉션)->allrating(문서)에 대한 참조
@@ -174,7 +178,22 @@ function ReviewForm({userObj}){
         setReviewObj({...reviewObj,userYear:year,userMonth:month})
     },[])
     
-   
+    
+
+
+    const reviewObjTest=()=>{   //**************테스트용*************88
+        if(oneLine.current.value==='' || goodReview.current.value==='' || badReview.current.value===''){
+            alert('입력되지 않은 입력필드가 있습니다') //후에 error컴포넌트로 대체
+            return
+        } 
+        setReviewObj({  //ref사용한 유저가 글로쓴 리뷰
+            ...reviewObj,
+            userReview:oneLine.current.value,
+            userGoodReview:goodReview.current.value,
+            userBadReview:badReview.current.value
+        })
+    }
+    
     return (
         <Wrapper>
             <Inner>
@@ -256,7 +275,7 @@ function ReviewForm({userObj}){
                 <Grid mt={2} mb={2} style={{display:'flex',justifyContent:"center",}}>
                     <Rating onChange={onChangeStar} name="half-rating" defaultValue={Number(3)} precision={0.5} size='large'/>
                 </Grid>
-                <Button 
+                {/* <Button 
                     onClick={onSubmit} 
                     variant="contained" 
                     style={{
@@ -266,7 +285,8 @@ function ReviewForm({userObj}){
                         marginBottom:'20px'
                         }}>
                     글쓰기
-                </Button>
+                </Button> */}
+                <button onClick={reviewObjTest}>테스트</button>
             </Inner>
         </Wrapper>
     )
