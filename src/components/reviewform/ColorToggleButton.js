@@ -6,7 +6,6 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 function ColorToggleButton() {
-  console.log('colortogglebtn is rendered')
   const [alignment, setAlignment] = React.useState(1);
   // const [id,setId]=useState(null)
   const handleChange = (event, newAlignment) => {

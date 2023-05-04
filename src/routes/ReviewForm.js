@@ -33,7 +33,9 @@
 //근데 에러있음
 //리뷰 작성시 글쓰기 버튼 클릭하면 입력되지않은 필드가 있다면서 에러창 나오고
 //다시 글쓰기 버튼 클릭해야 제대로됨
-//useState함수 사용시 바로 반영안되기 때문인거같음 
+//useState함수 사용시 바로 반영안되기 때문인거같음
+//그래서 ref로 처리되는 값은 리랜더링될 필요 없으므로
+//useState함수 사용안하고 객체에 직접 값 넣음 
 import { useCallback, useEffect, useRef, useState, } from "react";
 import { useLocation,useNavigate } from "react-router-dom";
 import { doc,addDoc,setDoc,  collection,getDoc, getCountFromServer } from "firebase/firestore";
@@ -58,6 +60,7 @@ function ReviewForm({userObj}){
     const goodReview=useRef("")
     const badReview=useRef("")
 
+    
     const [reviewObj,setReviewObj]=useState({ //사용자가 작성한 리뷰의 정보(작성자 정보 포함)
         displayName:userObj.displayName,
         uid:userObj.uid,
@@ -90,14 +93,14 @@ function ReviewForm({userObj}){
             userGoodReview:goodReview.current.value,
             userBadReview:badReview.current.value
         })
-        // if(reviewObj.userReview==='' || reviewObj.userGoodReview==='' || reviewObj.userBadReview===''){
-        //     alert('입력되지 않은 입력필드가 있습니다') //후에 error컴포넌트로 대체
-        //     return
-        // } 
+        
         if(oneLine.current.value==='' || goodReview.current.value==='' || badReview.current.value===''){
             alert('입력되지 않은 입력필드가 있습니다') //후에 error컴포넌트로 대체
             return
-        }     
+        }
+        reviewObj.userReview=oneLine.current.value
+        reviewObj.userGoodReview=goodReview.current.value
+        reviewObj.userBadReview=badReview.current.value     
         await addDoc(collection(dbService,`${divisionData[id].title}`),reviewObj) //내가 작성한 reviewObj 해당 부대의 데이터베이스 저장
 
         let starDocRef=doc(dbService,`${divisionData[id].title}`,'allrating') //starDocRef는 부대이름(컬렉션)->allrating(문서)에 대한 참조
@@ -177,22 +180,6 @@ function ReviewForm({userObj}){
     const childToParentDate=useCallback((year,month)=>{ //DatePicker(자식)에서 받아온 입영날짜 정보 reviewObj(부모)에 저장
         setReviewObj({...reviewObj,userYear:year,userMonth:month})
     },[])
-    
-    
-
-
-    const reviewObjTest=()=>{   //**************테스트용*************88
-        if(oneLine.current.value==='' || goodReview.current.value==='' || badReview.current.value===''){
-            alert('입력되지 않은 입력필드가 있습니다') //후에 error컴포넌트로 대체
-            return
-        } 
-        setReviewObj({  //ref사용한 유저가 글로쓴 리뷰
-            ...reviewObj,
-            userReview:oneLine.current.value,
-            userGoodReview:goodReview.current.value,
-            userBadReview:badReview.current.value
-        })
-    }
     
     return (
         <Wrapper>
@@ -275,7 +262,7 @@ function ReviewForm({userObj}){
                 <Grid mt={2} mb={2} style={{display:'flex',justifyContent:"center",}}>
                     <Rating onChange={onChangeStar} name="half-rating" defaultValue={Number(3)} precision={0.5} size='large'/>
                 </Grid>
-                {/* <Button 
+                <Button 
                     onClick={onSubmit} 
                     variant="contained" 
                     style={{
@@ -285,8 +272,7 @@ function ReviewForm({userObj}){
                         marginBottom:'20px'
                         }}>
                     글쓰기
-                </Button> */}
-                <button onClick={reviewObjTest}>테스트</button>
+                </Button>
             </Inner>
         </Wrapper>
     )
@@ -339,4 +325,6 @@ const RadioInner=styled.div`
         width:33%;
     }
 `
+
+
 
