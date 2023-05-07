@@ -11,13 +11,12 @@ function Profile({refreshUser,userObj}){
     const [img,setImg]=useState(null)
     const [updateName,setUpdateName]=useState(userObj.displayName)
     const navigate=useNavigate()
+    
     useEffect(()=>{
-        setDisplay()
-    },[userObj]) 
-    const setDisplay= ()=>{  //userObj 객체를 불러오는게 느린지 await 문 없으면 userObj가 null값으로 들어옴 ==> 느려서 그런게 아니라 애초에 router컴포넌트에서부터 잘못받고있엇음
         setName(userObj.displayName)
         setImg(userObj.userImg)
-    }
+    },[userObj]) 
+    
     const onClickLogOutBtn=()=>{ //로그아웃버튼 클릭시 로그아웃하고 홈페이지로 이동
         signOut(authService)
         navigate('/') 

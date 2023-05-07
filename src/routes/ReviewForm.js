@@ -100,7 +100,8 @@ function ReviewForm({userObj}){
         }
         reviewObj.userReview=oneLine.current.value
         reviewObj.userGoodReview=goodReview.current.value
-        reviewObj.userBadReview=badReview.current.value     
+        reviewObj.userBadReview=badReview.current.value  
+
         await addDoc(collection(dbService,`${divisionData[id].title}`),reviewObj) //내가 작성한 reviewObj 해당 부대의 데이터베이스 저장
 
         let starDocRef=doc(dbService,`${divisionData[id].title}`,'allrating') //starDocRef는 부대이름(컬렉션)->allrating(문서)에 대한 참조
@@ -128,6 +129,7 @@ function ReviewForm({userObj}){
         //home 컴포넌트(useEffect) 한번 거쳐야됨
         //이 함수에서 정한 db값(allarmy 컬렉션)을 토대로 ranking 정해짐
     }
+    
     const setArmyDB=async()=>{ //데이터베이스(allarmy)에 부대의 정보(이름,주소,별점 등등 )저장 ,랭킹컴포넌트
         const starRef=doc(dbService,`${divisionData[id].title}`,'allrating')
         const starSnap=await getDoc(starRef)

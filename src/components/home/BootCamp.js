@@ -12,11 +12,11 @@ function BootCamp({id}){
     const [star,setStar]=useState(0)
     const navigate=useNavigate()
     const initDocRef=collection(dbService,`${divisionData[id].title}`)
+
     const onClickRouting=async()=>{ //라우팅 처리 해당부대 디테일 컴포넌트로 이동 
         navigate(`/detail/${id}`)
-        
     }
-
+    
     const getStarRating=async()=>{ //해당부대(컬렉션)=>allrating(문서)에 저장된 이 부대의 평균별점 가져옴
         const starRef=doc(dbService,`${divisionData[id].title}`,'allrating')
         const starSnap=await getDoc(starRef)

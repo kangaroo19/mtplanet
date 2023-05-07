@@ -4,7 +4,7 @@
 //따로 분리해서 커스텀 훅으로 만들고 innerWidth 값을 NewsDetail 컴포넌트에 프롭으로 내려줌
 
 
-import { useEffect, useState,useCallback } from "react";
+import { useEffect, useState} from "react";
 import styled from "styled-components"
 import NewsDetail from "../components/news/NewsDetail";
 import CircularProgress from '@mui/material/CircularProgress';

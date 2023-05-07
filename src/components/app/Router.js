@@ -13,11 +13,11 @@ import ReviewForm from "../../routes/ReviewForm";
 function Router({userObj,isLoggedIn,refreshUser}){
     return (
         <Routes>
-            <Route exact path="/" element={<Home userObj={userObj}/>}></Route>
+            <Route exact path="/" element={<Home/>}></Route>
             <Route exact path="/ranking" element={<Ranking/>}></Route>
             <Route exact path="/news" element={<News/>}></Route>
             <Route exact path="login" element={<Login/>}></Route>
-            <Route exact path='/detail/:id' element={<Detail userObj={userObj} isLoggedIn={isLoggedIn}/>}></Route>
+            <Route exact path='/detail/:id' element={<Detail isLoggedIn={isLoggedIn}/>}></Route>
             <Route exact path='/profile' element={<Profile userObj={userObj} refreshUser={refreshUser}/>}></Route>
             <Route exact path='/reviewform' element={<ReviewForm userObj={userObj} isLoggedIn={isLoggedIn}/>}></Route>
         </Routes>
