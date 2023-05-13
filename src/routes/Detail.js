@@ -77,7 +77,7 @@ function Detail({isLoggedIn}){
     }
     const goToReviewForm=()=>{ //리뷰작성하는 화면으로 이동 (로그인상태 아닐때는 로그인 페이지로 리디렉션)
         if(isLoggedIn===false){
-            //setError(true)
+            setError(true)
             return
         }
         navigate('/reviewform',{state:{id:id,},})

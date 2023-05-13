@@ -9,6 +9,8 @@ import Detail from "../../routes/Detail";
 import Login from '../../routes/Login'
 import Profile from "../../routes/Profile";
 import ReviewForm from "../../routes/ReviewForm";
+import Board from "../../routes/Board";
+import AddPost from "../board/AddPost";
 
 function Router({userObj,isLoggedIn,refreshUser}){
     return (
@@ -20,6 +22,8 @@ function Router({userObj,isLoggedIn,refreshUser}){
             <Route exact path='/detail/:id' element={<Detail isLoggedIn={isLoggedIn}/>}></Route>
             <Route exact path='/profile' element={<Profile userObj={userObj} refreshUser={refreshUser}/>}></Route>
             <Route exact path='/reviewform' element={<ReviewForm userObj={userObj} isLoggedIn={isLoggedIn}/>}></Route>
+            <Route exact path='/board' element={<Board userObj={userObj}/>}></Route>
+            <Route exact path='/addpost' element={<AddPost userObj={userObj}/>}></Route>
         </Routes>
     )
 }

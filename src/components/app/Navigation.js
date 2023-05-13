@@ -13,6 +13,7 @@ const Navigation = ({ isLoggedIn }) => {
         <LinkStyled to="/">홈</LinkStyled>
         <LinkStyled to="/ranking">랭킹</LinkStyled>
         <LinkStyled to="/news">뉴스</LinkStyled>
+        <LinkStyled to="/board">게시판</LinkStyled>
         <LinkStyled to={isLoggedIn ? "/profile" : "/login"}>
           {isLoggedIn ? "내 프로필" : "로그인"}
         </LinkStyled>
