@@ -95,13 +95,12 @@ function ReviewForm({userObj}){
         })
         
         if(oneLine.current.value==='' || goodReview.current.value==='' || badReview.current.value===''){
-            alert('입력되지 않은 입력필드가 있습니다') //후에 error컴포넌트로 대체
-            return
+            return alert('입력되지 않은 입력필드가 있습니다') //후에 error컴포넌트로 대체
         }
         reviewObj.userReview=oneLine.current.value
         reviewObj.userGoodReview=goodReview.current.value
         reviewObj.userBadReview=badReview.current.value  
-
+        
         await addDoc(collection(dbService,`${divisionData[id].title}`),reviewObj) //내가 작성한 reviewObj 해당 부대의 데이터베이스 저장
 
         let starDocRef=doc(dbService,`${divisionData[id].title}`,'allrating') //starDocRef는 부대이름(컬렉션)->allrating(문서)에 대한 참조

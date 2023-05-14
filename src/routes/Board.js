@@ -7,7 +7,7 @@ function Board({userObj}){
     const navigation=useNavigate()
     const onClickAddPost=()=>{ 
         if(!userObj)  return navigation('/login')
-        navigation('/addpost')
+        navigation('/postform')
     }
     return (
         <Wrapper>
