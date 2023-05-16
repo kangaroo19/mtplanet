@@ -22,31 +22,28 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { addDoc,collection, getCountFromServer } from 'firebase/firestore';
 import { dbService } from '../../fbase';
+import { useNavigate } from 'react-router-dom';
 function PostForm({userObj}){
-
-    const [postObj,setPostObj]=useState({number:null,title:"",content:"",date:"",userObj:userObj}) //게시물에 대한 정보를 담고있는 객체
+    const [postObj,setPostObj]=useState({number:(Math.random()*1000000).toFixed().toString(),title:"",content:"",date:"",userObj:userObj,sort:null}) //게시물에 대한 정보를 담고있는 객체
     const [toggle,setToggle]=useState(false)
-    const postRef=collection(dbService,'post')
-    // useEffect(()=>{
-    //     initDB(postRef)
-    // },[])
+    const navigate=useNavigate()
     useEffect(()=>{
-        console.log('clickc',toggle)
         const date=getDateString()
-        setPostObj({...postObj, date: date})
-
+        setPostObj({...postObj, date: date[0],sort:date[1]})
     }, [toggle])
     
     const getDateString=()=>{ //현재 시간 가져오는 함수
         const today = new Date();
+        const unixTime=today.getTime() //정렬에 사용할 유닉스시간값
         const year = today.getFullYear();
         const month = ('0' + (today.getMonth() + 1)).slice(-2);
         const day = ('0' + today.getDate()).slice(-2);
         const hour=('0' + today.getHours()).slice(-2);
         const min=('0' + today.getMinutes()).slice(-2);
         const sec=('0' + today.getSeconds()).slice(-2);
-        return year + '-' + month  + '-' + day+" " + hour + ":"+ min + ":" + sec ;
+        return [year + '-' + month  + '-' + day+" " + hour + ":"+ min + ":" + sec , unixTime ];
     }
+
     const onChangePost=(event)=>{
         const {target:{id,value}}=event
         switch(id){
@@ -58,19 +55,13 @@ function PostForm({userObj}){
                 break
         }
     }
-    const initDB=async(ref)=>{
-        const count=await getCountFromServer(ref)
-        if(count.data().count===0){
-            setPostObj({...postObj, number:1})
-        }
-    }
     
-    const onClickAddPost = async () => {
-        setToggle((prev)=>!prev)
+    
+    const onClickAddPost = async () => { //글쓰기 버튼 클릭시
         if(postObj.content==="" || postObj.title==="") return alert("내용을 작성해 주세요")
-        
-        console.log(postObj)
-        // await addDoc(collection(dbService,'post'),postObj)
+        setToggle((prev)=>!prev)
+        await addDoc(collection(dbService,'post'),postObj)
+        return navigate(`/board`)
     }
 
     return (

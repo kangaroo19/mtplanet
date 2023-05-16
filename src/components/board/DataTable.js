@@ -7,28 +7,45 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { Link } from 'react-router-dom';
-const columns = [
-  { id: 'id', label: 'ID', minWidth: 170 },
-  { id: 'title', label: '제목', minWidth: 300 },
-  { id: 'user', label: '작성자', minWidth: 100 },
-  { id: 'date', label: '등록일', minWidth: 100 },
-];
+import { collection,  getDocs, orderBy } from 'firebase/firestore';
+import { dbService } from '../../fbase';
 
-function createData(id, title, user, date) {
-  return { id, title, user, date };
-}
 
-const rows = [
-  createData('1','안녕하세요','재현','2023-05-14'),
-  createData('2','안녕하세요2','재현2','2023-05-14')
 
-];
 
 export default function StickyHeadTable() {
+
+  const columns = [
+    { id: 'id', label: 'ID', minWidth: 170 },
+    { id: 'title', label: '제목', minWidth: 300 },
+    { id: 'user', label: '작성자', minWidth: 100 },
+    { id: 'date', label: '등록일', minWidth: 100 },
+  ];
+  
+  function createData(id, title, user, date) {
+    return { id, title, user, date };
+  }
+  
+  // const rows = [
+  //   // createData('1','안녕하세요','재현','2023-05-14'),
+  //   // createData('2','안녕하세요2','재현2','2023-05-14')
+    
+  // ];
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+  const [rows,setRows]=React.useState([])
+  React.useEffect(()=>{
+    const getPosts=async()=>{
+      const querySnapshot = await getDocs(collection(dbService,'post'),orderBy("sort","desc"));
+      const tempRows = [];
+      querySnapshot.forEach((doc) => {
+        tempRows.push(createData(doc.data().number,doc.data().title,doc.data().userObj.displayName,doc.data().date))
+      });
+      setRows(tempRows);
+    }
+    getPosts();
+  },[]);
+  console.log(rows)
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
