@@ -34,6 +34,9 @@ function App() {
     const [userObj, setUserObj] = useState(null)
     const [openSnackbar,setOpenSnackbar]=useState(false)
     const innerWidth=useWindowWidth()
+    // 
+    // 
+    // 
     useEffect(() => {
         onAuthStateChanged(authService,async (user) => {
             if (user) {

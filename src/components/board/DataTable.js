@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { collection,  getDocs, orderBy } from 'firebase/firestore';
+import { collection,  getDocs, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { dbService } from '../../fbase';
 
 
@@ -36,16 +36,17 @@ export default function StickyHeadTable() {
   const [rows,setRows]=React.useState([])
   React.useEffect(()=>{
     const getPosts=async()=>{
-      const querySnapshot = await getDocs(collection(dbService,'post'),orderBy("sort","desc"));
+      const querySnapshot = query(collection(dbService,'post'),orderBy("sort","desc"));
       const tempRows = [];
-      querySnapshot.forEach((doc) => {
-        tempRows.push(createData(doc.data().number,doc.data().title,doc.data().userObj.displayName,doc.data().date))
-      });
+      onSnapshot(querySnapshot,(snapshot)=>{
+          snapshot.forEach((doc)=>{
+              tempRows.push(createData(doc.data().number,doc.data().title,doc.data().userObj.displayName,doc.data().date))
+          })
+      })
       setRows(tempRows);
     }
     getPosts();
   },[]);
-  console.log(rows)
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };

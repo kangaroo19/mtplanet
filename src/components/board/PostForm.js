@@ -56,7 +56,6 @@ function PostForm({userObj}){
         }
     }
     
-    
     const onClickAddPost = async () => { //글쓰기 버튼 클릭시
         if(postObj.content==="" || postObj.title==="") return alert("내용을 작성해 주세요")
         setToggle((prev)=>!prev)
