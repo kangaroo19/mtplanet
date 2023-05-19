@@ -14,7 +14,7 @@ function Board({userObj}){
             <Inner>
                 <Title>자유게시판</Title>
                 <button onClick={onClickAddPost}>글쓰기</button>
-                <DataTable/>
+                <DataTable/>    
             </Inner>
         </Wrapper>
     )  

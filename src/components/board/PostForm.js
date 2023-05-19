@@ -16,15 +16,22 @@
 
 
 
+
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { addDoc,collection, getCountFromServer } from 'firebase/firestore';
+import { addDoc,collection,setDoc,doc } from 'firebase/firestore';
 import { dbService } from '../../fbase';
 import { useNavigate } from 'react-router-dom';
 function PostForm({userObj}){
-    const [postObj,setPostObj]=useState({number:(Math.random()*1000000).toFixed().toString(),title:"",content:"",date:"",userObj:userObj,sort:null}) //게시물에 대한 정보를 담고있는 객체
+    const [postObj,setPostObj]=useState({
+                                        id:(Math.random()*1000000).toFixed().toString(),
+                                        title:"",
+                                        content:"",
+                                        date:"",
+                                        userObj:userObj,sort:null
+                                        }) //게시물에 대한 정보를 담고있는 객체
     const [toggle,setToggle]=useState(false)
     const navigate=useNavigate()
     useEffect(()=>{
@@ -43,7 +50,7 @@ function PostForm({userObj}){
         const sec=('0' + today.getSeconds()).slice(-2);
         return [year + '-' + month  + '-' + day+" " + hour + ":"+ min + ":" + sec , unixTime ];
     }
-
+    
     const onChangePost=(event)=>{
         const {target:{id,value}}=event
         switch(id){
@@ -59,8 +66,10 @@ function PostForm({userObj}){
     const onClickAddPost = async () => { //글쓰기 버튼 클릭시
         if(postObj.content==="" || postObj.title==="") return alert("내용을 작성해 주세요")
         setToggle((prev)=>!prev)
-        await addDoc(collection(dbService,'post'),postObj)
+        await setDoc(doc(dbService,'post',postObj.id),postObj)
+        // await setDoc(doc(dbService,postObj.id,'test'),{a:'123'})
         return navigate(`/board`)
+
     }
 
     return (

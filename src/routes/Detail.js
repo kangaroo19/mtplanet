@@ -82,7 +82,7 @@ function Detail({isLoggedIn}){
         }
         navigate('/reviewform',{state:{id:id,},})
     }
-
+    
     const innerWidth=useWindowWidth()
 
     function callBack(value) { //자식 컴포넌트의 데이터 부모 컴포넌트(app)로 보내기 위함

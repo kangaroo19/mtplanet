@@ -12,7 +12,7 @@ function BootCamp({id}){
     const [star,setStar]=useState(0)
     const navigate=useNavigate()
     const initDocRef=collection(dbService,`${divisionData[id].title}`)
-
+    
     const onClickRouting=async()=>{ //라우팅 처리 해당부대 디테일 컴포넌트로 이동 
         navigate(`/detail/${id}`)
     }

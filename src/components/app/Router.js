@@ -11,6 +11,7 @@ import Profile from "../../routes/Profile";
 import ReviewForm from "../../routes/ReviewForm";
 import Board from "../../routes/Board";
 import PostForm from "../board/PostForm";
+import Post from "../board/Post";
 
 function Router({userObj,isLoggedIn,refreshUser}){
     return (
@@ -24,6 +25,7 @@ function Router({userObj,isLoggedIn,refreshUser}){
             <Route exact path='/reviewform' element={<ReviewForm userObj={userObj} isLoggedIn={isLoggedIn}/>}></Route>
             <Route exact path='/board' element={<Board userObj={userObj}/>}></Route>
             <Route exact path='/postform' element={<PostForm userObj={userObj}/>}></Route>
+            <Route exact path='/post/:id' element={<Post userObj={userObj}/>}></Route>
         </Routes>
     )
 }

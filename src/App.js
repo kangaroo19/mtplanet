@@ -34,9 +34,7 @@ function App() {
     const [userObj, setUserObj] = useState(null)
     const [openSnackbar,setOpenSnackbar]=useState(false)
     const innerWidth=useWindowWidth()
-    // 
-    // 
-    // 
+
     useEffect(() => {
         onAuthStateChanged(authService,async (user) => {
             if (user) {
@@ -55,7 +53,7 @@ function App() {
             setInit(true)
         })
     },[isLoggedIn])
-
+    
     const refreshUser=()=>{ //프로필화면에서 업테이트시 userObj값 변경,Profile 컴포넌트에서 호출
         const user=authService.currentUser
         setUserObj({

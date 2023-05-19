@@ -60,7 +60,7 @@ function ReviewForm({userObj}){
     const goodReview=useRef("")
     const badReview=useRef("")
 
-    
+        
     const [reviewObj,setReviewObj]=useState({ //사용자가 작성한 리뷰의 정보(작성자 정보 포함)
         displayName:userObj.displayName,
         uid:userObj.uid,

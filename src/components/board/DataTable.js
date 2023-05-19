@@ -9,12 +9,13 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { collection,  getDocs, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { dbService } from '../../fbase';
+import { useNavigate } from 'react-router-dom';
 
 
 
 
 export default function StickyHeadTable() {
-
+  
   const columns = [
     { id: 'id', label: 'ID', minWidth: 170 },
     { id: 'title', label: '제목', minWidth: 300 },
@@ -26,24 +27,27 @@ export default function StickyHeadTable() {
     return { id, title, user, date };
   }
   
-  // const rows = [
-  //   // createData('1','안녕하세요','재현','2023-05-14'),
-  //   // createData('2','안녕하세요2','재현2','2023-05-14')
-    
-  // ];
+  
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [rows,setRows]=React.useState([])
+  const [allPostObj,setAllPostObj]=React.useState([])
+  const navigate=useNavigate()
   React.useEffect(()=>{
     const getPosts=async()=>{
       const querySnapshot = query(collection(dbService,'post'),orderBy("sort","desc"));
-      const tempRows = [];
-      onSnapshot(querySnapshot,(snapshot)=>{
+      
+      onSnapshot(querySnapshot,(snapshot)=>{  //onSnapshot은 비동기 함수이므로 이 함수 바깥에 setRows함수를 넣으면 바로 반영 안됨
+          const tempRows = [];
+          const tempAllRows=[]
           snapshot.forEach((doc)=>{
-              tempRows.push(createData(doc.data().number,doc.data().title,doc.data().userObj.displayName,doc.data().date))
+              // console.log(123) 나중에 리랜더링 확인
+              tempRows.push(createData(doc.data().id,doc.data().title,doc.data().userObj.displayName,doc.data().date))
+              tempAllRows.push(doc.data())
           })
+          setRows(tempRows);
+          setAllPostObj(tempAllRows)
       })
-      setRows(tempRows);
     }
     getPosts();
   },[]);
@@ -55,16 +59,19 @@ export default function StickyHeadTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
+  const onClickMoveToPost=(row)=>{
+    const sendPostObj=allPostObj.filter((value)=>value.id===row.id)
+    navigate(`/post/${row.id}`,{state:{postObj:sendPostObj},})
+  }
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              {columns.map((column) => (
+              {columns.map((column,idx) => (
                 <TableCell
-                  key={column.id}
+                  key={idx}
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
                 >
@@ -76,17 +83,18 @@ export default function StickyHeadTable() {
           <TableBody>
             {rows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
+              .map((row,_idx) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                    {columns.map((column) => {
+                  <TableRow hover role="checkbox" tabIndex={-1} key={_idx}>
+                    {columns.map((column,idx) => {
                       const value = row[column.id];
                       return (
-                        <TableCell key={column.id} align={column.align} onClick={()=>console.log('나중에 여기에 라우팅 처리 하자 ',row.number)}>
+                        <TableCell key={idx} align={column.align} onClick={()=>onClickMoveToPost(row)}>
                           {column.format && typeof value === 'number'
                             ? column.format(value)
                             : value}
                         </TableCell>
+                        
                       );
                     })}
                   </TableRow>
