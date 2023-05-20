@@ -1,11 +1,37 @@
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import ReplyForm from "./ReplyForm"
+import { useEffect,useState } from "react"
+import { authService, dbService } from "../../fbase";
+import { Grid } from "@mui/material";
+import { deleteDoc, doc } from "firebase/firestore";
+
 
 function Post({userObj}){
     const location=useLocation()
+    const navigate=useNavigate()
     const postObj=location.state.postObj[0]
-    console.log(postObj)
+    const [toggle,setToggle]=useState(false) // 현재 로그인한 사용자와 게시판 글쓴 사람과 같은지 비교위함
+    useEffect(()=>{
+        if(!userObj) return
+        if(authService.currentUser.uid===postObj.userObj.uid){
+            setToggle(true)
+        }
+    },[])
+
+    const onClickUpdateBtn=()=>{
+        if(window.confirm('게시물을 수정하시겠습니까?')){
+            console.log('업데이트창으로이동')
+        }
+        
+    }
+
+    const onClickDeleteBtn=async()=>{
+        if(window.confirm('게시물을 삭제하시겠습니까?')){
+            await deleteDoc(doc(dbService,"post",postObj.id))
+            return navigate('/board')
+        }
+    }
     return (
         <Wrapper>
             <Inner>
@@ -13,8 +39,16 @@ function Post({userObj}){
                 <Head>자유게시판</Head>
                 <Title>{postObj.title}</Title>
                 <WriterContaienr>
-                    <Writer>작성자 : {postObj.userObj.displayName}</Writer>
-                    <Date>작성일 : {postObj.date}</Date>
+                    <Grid sx={{display:'flex'}}>
+                        <Writer>작성자 : {postObj.userObj.displayName}</Writer>
+                        <Date>작성일 : {postObj.date}</Date>
+                    </Grid>
+                    {toggle?
+                    <Grid sx={{display:'flex'}}>
+                        <UpdateBtn onClick={onClickUpdateBtn}>수정/</UpdateBtn>
+                        <DeleteBtn onClick={onClickDeleteBtn}>삭제</DeleteBtn>
+                    </Grid>:
+                    null}
                 </WriterContaienr>
             </HeadContainer>
             <ContentContainer>
@@ -70,6 +104,7 @@ const Title=styled.div`
 
 const WriterContaienr=styled.div`
     display:flex;
+    justify-content:space-between;
     
 `
 const Writer=styled.div`
@@ -89,4 +124,10 @@ const Content=styled.div`
     padding:10px 0 10px 0;
 `
 
+const UpdateBtn=styled.div`
+
+`
+
+const DeleteBtn=styled.div`
+`
 
