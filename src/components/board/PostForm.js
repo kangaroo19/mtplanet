@@ -17,14 +17,19 @@
 
 
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { addDoc,collection,setDoc,doc } from 'firebase/firestore';
+import { addDoc,collection,setDoc,doc, updateDoc } from 'firebase/firestore';
 import { dbService } from '../../fbase';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 function PostForm({userObj}){
+    const updateTitle=useRef("")
+    const updateContent=useRef("")
+    const location=useLocation()
+    const [toggle,setToggle]=useState(false)
+    const [updateToggle,setUpdateToggle]=useState(false)
     const [postObj,setPostObj]=useState({
                                         id:(Math.random()*1000000).toFixed().toString(),
                                         title:"",
@@ -32,13 +37,25 @@ function PostForm({userObj}){
                                         date:"",
                                         userObj:userObj,sort:null
                                         }) //게시물에 대한 정보를 담고있는 객체
-    const [toggle,setToggle]=useState(false)
     const navigate=useNavigate()
+    useEffect(()=>{ 
+        if(!location.state) return
+        setPostObj(location.state.postObj)
+        setUpdateToggle((prev)=>!prev)
+        console.log(location.state.postObj)
+        updateTitle.current.value=location.state.postObj.title
+        updateContent.current.value=location.state.postObj.content
+        
+    },[])
     useEffect(()=>{
         const date=getDateString()
         setPostObj({...postObj, date: date[0],sort:date[1]})
     }, [toggle])
-    
+
+    useEffect(()=>{ //업데이트용
+        if(!location.state) return 
+        setPostObj(location.state.postObj)
+    },[updateToggle])
     const getDateString=()=>{ //현재 시간 가져오는 함수
         const today = new Date();
         const unixTime=today.getTime() //정렬에 사용할 유닉스시간값
@@ -64,6 +81,7 @@ function PostForm({userObj}){
     }
     
     const onClickAddPost = async () => { //글쓰기 버튼 클릭시
+        // console.log(postObj)
         if(postObj.content==="" || postObj.title==="") return alert("내용을 작성해 주세요")
         setToggle((prev)=>!prev)
         await setDoc(doc(dbService,'post',postObj.id),postObj)
@@ -71,7 +89,14 @@ function PostForm({userObj}){
         return navigate(`/board`)
 
     }
-
+    const onClickUpdatePost=async()=>{
+        if(postObj.content==="" || postObj.title==="") return alert("내용을 작성해 주세요")
+        await updateDoc(doc(dbService,'post',postObj.id),postObj)
+        return navigate(`/board`)
+    }
+    const onClickUpdateCancle=()=>{
+        return navigate('/board')
+    }
     return (
         <Wrapper>
             <Inner>
@@ -81,7 +106,8 @@ function PostForm({userObj}){
                             id="title" 
                             label="제목을 작성해 주세요" 
                             variant="outlined" 
-                            sx={{width:'100%'}}/>
+                            sx={{width:'100%'}}
+                            inputRef={updateTitle}/>
                     </Title>
                     <Content>
                     <TextField
@@ -92,11 +118,21 @@ function PostForm({userObj}){
                             rows={10} //height
                             variant="filled"
                             name='badreview'
+                            inputRef={updateContent}
                         />
                     </Content>
                 </PostContainer>
                 <ButtonContainer>
-                     <Button variant="contained" onClick={onClickAddPost}>글쓰기</Button>         
+                     {updateToggle?
+                     <>
+                     <Button variant="contained" onClick={onClickUpdatePost} style={{marginRight:'4px'}}>수정</Button>         
+                     <Button variant="contained" onClick={onClickUpdateCancle}>취소</Button>         
+                     </>
+                     
+                    :
+                    <Button variant="contained" onClick={onClickAddPost}>글쓰기</Button>         
+
+                    }
                 </ButtonContainer>
             </Inner>
         </Wrapper>

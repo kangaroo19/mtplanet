@@ -5,6 +5,7 @@ import { useEffect,useState } from "react"
 import { authService, dbService } from "../../fbase";
 import { Grid } from "@mui/material";
 import { deleteDoc, doc } from "firebase/firestore";
+import Replies from "./Replies";
 
 
 function Post({userObj}){
@@ -13,21 +14,20 @@ function Post({userObj}){
     const postObj=location.state.postObj[0]
     const [toggle,setToggle]=useState(false) // 현재 로그인한 사용자와 게시판 글쓴 사람과 같은지 비교위함
     useEffect(()=>{
-        if(!userObj) return
+        if(!userObj) return //로그인상태 아닐시
         if(authService.currentUser.uid===postObj.userObj.uid){
             setToggle(true)
         }
     },[])
 
     const onClickUpdateBtn=()=>{
-        if(window.confirm('게시물을 수정하시겠습니까?')){
-            console.log('업데이트창으로이동')
+        if(window.confirm('게시물을 수정하시겠습니까?')){   //확인버튼 클릭시
+            return navigate('/postform',{state:{postObj:postObj},})
         }
-        
     }
 
     const onClickDeleteBtn=async()=>{
-        if(window.confirm('게시물을 삭제하시겠습니까?')){
+        if(window.confirm('게시물을 삭제하시겠습니까?')){   //확인버튼 클릭시
             await deleteDoc(doc(dbService,"post",postObj.id))
             return navigate('/board')
         }
@@ -54,7 +54,8 @@ function Post({userObj}){
             <ContentContainer>
                 <Content>{postObj.content}</Content>
             </ContentContainer>
-            <ReplyForm userObj={userObj}/>   
+            <ReplyForm userObj={userObj}/>  
+            <Replies/> 
             </Inner>
         </Wrapper>
     )
