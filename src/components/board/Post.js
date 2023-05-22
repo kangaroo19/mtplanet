@@ -6,13 +6,29 @@ import { authService, dbService } from "../../fbase";
 import { Grid } from "@mui/material";
 import { deleteDoc, doc } from "firebase/firestore";
 import Replies from "./Replies";
-
+import {  collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 
 function Post({userObj}){
     const location=useLocation()
     const navigate=useNavigate()
     const postObj=location.state.postObj[0]
     const [toggle,setToggle]=useState(false) // 현재 로그인한 사용자와 게시판 글쓴 사람과 같은지 비교위함
+    const [replies,setReplies]=useState([])
+
+    useEffect(()=>{
+        const getReplies=async()=>{
+            const querySnapshot=query(collection(dbService,postObj.id),orderBy("sort","desc"))
+            onSnapshot(querySnapshot,(snapshot)=>{
+                const tempReplies=[]
+                snapshot.forEach((doc)=>{
+                    tempReplies.push(doc.data())
+                })
+                setReplies(tempReplies)
+            })
+        }
+        getReplies()
+    },[])
+    console.log(replies)
     useEffect(()=>{
         if(!userObj) return //로그인상태 아닐시
         if(authService.currentUser.uid===postObj.userObj.uid){
@@ -54,8 +70,14 @@ function Post({userObj}){
             <ContentContainer>
                 <Content>{postObj.content}</Content>
             </ContentContainer>
-            <ReplyForm userObj={userObj}/>  
-            <Replies/> 
+            <ReplyForm userObj={userObj} postObj={postObj}/>  
+            {replies.map((reply)=>(
+                <Replies 
+                    value={reply.value} 
+                    date={reply.date} 
+                    userObj={userObj}
+                />
+            ))} 
             </Inner>
         </Wrapper>
     )

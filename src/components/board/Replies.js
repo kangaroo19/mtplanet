@@ -2,16 +2,18 @@ import { Grid } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import styled from "styled-components";
 
-function Replies(){
+
+function Replies({value,date,userObj}){
+    
     return (
         <Wrapper>
             <Inner>
                 <AvatarConatiner>
-                    <Avatar alt="Remy Sharp" sx={{ width: 40, height: 40, diplay:'block', margin:'0 auto' }}/>
-                    <UserName>재현</UserName>
+                    <Avatar alt="Remy Sharp" src={userObj.userImg} sx={{ width: 40, height: 40, diplay:'block', margin:'0 auto' }}/>
+                    <UserName>{userObj.displayName}</UserName>
                 </AvatarConatiner>
                 <TextContainer>
-                    <Text>sdfasdfasdf</Text>
+                    <Text>{value}</Text>
                 </TextContainer>
             </Inner>
         </Wrapper>

@@ -28,14 +28,15 @@ function PostForm({userObj}){
     const updateTitle=useRef("")
     const updateContent=useRef("")
     const location=useLocation()
-    const [toggle,setToggle]=useState(false)
+    const [toggle,setToggle]=useState(false)    //작성한 날짜와 날짜별 정렬위함
     const [updateToggle,setUpdateToggle]=useState(false)
     const [postObj,setPostObj]=useState({
                                         id:(Math.random()*1000000).toFixed().toString(),
                                         title:"",
                                         content:"",
                                         date:"",
-                                        userObj:userObj,sort:null
+                                        userObj:userObj,
+                                        sort:null
                                         }) //게시물에 대한 정보를 담고있는 객체
     const navigate=useNavigate()
     useEffect(()=>{ 
