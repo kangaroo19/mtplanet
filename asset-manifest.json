@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.js": "/mtplanet/static/js/main.9f4fbb43.js",
+    "main.js": "/mtplanet/static/js/main.b6dd410f.js",
     "static/media/bootcamp.jpg": "/mtplanet/static/media/bootcamp.b6b3d6de55ecfe8be843.jpg",
     "static/media/main.jpg": "/mtplanet/static/media/main.6fe2e990cf004eac05dc.jpg",
     "static/media/3rd.png": "/mtplanet/static/media/3rd.e96c4cd88cf827c3c869.png",
@@ -19,12 +19,12 @@
     "static/media/50th.svg": "/mtplanet/static/media/50th.6d12d3b3871e0940dc542003d36b78b7.svg",
     "static/media/15th.svg": "/mtplanet/static/media/15th.1013255a057f03d0eaa9db33b181cefe.svg",
     "static/media/32nd.svg": "/mtplanet/static/media/32nd.1e9e8fdb02b49882f4b9855ea23a0896.svg",
-    "static/media/21st.svg": "/mtplanet/static/media/21st.abf68756531b0a82e6e44c523840d240.svg",
     "index.html": "/mtplanet/index.html",
+    "static/media/21st.svg": "/mtplanet/static/media/21st.abf68756531b0a82e6e44c523840d240.svg",
     "static/media/6th.svg": "/mtplanet/static/media/6th.ec7755c81e9b4f232490dc59a294a5d9.svg",
-    "main.9f4fbb43.js.map": "/mtplanet/static/js/main.9f4fbb43.js.map"
+    "main.b6dd410f.js.map": "/mtplanet/static/js/main.b6dd410f.js.map"
   },
   "entrypoints": [
-    "static/js/main.9f4fbb43.js"
+    "static/js/main.b6dd410f.js"
   ]
 }
