@@ -2,13 +2,16 @@
 
 import { signOut, updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { authService } from "../fbase";
+import { authService, dbService } from "../fbase";
 import styled from "styled-components";
 import Avatar from '@mui/material/Avatar';
 import { useEffect, useState } from "react";
+import { collection, onSnapshot, query,doc } from "firebase/firestore";
+import MyPosts from "../components/profile/MyPosts";
 function Profile({refreshUser,userObj}){
     const [name,setName]=useState(null)
     const [img,setImg]=useState(null)
+    const [data,setData]=useState([])
     const [updateName,setUpdateName]=useState(userObj.displayName)
     const navigate=useNavigate()
     
@@ -17,6 +20,23 @@ function Profile({refreshUser,userObj}){
         setImg(userObj.userImg)
     },[userObj]) 
     
+    useEffect(()=>{
+        const getPosts=async()=>{
+            const querySnapshot=query(collection(dbService,'post'))
+            onSnapshot(querySnapshot,(snapshot)=>{
+                const tempData=[]
+                snapshot.forEach((doc)=>{
+                    if(doc.data().userObj.uid===authService.currentUser.uid){
+                        tempData.push(doc.data())
+                    }
+                })
+                setData(tempData)
+            })
+        }
+        getPosts()
+
+    },[])
+    console.log(data)
     const onClickLogOutBtn=()=>{ //로그아웃버튼 클릭시 로그아웃하고 홈페이지로 이동
         signOut(authService)
         navigate('/') 
@@ -36,13 +56,23 @@ function Profile({refreshUser,userObj}){
     return (
          <Wrapper>
             <Inner>
-                <Title>{name}님의 프로필입니다</Title>
-                <UserContainer>
-                    <Avatar alt="Remy Sharp" src={img} sx={{ width: 56, height: 56 }}/>
-                    <Name type="text" value={updateName} onChange={onChangeName}/>
-                </UserContainer>
-                <UpdateButton onClick={onClickUpdateBtn}>업데이트</UpdateButton>
-                <LogOutButton onClick={onClickLogOutBtn}>로그아웃</LogOutButton>
+                <ProfileContainer>
+                    <Title>{name}님의 프로필입니다</Title>
+                    <UserContainer>
+                        <Avatar alt="Remy Sharp" src={img} sx={{ width: 56, height: 56 }}/>
+                        <Name type="text" value={updateName} onChange={onChangeName}/>
+                    </UserContainer>
+                    <UpdateButton onClick={onClickUpdateBtn}>업데이트</UpdateButton>
+                    <LogOutButton onClick={onClickLogOutBtn}>로그아웃</LogOutButton>
+                </ProfileContainer>
+                <MyPostsContainer>
+                    {!data.length?
+                        <MyPostsNone>😢작성한 게시물이 없어요😢</MyPostsNone>:
+                        <MyPostsTitle>나의 게시물</MyPostsTitle>}
+                    {data.map((v)=>(
+                        <MyPosts id={v.id} title={v.title}/>
+                    ))}
+                </MyPostsContainer>
             </Inner>
         </Wrapper>
     )
@@ -130,4 +160,25 @@ const LogOutButton=styled.button`
     @media only screen and (max-width:420px){
         width:60%;
     }
+`
+
+const ProfileContainer=styled.div`
+    padding-bottom:20px;
+    border-bottom:3px solid #eee;
+`
+
+const MyPostsContainer=styled.div`
+    padding:20px 0 10px 0;
+`
+
+const MyPostsTitle=styled.div`
+    font-size:1.2rem;
+    font-weight:800;
+`
+
+const MyPostsNone=styled.div`
+    font-size:2rem;
+    line-height:2rem;
+    text-align:center;
+    font-weight:700;
 `
