@@ -8,6 +8,7 @@ import Avatar from '@mui/material/Avatar';
 import { useEffect, useState } from "react";
 import { collection, onSnapshot, query,doc } from "firebase/firestore";
 import MyPosts from "../components/profile/MyPosts";
+import MyPostsTable from "../components/profile/MyPostsTable";
 function Profile({refreshUser,userObj}){
     const [name,setName]=useState(null)
     const [img,setImg]=useState(null)
@@ -36,7 +37,6 @@ function Profile({refreshUser,userObj}){
         getPosts()
 
     },[])
-    console.log(data)
     const onClickLogOutBtn=()=>{ //로그아웃버튼 클릭시 로그아웃하고 홈페이지로 이동
         signOut(authService)
         navigate('/') 
@@ -66,12 +66,13 @@ function Profile({refreshUser,userObj}){
                     <LogOutButton onClick={onClickLogOutBtn}>로그아웃</LogOutButton>
                 </ProfileContainer>
                 <MyPostsContainer>
-                    {!data.length?
-                        <MyPostsNone>😢작성한 게시물이 없어요😢</MyPostsNone>:
-                        <MyPostsTitle>나의 게시물</MyPostsTitle>}
-                    {data.map((v)=>(
-                        <MyPosts id={v.id} title={v.title}/>
-                    ))}
+                <MyPostsTitle>나의 게시물</MyPostsTitle>
+                    <MyPostsInner>
+                        {/* {data.map((v)=>(
+                            <MyPosts id={v.id} title={v.title}/>
+                        ))} */}
+                        <MyPostsTable data={data}/>
+                    </MyPostsInner>
                 </MyPostsContainer>
             </Inner>
         </Wrapper>
@@ -87,7 +88,7 @@ export default Profile
 const Wrapper=styled.div`
     background-color:#e9e9e9;
     margin-top:50px;
-    height:80vh;
+    height:100vh;
     @media only screen and (max-width:420px){
         margin-top:10px;
         margin-bottom:60px;
@@ -181,4 +182,7 @@ const MyPostsNone=styled.div`
     line-height:2rem;
     text-align:center;
     font-weight:700;
+`
+
+const MyPostsInner=styled.div`
 `

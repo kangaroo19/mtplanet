@@ -17,6 +17,8 @@ function MyPosts({id,title}){
 export default MyPosts
 
 const Wrapper=styled.div`
+    padding:5px 0 5px 0;
+    border-bottom:1px solid black;
 `
 
 const Inner=styled.div`

@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 function Error({error,callBack}){
   const navigate=useNavigate()
   const [newOpen,setNewOpen]=useState(true)
-
+  
   const handleClose = () => {
     navigate('/login')
     setNewOpen(false)
