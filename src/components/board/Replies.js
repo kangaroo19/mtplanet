@@ -1,17 +1,17 @@
 import Avatar from '@mui/material/Avatar';
 import styled from "styled-components";
 
-function Replies({value,date,userObj}){
-    
+function Replies({value,date,writerUserObj}){
+   
     return (
         <Wrapper>
             <Inner>
                 <AvatarConatiner>
-                    <Avatar alt="Remy Sharp" src={userObj.userImg} sx={{ width: 40, height: 40, diplay:'block', margin:'0 auto' }}/>
+                    <Avatar alt="Remy Sharp" src={writerUserObj.userImg} sx={{ width: 40, height: 40, diplay:'block', margin:'0 auto' }}/>
                 </AvatarConatiner>
                 <TextContainer>
                     <TextTitle>
-                        <UserName>{userObj.displayName}</UserName>
+                        <UserName>{writerUserObj.displayName}</UserName>
                         <UserDate>{date}</UserDate>
                     </TextTitle>
                     <Text>{value}</Text>

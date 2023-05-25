@@ -27,6 +27,7 @@ function ReplyForm({userObj,postObj}){
             setName(userObj.displayName)
             setImg(userObj.userImg)
         }
+        // else return
     },[])                               
     useEffect(()=>{
         const date=getDateString()

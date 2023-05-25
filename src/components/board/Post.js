@@ -75,7 +75,7 @@ function Post({userObj}){
                 <Replies 
                     value={reply.value} 
                     date={reply.date} 
-                    userObj={userObj}
+                    writerUserObj={reply.userObj}
                 />
             ))} 
             </Inner>
