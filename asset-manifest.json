@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.js": "/mtplanet/static/js/main.ffd2aa9b.js",
+    "main.js": "/mtplanet/static/js/main.bc102aa5.js",
     "static/media/bootcamp.jpg": "/mtplanet/static/media/bootcamp.b6b3d6de55ecfe8be843.jpg",
     "static/media/main.jpg": "/mtplanet/static/media/main.6fe2e990cf004eac05dc.jpg",
     "static/media/3rd.png": "/mtplanet/static/media/3rd.e96c4cd88cf827c3c869.png",
@@ -22,9 +22,9 @@
     "index.html": "/mtplanet/index.html",
     "static/media/21st.svg": "/mtplanet/static/media/21st.abf68756531b0a82e6e44c523840d240.svg",
     "static/media/6th.svg": "/mtplanet/static/media/6th.ec7755c81e9b4f232490dc59a294a5d9.svg",
-    "main.ffd2aa9b.js.map": "/mtplanet/static/js/main.ffd2aa9b.js.map"
+    "main.bc102aa5.js.map": "/mtplanet/static/js/main.bc102aa5.js.map"
   },
   "entrypoints": [
-    "static/js/main.ffd2aa9b.js"
+    "static/js/main.bc102aa5.js"
   ]
 }
