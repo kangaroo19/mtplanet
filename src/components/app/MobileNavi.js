@@ -6,6 +6,7 @@ import NewspaperIcon from '@mui/icons-material/Newspaper';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import LoginIcon from '@mui/icons-material/Login';
+import ForumIcon from '@mui/icons-material/Forum';
 import { useNavigate } from "react-router-dom"
 
 export default function MobileNavi({isLoggedIn}) {
@@ -25,18 +26,29 @@ export default function MobileNavi({isLoggedIn}) {
         value="home"
         icon={<HomeIcon />}
       />
+
       <BottomNavigationAction
         onClick={()=>navigate(`/ranking`)}
         label="랭킹"
         value="ranking"
         icon={<EmojiEventsIcon />}
       />
+
       <BottomNavigationAction
         onClick={()=>navigate(`/news`)}
         label="뉴스"
         value="news"
         icon={<NewspaperIcon />}
       />
+
+      
+      <BottomNavigationAction
+        onClick={()=>navigate(`/board`)}
+        label="게시판"
+        value="board"
+        icon={<ForumIcon />}
+      />
+      
       {isLoggedIn?
       <BottomNavigationAction 
         onClick={()=>navigate(`/profile`)}
@@ -48,6 +60,7 @@ export default function MobileNavi({isLoggedIn}) {
         label="로그인" 
         value="login" 
         icon={<LoginIcon />} />}
+        
     </BottomNavigation>
   );
 }

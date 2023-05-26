@@ -22,7 +22,6 @@ function createData(id,title) {
 
 
 export default function MyPostsTable({data}) {
-    console.log(data)
   const navigate=useNavigate()
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -41,20 +40,18 @@ export default function MyPostsTable({data}) {
     const tempRows=[]
     const tempAllRows=[]
     data.forEach((v)=>{
-        console.log(v)
         tempRows.push(createData(v.id,v.title))
         tempAllRows.push(v)
 
     })
     setRows(tempRows)
-
+    
     setAllPostObj(tempAllRows)
 
   },[data])
   const onClickMoveToPost=(row)=>{
     const sendPostObj=allPostObj.filter((value)=>value.id===row.id)
     navigate(`/post/${row.id}`,{state:{postObj:sendPostObj},})
-    // navigate(`/post/${row.id}`)
   }
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -62,9 +59,9 @@ export default function MyPostsTable({data}) {
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              {columns.map((column) => (
+              {columns.map((column,idx) => (
                 <TableCell
-                  key={column.id}
+                  key={idx}
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
                 >
@@ -76,13 +73,13 @@ export default function MyPostsTable({data}) {
           <TableBody>
             {rows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
+              .map((row,_idx) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                    {columns.map((column) => {
+                  <TableRow hover role="checkbox" tabIndex={-1} key={_idx}>
+                    {columns.map((column,idx) => {
                       const value = row[column.id];
                       return (
-                        <TableCell key={column.id} align={column.align} onClick={()=>onClickMoveToPost(row)}>
+                        <TableCell key={idx} align={column.align} onClick={()=>onClickMoveToPost(row)}>
                           {column.format && typeof value === 'number'
                             ? column.format(value)
                             : value}
