@@ -36,7 +36,7 @@ const Wrapper=styled.div`
     margin-top:50px;
     background-color:#e9e9e9;
     @media only screen and (max-width:420px){
-        margin-top:20px;
+        margin-top:10px;
         margin-bottom:60px;
     }
 `

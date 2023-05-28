@@ -7,9 +7,10 @@ import { useEffect, useState } from 'react';
 import Error from '../login/Error';
 import { doc, setDoc,addDoc, collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 import { dbService } from '../../fbase';
-
+import useWindowWidth from '../../functions/useWindowWidth';
 
 function ReplyForm({userObj,postObj}){
+    const innerWidth=useWindowWidth()
     const [error,setError]=useState(false)
     const [name,setName]=useState('로그인')
     const [img,setImg]=useState(null)
@@ -73,12 +74,14 @@ function ReplyForm({userObj,postObj}){
                     label="댓글을 입력하세요" 
                     variant="filled" 
                     multiline
-                    rows={2} //height
+                    rows={innerWidth>=420?2:3} //height
                     sx={{
                         width:'75%',
                         padding:'0 5px 0 5px',
                         }} />
-                <Button variant="contained" onClick={onClickSendBtn}>댓글쓰기</Button>
+                {innerWidth>=420?
+                <Button variant="contained" onClick={onClickSendBtn}>댓글쓰기</Button>:
+                <Button variant="contained" onClick={onClickSendBtn} sx={{width:'50px',height:'102px'}}>댓글쓰기</Button>}
            </Inner>
            {error
                 ? <Error error='댓글을 작성하려면 로그인이 필요합니다.' callBack={callBack}/>
@@ -101,11 +104,18 @@ const Inner=styled.div`
 `
 
 const UserContainer=styled.div`
-    
+    @media only screen and (max-width:420px){
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+    }
 `
 
 
 const UserName=styled.div`
     text-align:center;
+    @media only screen and (max-width:420px){
+        font-size:0.8rem;
+    }
 `
 
