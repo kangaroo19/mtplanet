@@ -73,7 +73,7 @@ function BootCamp({id}){
             <Wrapper onClick={onClickRouting}>
             <ImgWrapper>
                 <CardImg>
-                    <img src={divisionData[id].img} style={{width:'100px',height:'100px',}}></img>
+                    <img alt={divisionData[id].name} src={divisionData[id].img} style={{width:'100px',height:'100px',}}></img>
                 </CardImg>
             </ImgWrapper>
             <ClassContainer>
