@@ -15,7 +15,7 @@ function Post({userObj}){
     const [toggle,setToggle]=useState(false) // 현재 로그인한 사용자와 게시판 글쓴 사람과 같은지 비교위함
     const [replies,setReplies]=useState([])
 
-    useEffect(()=>{
+    useEffect(()=>{ //댓글 렌더링 위함
         const getReplies=async()=>{
             const querySnapshot=query(collection(dbService,postObj.id),orderBy("sort","desc"))
             onSnapshot(querySnapshot,(snapshot)=>{

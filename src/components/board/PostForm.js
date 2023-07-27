@@ -1,3 +1,5 @@
+
+
 //글쓰기 버튼 클릭시 toggle값 true로 변함 (기본값은 false)
 //그럼 의존성배열에 toggle값이 있는 useEffect 안에서 
 //현재 시간 가져오는 getDateString()함수 호출하고
@@ -28,28 +30,28 @@ function PostForm({userObj}){
     const updateTitle=useRef("")
     const updateContent=useRef("")
     const location=useLocation()
-    const [toggle,setToggle]=useState(false)    //작성한 날짜와 날짜별 정렬위함
+    const [toggle,setToggle]=useState(false)  
     const [updateToggle,setUpdateToggle]=useState(false)
-    const [postObj,setPostObj]=useState({
-                                        id:(Math.random()*1000000).toFixed().toString(),
-                                        title:"",
-                                        content:"",
-                                        date:"",
-                                        userObj:userObj,
-                                        sort:null
-                                        }) //게시물에 대한 정보를 담고있는 객체
+    const [postObj,setPostObj]=useState(        //게시물에 대한 정보를 담고있는 객체
+        {
+            id:(Math.random()*1000000).toFixed().toString(), //게시물 고유 id
+            title:"",   //게시물 제목
+            content:"", //게시물 내용
+            date:"",    //게시물 등록 날짜
+            userObj:userObj, //글쓴이 정보
+            sort:null   //정렬에 사용될 유닉스시간
+        }) 
     const navigate=useNavigate()
     useEffect(()=>{ 
         if(!location.state) return
         setPostObj(location.state.postObj)
         setUpdateToggle((prev)=>!prev)
-        console.log(location.state.postObj)
         updateTitle.current.value=location.state.postObj.title
         updateContent.current.value=location.state.postObj.content
         
     },[])
     useEffect(()=>{
-        const date=getDateString()
+        const date=getDateString() //yyyy-mm-dd hh:mm:ss 형식의 시간 데이터,유닉스시간 데이터 리턴
         setPostObj({...postObj, date: date[0],sort:date[1]})
     }, [toggle])
 
@@ -82,13 +84,10 @@ function PostForm({userObj}){
     }
     
     const onClickAddPost = async () => { //글쓰기 버튼 클릭시
-        // console.log(postObj)
         if(postObj.content==="" || postObj.title==="") return alert("내용을 작성해 주세요")
         setToggle((prev)=>!prev)
         await setDoc(doc(dbService,'post',postObj.id),postObj)
-        // await setDoc(doc(dbService,postObj.id,'test'),{a:'123'})
         return navigate(`/board`)
-
     }
     const onClickUpdatePost=async()=>{
         if(postObj.content==="" || postObj.title==="") return alert("내용을 작성해 주세요")
@@ -124,7 +123,7 @@ function PostForm({userObj}){
                     </Content>
                 </PostContainer>
                 <ButtonContainer>
-                     {updateToggle?
+                     {updateToggle? //게시물화면에서 수정버튼 클릭시
                      <>
                      <Button variant="contained" onClick={onClickUpdatePost} style={{marginRight:'4px'}}>수정</Button>         
                      <Button variant="contained" onClick={onClickUpdateCancle}>취소</Button>         

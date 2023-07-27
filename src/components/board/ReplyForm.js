@@ -15,20 +15,20 @@ function ReplyForm({userObj,postObj}){
     const [name,setName]=useState('로그인')
     const [img,setImg]=useState(null)
     const [toggle,setToggle]=useState(false) //작성한 날짜와 날짜별 정렬위함
-    const [replyObj,setReplyObj]=useState({
-                                            id:(Math.random()*1000000).toFixed().toString(),
-                                            value:"",   //작성한 댓글
-                                            date:null,  //작성한 시간
-                                            sort:null,  //시간별 정렬위함
-                                            userObj:userObj
-                                        })
+    const [replyObj,setReplyObj]=useState(
+            {
+                id:(Math.random()*1000000).toFixed().toString(),
+                value:"",   //작성한 댓글
+                date:null,  //작성한 시간
+                sort:null,  //시간별 정렬위함
+                userObj:userObj //댓글쓴 사용자 정보
+            })
     
     useEffect(()=>{
         if(userObj){
             setName(userObj.displayName)
             setImg(userObj.userImg)
         }
-        // else return
     },[])                               
     useEffect(()=>{
         const date=getDateString()
