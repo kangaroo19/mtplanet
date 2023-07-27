@@ -7,6 +7,7 @@ https://kangaroo19.github.io/mtplanet/#/
 ## 1.개요
 MTPLANET은 기업정보,리뷰 서비스를 제공하는 "잡플래닛"이라는 사이트와 비슷하게 군대 훈련소들의 리뷰를 볼 수 있는 웹페이지 입니다
 
+
 ## 2.미리보기
 ### PC버전
 ![ㅋㅋㅋㅋㅋ](https://user-images.githubusercontent.com/86513078/228157468-abd0d2ca-e8f0-4d80-88dd-9fc69a0ff0d5.png)
@@ -23,8 +24,11 @@ MTPLANET은 크게 4가지 화면으로 구성되어 있습니다.
 
 ※디자인은 대부분 Material UI 사용하였습니다.
 
+## 3.파일구조
+![구조](https://github.com/kangaroo19/mtplanet/assets/86513078/e1bf110f-7a38-4083-95d5-16e8861b5f44)
 
-## 3.사용법
+
+## 4.사용법
 
 ![제목 없음](https://user-images.githubusercontent.com/86513078/226247553-2b1e1568-e67a-4c92-a051-815295aad33e.png)
 
@@ -47,7 +51,8 @@ MTPLANET은 크게 4가지 화면으로 구성되어 있습니다.
 ![dcc](https://user-images.githubusercontent.com/86513078/226252247-9732385f-c615-445c-88d7-2ec0d2eea94a.PNG)
 게시완료
 
-## 4.코드
+
+## 5.코드
 ### - 회원가입
 
 로그인과 회원가입기능은 Firebase Authentication를 사용하여 구현하였습니다.
@@ -150,11 +155,56 @@ const countDocRef = collection(dbService, `${divisionData[id].title}`)
 ```
 내가 방금 작성한 별점과 firestore에 저장된 별점 값을 더해 새로 firebase에 저장합니다 리뷰작성이 성공적으로 완료되면 부대 페이지로 리디렉션됩니다.
 
-## 5.기술스택
+## 6.기술스택
 
 <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=JavaScript&logoColor=white"/><img src="https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=white"/><img src="https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=CSS3&logoColor=white"/><img src="https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=HTML5&logoColor=white"/>
 <img src="https://img.shields.io/badge/firebase-FFCA28?style=flat&logo=firebase&logoColor=white">
 
-## 게시판 기능 추가
+## ** 게시판 기능 추가(2023/05/28)
 
 ![ㅇㅇㅇㅇㅇ](https://github.com/kangaroo19/mtplanet/assets/86513078/c948caa7-949c-4bc8-ad9d-c0df85da7a40)
+
+CRUD기능과 댓글기능을 포함한 게시판 기능을 추가하였습니다.
+
+### -글쓰기 버튼 클릭시 파이어베이스에 저장되는 데이터(postObj)
+
+```JS
+const [postObj,setPostObj]=useState(        
+        {
+            id:(Math.random()*1000000).toFixed().toString(), 
+            title:"",   
+            content:"", 
+            date:"",    
+            userObj:userObj, /
+            sort:null   
+        })
+```
+- id:게시물의 고유 id 클릭시 이 값으로 라우팅,파이어베이스에 댓글기능 처리위해 이 값을 이름으로 가지는 컬렉션 생성 
+- title:게시물 제목
+- content:게시물 내용
+- date:게시물 등록 날짜
+- userObj:글쓴이 정보
+- sort:정렬에 사용될 유닉스 시간
+
+
+### -댓글작성시 파이어베이스에 저장되는 데이터(replyObj)
+
+```JS
+const [replyObj,setReplyObj]=useState(
+            {
+                id:(Math.random()*1000000).toFixed().toString(),
+                value:"",  
+                date:null,  
+                sort:null, 
+                userObj:userObj
+            })
+```
+
+- id:댓글의 고유 아이디
+- value:댓글 내용
+- date:댓글작성 날짜
+- sort:정렬에 사용될 유닉스 시간
+- userObj:댓글 작성자 정보
+
+
+
